@@ -1,4 +1,4 @@
-package MODEL;
+package it.polimi.ingsw.MODEL;
 
 public enum Colour {
     BLUE,

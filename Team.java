@@ -1,6 +1,4 @@
-package it.polimi.ingsw;
-
-import java.util.*;
+package it.polimi.ingsw.MODEL;
 
 public class Team {
     private Player player1;

@@ -1,4 +1,4 @@
-package MODEL;
+package it.polimi.ingsw.MODEL;
 
 public class Professor {
     private Colour typeColour;

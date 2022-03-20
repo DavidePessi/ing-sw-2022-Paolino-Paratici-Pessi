@@ -1,4 +1,4 @@
-package MODEL;
+package it.polimi.ingsw.MODEL;
 
 public class MotherNature {
     private Island position;
@@ -7,4 +7,6 @@ public class MotherNature {
         this.position = position;
     }
 
+    public void move() {
+    }
 }
