@@ -11,18 +11,18 @@ public class Game {
     private Bag bag;
     private MotherNature motherNature;
     private List<Professor> professors;
-    private int currentIslad;
+    private int currentIsland;
 
-    public Game game(Player player1, Player player2) {
-        return this;
+    public Game(Player player1, Player player2) {
+
     }
 
-    public Game game(Player player1, Player player2, Player player3) {
-        return this;
+    public Game(Player player1, Player player2, Player player3) {
+
     }
 
-    public Game game(Player player1, Player player2, Player player3, Player player4) {
-        return this;
+    public Game(Player player1, Player player2, Player player3, Player player4) {
+
     }
 
     public void startGame() {
@@ -41,33 +41,41 @@ public class Game {
         motherNature.move();
     }
 
-    public void doMoveStuentToDiningRoom(int idClient, Colour colour) {
-        for(int i=0; i<listPlayer.size(); i++)
-        {
-            if (listPlayer.get(i) != null ){
-                if(listPlayer.get(i).idClient == idClient){
-                    listPlayer.get(i).moveStudentToDiningRoom(colour);
+    public void doMoveStuentInDiningRoom(int idClient, Colour colour) {
+        for (Player player : listPlayer) {
+            if (player != null) {
+                if (player.idClient == idClient) {
+                    player.moveStudentInDiningRoom(colour);
                 }
 
             }
         }
     }
 
-    //search the id of the player in the player list
-    //once is done it calls the method that add the students from the group to the entrance
-    //passing as parameter the studentGroup in the cloud that we want to take
-    public void doTakeCloud(int idClient, int numCloud) {
-            try{
-                    for(int i=0; i<listPlayer.size(); i++){
-                        if(listPlayer.get(i) != null){
-                            if(listPlayer.get(i).idClient == idClient){
-                                listPlayer.get(i).addStudentsToEntrances(listCloud.get(numCloud).getStudents());
-                            }
-                        }
-                    }
-            } catch (MissingCloudException e) {
+    public void doMoveStudentInIsland(int idClient, Colour colour, int numIsland){
+        for (Player player : listPlayer) {
 
+            if (player.idClient == idClient) {
+                player.moveStudentInIsland(colour, this.getIsland(numIsland));
             }
+        }
+    }
+
+    public Island getIsland(int numIsland) throws IllegalArgumentException{
+        Island island = null;
+        if (numIsland<0 || numIsland>listIsland.size()){
+            throw new IllegalArgumentException();
+        }
+        else {
+            for (int i = 0; i < listIsland.size(); i++) {
+
+                if (listIsland.get(i).numIsland == numIsland) {
+                    island = listIsland.get(i);
+                }
+            }
+        }
+        return island;
+
     }
 }
 

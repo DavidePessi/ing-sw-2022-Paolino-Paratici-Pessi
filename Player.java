@@ -17,14 +17,16 @@ public class Player {
     public void playCard(Card card){};
     public Player getLastPlayedCard(){return this;}
 
-    public void moveStudentToDiningRoom(Colour colour) {
+    public void moveStudentInDiningRoom(Colour colour) {
         try{
             entrance.removeStudent(colour);
-        }catch (MissingStudentException());
+        }catch (MissingStudentException e){};
     }
 
-    //add students of the group given at the entrance
-    public void addStudentsToEntrances(StudentGroup students) {
-        entrance.addGroup(students);
+    public void moveStudentInIsland(Colour colour, Island island) {
+        try {
+            entrance.removeStudent(colour);
+            island.addStudent(colour);
+        } catch (IllegalArgumentException e) {}  //Do we want to use the MissingStudentException?
     }
 }
