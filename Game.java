@@ -52,5 +52,22 @@ public class Game {
             }
         }
     }
+
+    //search the id of the player in the player list
+    //once is done it calls the method that add the students from the group to the entrance
+    //passing as parameter the studentGroup in the cloud that we want to take
+    public void doTakeCloud(int idClient, int numCloud) {
+            try{
+                    for(int i=0; i<listPlayer.size(); i++){
+                        if(listPlayer.get(i) != null){
+                            if(listPlayer.get(i).idClient == idClient){
+                                listPlayer.get(i).addStudentsToEntrances(listCloud.get(numCloud).getStudents());
+                            }
+                        }
+                    }
+            } catch (MissingCloudException e) {
+
+            }
+    }
 }
 

@@ -7,4 +7,9 @@ public class Entrance{
     public void removeStudent(Colour colour){
         studentGroup.removeStudent(colour);
     }
+
+    //aggiungo studenti alla nuvola
+    public void addGroup(StudentGroup students) {
+        studentGroup.addStudents(students);
+    }
 }

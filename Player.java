@@ -22,4 +22,9 @@ public class Player {
             entrance.removeStudent(colour);
         }catch (MissingStudentException());
     }
+
+    //add students of the group given at the entrance
+    public void addStudentsToEntrances(StudentGroup students) {
+        entrance.addGroup(students);
+    }
 }

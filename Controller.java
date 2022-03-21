@@ -12,7 +12,7 @@ public class Controller {
 
     public void placeStudentIsland(Colour student, int numIsola){}
 
-    public void takeCloud(int numCloud){}
+    public void takeCloud(int idClient, int numCloud){ game.doTakeCloud(idClient, numCloud);}
 
     public void useCharacter(int numPersonaggio){}
 

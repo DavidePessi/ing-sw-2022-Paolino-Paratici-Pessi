@@ -1,19 +1,17 @@
 package it.polimi.ingsw.MODEL;
 
 public class Cloud {
-    private int numBlue;
-    private int numGreen;
-    private int numRed;
-    private int numPink;
-    private int numYellow;
+    private StudentGroup students;
 
-    public Cloud cloud(int nB, int nG, int nR, int nP, int nY){
-        return this;
+    public Cloud cloud() {
     }
-    public void remove3(){
-        return;
-    }
-    public void add3(){
-        return;
+
+    //return group students of the cloud and delete every students from the list of the cloud
+    public StudentGroup getStudents() {
+        StudentGroup result = new StudentGroup(students);
+
+        students.clear();
+
+        return result;
     }
 }
