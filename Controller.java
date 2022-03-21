@@ -1,28 +1,46 @@
 package it.polimi.ingsw.CONTROLLER;
 
-import it.polimi.ingsw.MODEL.Colour;
-import it.polimi.ingsw.MODEL.Game;
+import it.polimi.ingsw.MODEL.*;
+import it.polimi.ingsw.VIEW.Client;
+
+// TODO: 21/03/2022 nel metodo takeCloud, numCloud>4...dobbiamo mettere un attributo che ci dice quante nuvole ci sono (perché in base al num di giocatori cambiano)
 
 public class Controller {
 
     private Game game;
     private Client client;
 
-    public void placeStudentDinner (Colour student){}
+    /*public void placeStudentInDiningRoom(int idClient, Colour colour){
+        Student student = new Student();
+        student.setColour(colour);
+        game.doMoveStuentInDiningRoom(idClient,student);
+    }*/
 
-    public void placeStudentIsland(Colour student, int numIsola){}
-
-    public void takeCloud(int idClient, int numCloud){ game.doTakeCloud(idClient, numCloud);}
+    public void takeCloud(int idClient, int numCloud) throws MissingCloudException {
+        if(numCloud<0 || numCloud>4) {
+            game.doTakeCloud(idClient, numCloud);
+        }
+        else throw new MissingCloudException("Cloud not found");
+    }
 
     public void useCharacter(int numPersonaggio){}
 
     public void playCard(int numCarta){}
 
     public void moveStudentToDinigRoom(int idClient, Colour colour){
-        game.doMoveStuentToDiningRoom(idClient,colour);
+        try {
+            game.doMoveStuentInDiningRoom(idClient,colour);
+        } catch (MissingStudentException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void moveMotherNature(int numIsland){
-        game.doMoveMotherNature(numIsland);
+    public void moveStudentInIsland(int idClient, Colour colour, int numIsland){
+        game.doMoveStudentInIsland(idClient, colour, numIsland);
+    }
+
+    public void moveMotherNature(int numMovement){
+        game.doMoveMotherNature(numMovement);
     }
 }
+

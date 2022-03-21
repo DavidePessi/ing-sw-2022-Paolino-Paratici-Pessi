@@ -4,6 +4,10 @@ public class Entrance{
 
     private StudentGroup studentGroup;
 
+    /*public void removeStudent(Student student){
+        studentGroup.removeStudent(student);
+    }*/
+
     public void removeStudent(Colour colour){
         studentGroup.removeStudent(colour);
     }

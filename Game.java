@@ -14,15 +14,12 @@ public class Game {
     private int currentIsland;
 
     public Game(Player player1, Player player2) {
-
     }
 
     public Game(Player player1, Player player2, Player player3) {
-
     }
 
     public Game(Player player1, Player player2, Player player3, Player player4) {
-
     }
 
     public void startGame() {
@@ -37,22 +34,53 @@ public class Game {
         return null;
     }
 
-    public void doMoveMotherNature(int numIsland){
-        motherNature.move();
+    public void doMoveMotherNature(int numMovement) {
+        motherNature.move(numMovement, listIsland);
     }
 
-    public void doMoveStuentInDiningRoom(int idClient, Colour colour) {
+    /*public void doMoveStuentInDiningRoom(int idClient, Student student) {
+        for (Player player : listPlayer) {
+            if (player != null) {
+                if (player.idClient == idClient) {
+                    try {
+                        //elimina lo studente dalla entrance prima di crearne uno nuovo in dining room
+                        player.moveStudentInDiningRoom(student);
+                    } catch (MissingStudentException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }
+    }*/
+
+    public void doMoveStuentInDiningRoom(int idClient, Colour colour) throws MissingStudentException {
         for (Player player : listPlayer) {
             if (player != null) {
                 if (player.idClient == idClient) {
                     player.moveStudentInDiningRoom(colour);
                 }
 
+            } else {
+                throw new MissingStudentException("Student not found");
             }
         }
     }
 
-    public void doMoveStudentInIsland(int idClient, Colour colour, int numIsland){
+    //search the id of the player in the player list
+    //once is done it calls the method that add the students from the group to the entrance
+    //passing as parameter the studentGroup in the cloud that we want to take
+    public void doTakeCloud(int idClient, int numCloud) {
+        for (Player player : listPlayer) {
+            if (player != null) {
+                if (player.idClient == idClient) {
+                    player.addStudentsToEntrances(listCloud.get(numCloud).getStudents());
+                }
+            }
+        }
+    }
+
+    public void doMoveStudentInIsland(int idClient, Colour colour, int numIsland) {
         for (Player player : listPlayer) {
 
             if (player.idClient == idClient) {
@@ -61,12 +89,11 @@ public class Game {
         }
     }
 
-    public Island getIsland(int numIsland) throws IllegalArgumentException{
+    public Island getIsland(int numIsland) throws IllegalArgumentException {
         Island island = null;
-        if (numIsland<0 || numIsland>listIsland.size()){
+        if (numIsland < 0 || numIsland > listIsland.size()) {
             throw new IllegalArgumentException();
-        }
-        else {
+        } else {
             for (int i = 0; i < listIsland.size(); i++) {
 
                 if (listIsland.get(i).numIsland == numIsland) {
@@ -75,6 +102,7 @@ public class Game {
             }
         }
         return island;
+
 
     }
 }
