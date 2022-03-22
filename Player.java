@@ -3,7 +3,7 @@ package it.polimi.ingsw.MODEL;
 import java.util.*;
 
 public class Player {
-    public int idClient; //it's so dangerous!
+    private int idClient; //it's so dangerous!
     private ColourTower tower;
     private List<Professor> professors;
     private Deck deck;
@@ -11,9 +11,10 @@ public class Player {
     private DiningRoom diningRoom;
     private Entrance entrance;
 
-    public Player createPlayer(Colour tower){return this;}
-    public void playCard(Card card){};
-    public Player getLastPlayedCard(){return this;}
+    public Player (Colour tower){}
+    public Player getLastPlayedCard(){
+        return null;
+    }
 
     /*public void moveStudentInDiningRoom(Student student) throws MissingStudentException {
         if(student.getColour()==Colour.BLUE || student.getColour()==Colour.GREEN || student.getColour()==Colour.PINK || student.getColour()==Colour.RED || student.getColour()==Colour.YELLOW) {
@@ -37,5 +38,9 @@ public class Player {
     //add students of the group given at the entrance
     public void addStudentsToEntrances(StudentGroup students) {
         entrance.addGroup(students);
+    }
+
+    public int getIdClient(){
+        return idClient;
     }
 }

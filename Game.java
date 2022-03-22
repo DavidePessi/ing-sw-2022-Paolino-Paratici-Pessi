@@ -11,15 +11,15 @@ public class Game {
     private Bag bag;
     private MotherNature motherNature;
     private List<Professor> professors;
-    private int currentIsland;
+    //private int currentIsland;
 
-    public Game(Player player1, Player player2) {
+    public Game(int idClient1, int idClient2) {
     }
 
-    public Game(Player player1, Player player2, Player player3) {
+    public Game(int idClient1, int idClient2, int idClient3) {
     }
 
-    public Game(Player player1, Player player2, Player player3, Player player4) {
+    public Game(int idClient1, int idClient2, int idClient3, int idClient4) {
     }
 
     public void startGame() {
@@ -54,10 +54,10 @@ public class Game {
         }
     }*/
 
-    public void doMoveStuentInDiningRoom(int idClient, Colour colour) throws MissingStudentException {
+    public void doMoveStudentInDiningRoom(int idClient, Colour colour) throws MissingStudentException {
         for (Player player : listPlayer) {
             if (player != null) {
-                if (player.idClient == idClient) {
+                if (player.getIdClient() == idClient) {
                     player.moveStudentInDiningRoom(colour);
                 }
 
@@ -73,7 +73,7 @@ public class Game {
     public void doTakeCloud(int idClient, int numCloud) {
         for (Player player : listPlayer) {
             if (player != null) {
-                if (player.idClient == idClient) {
+                if (player.getIdClient() == idClient) {
                     player.addStudentsToEntrances(listCloud.get(numCloud).getStudents());
                 }
             }
@@ -83,7 +83,7 @@ public class Game {
     public void doMoveStudentInIsland(int idClient, Colour colour, int numIsland) {
         for (Player player : listPlayer) {
 
-            if (player.idClient == idClient) {
+            if (player.getIdClient() == idClient) {
                 player.moveStudentInIsland(colour, this.getIsland(numIsland));
             }
         }

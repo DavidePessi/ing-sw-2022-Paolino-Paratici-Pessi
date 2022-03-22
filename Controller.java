@@ -23,13 +23,13 @@ public class Controller {
         else throw new MissingCloudException("Cloud not found");
     }
 
-    public void useCharacter(int numPersonaggio){}
+    public void useCharacter(int numCharacter){}
 
-    public void playCard(int numCarta){}
+    public void playCard(int numCard){}
 
-    public void moveStudentToDinigRoom(int idClient, Colour colour){
+    public void moveStudentInDiningRoom(int idClient, Colour colour){
         try {
-            game.doMoveStuentInDiningRoom(idClient,colour);
+            game.doMoveStudentInDiningRoom(idClient,colour);
         } catch (MissingStudentException e) {
             e.printStackTrace();
         }
