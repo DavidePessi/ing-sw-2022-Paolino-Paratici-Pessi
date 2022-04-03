@@ -2,7 +2,9 @@ package it.polimi.ingsw.MODEL;
 
 public class Cloud {
     private StudentGroup students;
-    public Cloud (){}
+    public Cloud (){
+        students = new StudentGroup();
+    }
 
     //return group students of the cloud and delete every students from the list of the cloud
     public StudentGroup getStudents() {

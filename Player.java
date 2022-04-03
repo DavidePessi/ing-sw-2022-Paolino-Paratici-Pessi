@@ -1,11 +1,9 @@
 package it.polimi.ingsw.MODEL;
 
-import java.io.PrintWriter;
 import java.util.*;
 
 public class Player {
     private String nickname;
-    private ColourTower tower;
     private Team team;
     private List<Professor> professors;
     private Deck deck;
@@ -13,33 +11,37 @@ public class Player {
     private DiningRoom diningRoom;
     private Entrance entrance;
 
-    public Player (String nickname, ColourTower tower){
+    public Player (String nickname, Team team){
         this.nickname = nickname;
-        this.tower = tower;
-        diningRoom = new DiningRoom();
-        entrance = new Entrance();
-        deck = new Deck();
+        this.team = team;
+
+        this.deck = new Deck();
+        this.diningRoom = new DiningRoom();
+        this.entrance = new Entrance();
     }
 
-    public Team getTeam(){
-        return team;
-    }
     public Card getLastPlayedCard(){
         return currentCard;
     }
 
-    public Deck getDeck(){
-        return deck;
-    }
-
-    public void playCard(int numCard){
-        try{
+    public void playCard(int numCard) {
+        try {
             currentCard = deck.getCard(numCard);
             deck.removeCard(numCard);
-        } catch (MissingCardException e){
-            e.printStackTrace();
+        } catch (MissingCardException e) {
+            System.out.println("This card number is not valid, this card is not in the deck!");
         }
     }
+
+    public Team getTeam(){
+        return this.team;
+    }
+    /*public void moveStudentInDiningRoom(Student student) throws MissingStudentException {
+        if(student.getColour()==Colour.BLUE || student.getColour()==Colour.GREEN || student.getColour()==Colour.PINK || student.getColour()==Colour.RED || student.getColour()==Colour.YELLOW) {
+            entrance.removeStudent(student);
+        }
+        else throw new MissingStudentException("Student not found");
+    }*/
 
     public void moveStudentInDiningRoom(Colour colour){
         entrance.removeStudent(colour);
@@ -50,9 +52,7 @@ public class Player {
         try {
             entrance.removeStudent(colour);
             island.addStudent(colour);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }  //Do we want to use the MissingStudentException?
+        } catch (IllegalArgumentException e) {}  //Do we want to use the MissingStudentException?
     }
 
     //add students of the group given at the entrance
@@ -60,7 +60,23 @@ public class Player {
         entrance.addGroup(students);
     }
 
-    public String getNicknameClient(){
+    public String getIdClient(){
         return nickname;
     }
+
+    //rimuove il professore dalla lista dei professori
+    public void removeProfessor(Professor professor){
+       professors.remove(professor);
+    }
+
+    //aggiunge un professore alla lista dei professori
+    public void addProfessor(Professor professor){
+        professors.add(professor);
+    }
+
+    //conta il numero di studenti posizionati in DinnerRoom del colore colour
+    public int NumStudents(Colour colour){
+        return this.diningRoom.NumStudents(colour);
+    }
+
 }

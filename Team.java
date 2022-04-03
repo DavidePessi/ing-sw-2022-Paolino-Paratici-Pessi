@@ -1,12 +1,11 @@
 package it.polimi.ingsw.MODEL;
 
 public class Team {
-    private int numberOfTower;
+    private ColourTower colourTower;
+    private int NumTower;
 
-    public Team (Player player1, Player player2){
-    }
-
-    public int getNumberOfTower(){
-        return numberOfTower;
+    public Team (ColourTower colourTower, int NumTower){
+        this.colourTower = colourTower;
+        this.NumTower = NumTower;
     }
 }
