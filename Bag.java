@@ -16,6 +16,10 @@ public class Bag {
         numYellow = 26;
     }
 
+    public int size(){
+        return numBlue+numGreen+numPink+numRed+numYellow;
+    }
+
     public Colour pullOut(){
         /*This method returns a random color that represents the student randomly extracted from the bag*/
 

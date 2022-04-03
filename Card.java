@@ -7,14 +7,14 @@ public class Card {
 
     public Card(int value, int movements){
         this.value = value;
-        this.movements=movements;
+        this.movements = movements;
     }
 
     public int getValue(){
-        return this.value;
+        return value;
     }
 
-    public int getMovements(){
-        return this.movements;
+    public int getMovement(){
+        return movements;
     }
 }

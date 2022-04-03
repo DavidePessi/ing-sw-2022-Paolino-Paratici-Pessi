@@ -5,7 +5,9 @@ public class StudentGroup {
 
     private List<Student> listStudent;
 
-    public StudentGroup(){}
+    public StudentGroup(){
+        
+    }
     //create a new StudentGroup that is the copy of the one given
     public StudentGroup(StudentGroup copy){
         try {

@@ -12,30 +12,41 @@ public class Controller {
     private Game game;
     private List<Client> listClient;
 
-
-    public void takeCloud(int idClient, int numCloud) throws MissingCloudException {
+    public void takeCloud(String nickname, int numCloud) throws MissingCloudException {
         if(numCloud>=0 && numCloud<=4) {
-            game.doTakeCloud(idClient, numCloud);
+            game.doTakeCloud(nickname, numCloud);
         }
         else throw new MissingCloudException("Cloud not found");
     }
 
-    public void useCharacter(int numCharacter){}
-
-    public void playCard(int idClient, int numCard){
-        game.doPlayCard(idClient, numCard);
+    public void createGame(String nickname1, String nickname2){
+        game = new Game(nickname1, nickname2);
     }
 
-    public void moveStudentInDiningRoom(int idClient, Colour colour){
+    public void createGame(String nickname1, String nickname2, String nickname3){
+        game = new Game(nickname1, nickname2, nickname3);
+    }
+
+    public void createGame(String nickname1, String nickname2, String nickname3, String nickname4){
+        game = new Game(nickname1, nickname2, nickname3, nickname4);
+    }
+
+    public void useCharacter(int numCharacter){}
+
+    public void playCard(String nickname, int numCard){
+        game.doPlayCard(nickname, numCard);
+    }
+
+    public void moveStudentInDiningRoom(String nickname, Colour colour){
         try {
-            game.doMoveStudentInDiningRoom(idClient,colour);
+            game.doMoveStudentInDiningRoom(nickname,colour);
         } catch (MissingStudentException e) {
             e.printStackTrace();
         }
     }
 
-    public void moveStudentInIsland(int idClient, Colour colour, int numIsland){
-        game.doMoveStudentInIsland(idClient, colour, numIsland);
+    public void moveStudentInIsland(String nickname, Colour colour, int numIsland){
+        game.doMoveStudentInIsland(nickname, colour, numIsland);
     }
 
     public void moveMotherNature(int numMovement){

@@ -15,15 +15,19 @@ public class Game {
     private List<Professor> professors;
     //private int currentIsland;
 
-    public Game(int idClient1, int idClient2) {
-        listPlayer.add(new Player(idClient1, ColourTower.BLACK));
-        listPlayer.add(new Player(idClient2, ColourTower.WHITE));
+    public Game(String nickname1, String nickname2) {
 
+        listPlayer = new ArrayList<Player>();
+        listPlayer.add(new Player(nickname1, ColourTower.BLACK));
+        listPlayer.add(new Player(nickname2, ColourTower.WHITE));
+
+        listCloud = new ArrayList<Cloud>();
         listCloud.add(new Cloud());
         listCloud.add(new Cloud());
 
         bag = new Bag();
 
+        listIsland = new ArrayList<Island>();
         listIsland.add(new Island(0));
         listIsland.add(new Island(1));
         listIsland.add(new Island(2));
@@ -39,6 +43,7 @@ public class Game {
 
         motherNature = new MotherNature(listIsland.get(0));
 
+        professors = new ArrayList<Professor>();
         professors.add(new Professor(Colour.BLUE));
         professors.add(new Professor(Colour.GREEN));
         professors.add(new Professor(Colour.PINK));
@@ -46,17 +51,21 @@ public class Game {
         professors.add(new Professor(Colour.YELLOW));
     }
 
-    public Game(int idClient1, int idClient2, int idClient3) {
-        listPlayer.add(new Player(idClient1, ColourTower.BLACK));
-        listPlayer.add(new Player(idClient2, ColourTower.WHITE));
-        listPlayer.add(new Player(idClient3, ColourTower.GREY));
+    public Game(String nickname1, String nickname2, String nickname3) {
 
+        listPlayer = new ArrayList<>();
+        listPlayer.add(new Player(nickname1, ColourTower.BLACK));
+        listPlayer.add(new Player(nickname2, ColourTower.WHITE));
+        listPlayer.add(new Player(nickname3, ColourTower.GREY));
+
+        listCloud = new ArrayList<>();
         listCloud.add(new Cloud());
         listCloud.add(new Cloud());
         listCloud.add(new Cloud());
 
         bag = new Bag();
 
+        listIsland = new ArrayList<>();
         listIsland.add(new Island(0));
         listIsland.add(new Island(1));
         listIsland.add(new Island(2));
@@ -72,6 +81,7 @@ public class Game {
 
         motherNature = new MotherNature(listIsland.get(0));
 
+        professors = new ArrayList<>();
         professors.add(new Professor(Colour.BLUE));
         professors.add(new Professor(Colour.GREEN));
         professors.add(new Professor(Colour.PINK));
@@ -80,13 +90,15 @@ public class Game {
 
     }
 
-    public Game(int idClient1, int idClient2, int idClient3, int idClient4) {
-        listPlayer.add(new Player(idClient1, ColourTower.BLACK));
-        listPlayer.add(new Player(idClient2, ColourTower.WHITE));
-        listPlayer.add(new Player(idClient3, ColourTower.BLACK));
-        listPlayer.add(new Player(idClient4, ColourTower.WHITE));
+    public Game(String nickname1, String nickname2, String nickname3, String nickname4) {
 
+        listPlayer = new ArrayList<>();
+        listPlayer.add(new Player(nickname1, ColourTower.BLACK));
+        listPlayer.add(new Player(nickname2, ColourTower.WHITE));
+        listPlayer.add(new Player(nickname3, ColourTower.BLACK));
+        listPlayer.add(new Player(nickname4, ColourTower.WHITE));
 
+        listCloud = new ArrayList<>();
         listCloud.add(new Cloud());
         listCloud.add(new Cloud());
         listCloud.add(new Cloud());
@@ -95,6 +107,7 @@ public class Game {
 
         bag = new Bag();
 
+        listIsland = new ArrayList<>();
         listIsland.add(new Island(0));
         listIsland.add(new Island(1));
         listIsland.add(new Island(2));
@@ -110,6 +123,7 @@ public class Game {
 
         motherNature = new MotherNature(listIsland.get(0));
 
+        professors = new ArrayList<>();
         professors.add(new Professor(Colour.BLUE));
         professors.add(new Professor(Colour.GREEN));
         professors.add(new Professor(Colour.PINK));
@@ -120,9 +134,19 @@ public class Game {
     public void startGame() {
     }
 
+    /*if the game is finished and there's a winner return True, else return False*/
     public boolean checkWin() {
-        /*if the game is finished and there's a winner return True, else return False*/
-        return false;
+        if(listIsland.size()<=3 || bag.size()==0){ //if there's 3 or less island or the bag is empty, the game ends
+            return true;
+        }
+        else{
+            for(Player p : listPlayer){
+                if(p.getTeam().getNumberOfTower()==0 || p.getDeck().size()==0){ //if there's a  player with 0 towers or without card, the game ends
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
     public Team theWinnerIs() {
@@ -134,18 +158,14 @@ public class Game {
         1. viene sommato il numero dell'isola su cui si trova madre natura con il numero di spostamenti che deve fare
         2. si fa modulo 12, si trova il numero dell'isola su cui madre natura si deve spostare
         3. questo numero è dato alla funzione getIsland, che ritorna l'oggetto isola avente quel numero
-
-        1. it sums the number of island on which mother nature is and the umber of steps she has to do
-        2. it does mod 12 to find the number of the island on which MotherNature has to move
-        3. this number is given by the function getIsland(), which returns the Island object having that number
          */
         motherNature.move(getIsland((numMovement+motherNature.getNumIsland())%12));
     }
 
-    public void doMoveStudentInDiningRoom(int idClient, Colour colour) throws MissingStudentException {
+    public void doMoveStudentInDiningRoom(String nickname, Colour colour) throws MissingStudentException {
         for (Player player : listPlayer) {
             if (player != null) {
-                if (player.getIdClient() == idClient) {
+                if (player.getNicknameClient().equals(nickname)) {
                     player.moveStudentInDiningRoom(colour);
                 }
 
@@ -158,30 +178,20 @@ public class Game {
     //search the id of the player in the player list
     //once is done it calls the method that add the students from the group to the entrance
     //passing as parameter the studentGroup in the cloud that we want to take
-    public void doTakeCloud(int idClient, int numCloud) {
+    public void doTakeCloud(String nickname, int numCloud) {
         for (Player player : listPlayer) {
             if (player != null) {
-                if (player.getIdClient() == idClient) {
+                if (player.getNicknameClient().equals(nickname)) {
                     player.addStudentsToEntrances(listCloud.get(numCloud).getStudents());
                 }
             }
         }
     }
 
-    public void doPlayCard(int idClient, int numCard) {
-        for (Player player : listPlayer) {
-            if (player != null) {
-                if (player.getIdClient() == idClient) {
-                    player.playCard(numCard);
-                }
-            }
-        }
-    }
-
-    public void doMoveStudentInIsland(int idClient, Colour colour, int numIsland) {
+    public void doMoveStudentInIsland(String nickname, Colour colour, int numIsland) {
         for (Player player : listPlayer) {
 
-            if (player.getIdClient() == idClient) {
+            if (player.getNicknameClient().equals(nickname)) {
                 player.moveStudentInIsland(colour, this.getIsland(numIsland));
             }
         }
@@ -200,6 +210,16 @@ public class Game {
             }
         }
         return island;
+    }
+
+    public void doPlayCard(String nickname, int numCard){
+        for(Player player : listPlayer){
+            if(player != null){
+                if(player.getNicknameClient().equals(nickname)){
+                    player.playCard(numCard);
+                }
+            }
+        }
     }
 }
 
