@@ -2,7 +2,19 @@ package it.polimi.ingsw.MODEL;
 
 public class Bag {
 
-    private StudentGroup students;
+    private int numBlue;
+    private int numGreen;
+    private int numRed;
+    private int numPink;
+    private int numYellow;
+
+    public Bag(){
+        numBlue = 26;
+        numGreen = 26;
+        numPink = 26;
+        numRed = 26;
+        numYellow = 26;
+    }
 
     public Colour pullOut(){
         /*This method returns a random color that represents the student randomly extracted from the bag*/

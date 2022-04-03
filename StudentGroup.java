@@ -5,6 +5,16 @@ public class StudentGroup {
 
     private List<Student> listStudent;
 
+    public StudentGroup(){}
+    //create a new StudentGroup that is the copy of the one given
+    public StudentGroup(StudentGroup copy){
+        try {
+            for (int i = 0; i < copy.size(); i++) {
+                this.listStudent.add(copy.get(i));
+            }
+        }catch(NullPointerException e){}
+    }
+
     public int countBlueStudent(){
         int numBlue=0;
         for (Student student : listStudent) {
@@ -67,15 +77,6 @@ public class StudentGroup {
         if(!removed){
             throw new IllegalArgumentException() ;
         }
-    }
-
-    //create a new StudentGroup that is the copy of the one given
-    public StudentGroup(StudentGroup copy){
-        try {
-            for (int i = 0; i < copy.size(); i++) {
-                this.listStudent.add(copy.get(i));
-            }
-        }catch(NullPointerException e){}
     }
 
     //delete every students from the list listStudent

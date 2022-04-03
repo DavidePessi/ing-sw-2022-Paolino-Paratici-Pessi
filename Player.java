@@ -11,9 +11,25 @@ public class Player {
     private DiningRoom diningRoom;
     private Entrance entrance;
 
-    public Player (Colour tower){}
-    public Player getLastPlayedCard(){
-        return null;
+    public Player (int idClient, ColourTower tower){
+        this.idClient = idClient;
+        this.tower = tower;
+        this.deck = new Deck();
+        this.diningRoom = new DiningRoom();
+        this.entrance = new Entrance();
+    }
+
+    public Card getLastPlayedCard(){
+        return currentCard;
+    }
+
+    public void playCard(int numCard) {
+        try {
+            currentCard = deck.getCard(numCard);
+            deck.removeCard(numCard);
+        } catch (MissingCardException e) {
+            System.out.println("This card number is not valid, this card is not in the deck!");
+        }
     }
 
     /*public void moveStudentInDiningRoom(Student student) throws MissingStudentException {

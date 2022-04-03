@@ -6,11 +6,16 @@ public class Island {
     private ColourTower colourTower;
     private boolean hasMotherNature;
     private int numSubisland;
-    int numIsland;
+    private int numIsland;
     private StudentGroup students;
 
     /*Why don't we pass 2 attributes of type Island to the constructor? */
-    public Island(int nB, int nG, int nR, int nP, int nY, int nSI) {}
+    public Island(int numIsland) {
+        this.numIsland = numIsland;
+        numSubisland = 1;
+        hasMotherNature = false;
+        students = new StudentGroup();
+    }
     public Island(Island i1, Island i2) {}
 
     public void setMotherNature(boolean hasMotherNature){
@@ -18,6 +23,10 @@ public class Island {
             this.hasMotherNature = true;
         }
         else this.hasMotherNature = false;
+    }
+
+    public int getNumIsland(){
+        return numIsland;
     }
 
     public void addStudent(Colour colour){

@@ -2,6 +2,8 @@ package it.polimi.ingsw.MODEL;
 
 import java.util.*;
 
+// TODO: 22/03/2022 aggiungere una variabile per fare il modulo
+
 public class Game {
     private int numPlayer;
     private Player lastFirstPlayer;
@@ -14,12 +16,105 @@ public class Game {
     //private int currentIsland;
 
     public Game(int idClient1, int idClient2) {
+        listPlayer.add(new Player(idClient1, ColourTower.BLACK));
+        listPlayer.add(new Player(idClient2, ColourTower.WHITE));
+
+        listCloud.add(new Cloud());
+        listCloud.add(new Cloud());
+
+        bag = new Bag();
+
+        listIsland.add(new Island(0));
+        listIsland.add(new Island(1));
+        listIsland.add(new Island(2));
+        listIsland.add(new Island(3));
+        listIsland.add(new Island(4));
+        listIsland.add(new Island(5));
+        listIsland.add(new Island(6));
+        listIsland.add(new Island(7));
+        listIsland.add(new Island(8));
+        listIsland.add(new Island(9));
+        listIsland.add(new Island(10));
+        listIsland.add(new Island(11));
+
+        motherNature = new MotherNature(listIsland.get(0));
+
+        professors.add(new Professor(Colour.BLUE));
+        professors.add(new Professor(Colour.GREEN));
+        professors.add(new Professor(Colour.PINK));
+        professors.add(new Professor(Colour.RED));
+        professors.add(new Professor(Colour.YELLOW));
     }
 
     public Game(int idClient1, int idClient2, int idClient3) {
+        listPlayer.add(new Player(idClient1, ColourTower.BLACK));
+        listPlayer.add(new Player(idClient2, ColourTower.WHITE));
+        listPlayer.add(new Player(idClient3, ColourTower.GREY));
+
+        listCloud.add(new Cloud());
+        listCloud.add(new Cloud());
+        listCloud.add(new Cloud());
+
+        bag = new Bag();
+
+        listIsland.add(new Island(0));
+        listIsland.add(new Island(1));
+        listIsland.add(new Island(2));
+        listIsland.add(new Island(3));
+        listIsland.add(new Island(4));
+        listIsland.add(new Island(5));
+        listIsland.add(new Island(6));
+        listIsland.add(new Island(7));
+        listIsland.add(new Island(8));
+        listIsland.add(new Island(9));
+        listIsland.add(new Island(10));
+        listIsland.add(new Island(11));
+
+        motherNature = new MotherNature(listIsland.get(0));
+
+        professors.add(new Professor(Colour.BLUE));
+        professors.add(new Professor(Colour.GREEN));
+        professors.add(new Professor(Colour.PINK));
+        professors.add(new Professor(Colour.RED));
+        professors.add(new Professor(Colour.YELLOW));
+
     }
 
     public Game(int idClient1, int idClient2, int idClient3, int idClient4) {
+        listPlayer.add(new Player(idClient1, ColourTower.BLACK));
+        listPlayer.add(new Player(idClient2, ColourTower.WHITE));
+        listPlayer.add(new Player(idClient3, ColourTower.BLACK));
+        listPlayer.add(new Player(idClient4, ColourTower.WHITE));
+
+
+        listCloud.add(new Cloud());
+        listCloud.add(new Cloud());
+        listCloud.add(new Cloud());
+        listCloud.add(new Cloud());
+
+
+        bag = new Bag();
+
+        listIsland.add(new Island(0));
+        listIsland.add(new Island(1));
+        listIsland.add(new Island(2));
+        listIsland.add(new Island(3));
+        listIsland.add(new Island(4));
+        listIsland.add(new Island(5));
+        listIsland.add(new Island(6));
+        listIsland.add(new Island(7));
+        listIsland.add(new Island(8));
+        listIsland.add(new Island(9));
+        listIsland.add(new Island(10));
+        listIsland.add(new Island(11));
+
+        motherNature = new MotherNature(listIsland.get(0));
+
+        professors.add(new Professor(Colour.BLUE));
+        professors.add(new Professor(Colour.GREEN));
+        professors.add(new Professor(Colour.PINK));
+        professors.add(new Professor(Colour.RED));
+        professors.add(new Professor(Colour.YELLOW));
     }
 
     public void startGame() {
@@ -34,25 +129,18 @@ public class Game {
         return null;
     }
 
-    public void doMoveMotherNature(int numMovement) {
-        motherNature.move(numMovement, listIsland);
+    public void doMoveMotherNature(int numMovement) { //metti eccezione
+        /*
+        1. viene sommato il numero dell'isola su cui si trova madre natura con il numero di spostamenti che deve fare
+        2. si fa modulo 12, si trova il numero dell'isola su cui madre natura si deve spostare
+        3. questo numero è dato alla funzione getIsland, che ritorna l'oggetto isola avente quel numero
+
+        1. it sums the number of island on which mother nature is and the umber of steps she has to do
+        2. it does mod 12 to find the number of the island on which MotherNature has to move
+        3. this number is given by the function getIsland(), which returns the Island object having that number
+         */
+        motherNature.move(getIsland((numMovement+motherNature.getNumIsland())%12));
     }
-
-    /*public void doMoveStuentInDiningRoom(int idClient, Student student) {
-        for (Player player : listPlayer) {
-            if (player != null) {
-                if (player.idClient == idClient) {
-                    try {
-                        //elimina lo studente dalla entrance prima di crearne uno nuovo in dining room
-                        player.moveStudentInDiningRoom(student);
-                    } catch (MissingStudentException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-        }
-    }*/
 
     public void doMoveStudentInDiningRoom(int idClient, Colour colour) throws MissingStudentException {
         for (Player player : listPlayer) {
@@ -80,6 +168,16 @@ public class Game {
         }
     }
 
+    public void doPlayCard(int idClient, int numCard) {
+        for (Player player : listPlayer) {
+            if (player != null) {
+                if (player.getIdClient() == idClient) {
+                    player.playCard(numCard);
+                }
+            }
+        }
+    }
+
     public void doMoveStudentInIsland(int idClient, Colour colour, int numIsland) {
         for (Player player : listPlayer) {
 
@@ -94,16 +192,14 @@ public class Game {
         if (numIsland < 0 || numIsland > listIsland.size()) {
             throw new IllegalArgumentException();
         } else {
-            for (int i = 0; i < listIsland.size(); i++) {
+            for (Island value : listIsland) {
 
-                if (listIsland.get(i).numIsland == numIsland) {
-                    island = listIsland.get(i);
+                if (value.getNumIsland() == numIsland) {
+                    island = value;
                 }
             }
         }
         return island;
-
-
     }
 }
 
