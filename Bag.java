@@ -20,6 +20,27 @@ public class Bag {
         return numBlue+numGreen+numPink+numRed+numYellow;
     }
 
+    public StudentGroup startingPullOut(){
+        StudentGroup studentGroup = new StudentGroup();
+        studentGroup.addStudent(Colour.BLUE);
+        studentGroup.addStudent(Colour.BLUE);
+        studentGroup.addStudent(Colour.GREEN);
+        studentGroup.addStudent(Colour.GREEN);
+        studentGroup.addStudent(Colour.PINK);
+        studentGroup.addStudent(Colour.PINK);
+        studentGroup.addStudent(Colour.RED);
+        studentGroup.addStudent(Colour.RED);
+        studentGroup.addStudent(Colour.YELLOW);
+        studentGroup.addStudent(Colour.YELLOW);
+        this.numBlue = this.numBlue - 2;
+        this.numGreen = this.numGreen - 2;
+        this.numPink = this.numPink - 2;
+        this.numRed = this.numRed - 2;
+        this.numYellow = this.numYellow - 2;
+
+        return studentGroup;
+    }
+
     public Colour pullOut(){
         /*This method returns a random color that represents the student randomly extracted from the bag*/
 

@@ -12,4 +12,8 @@ public class Cloud {
         students.clear();
         return result;
     }
+
+    public void addStudents (StudentGroup studentGroup){
+        this.students.addStudents(studentGroup); //we have to check that we can only add 3 students when the cloud is empty or take 3 students, and we can have only 3 or 0 students on a cloud
+    }
 }

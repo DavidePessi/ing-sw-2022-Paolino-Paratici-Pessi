@@ -106,4 +106,10 @@ public class StudentGroup {
     public void addStudent(Colour colour){
         listStudent.add(new Student(colour));
     }
+
+    public Colour pullOut(){
+        /*da implementare:
+         * deve estrarre uno studente casuale dalla lista, ritornarne il colore e rimuovere lo studente dalla lista*/
+        return Colour.BLUE;
+    }
 }

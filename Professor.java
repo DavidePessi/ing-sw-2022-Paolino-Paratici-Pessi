@@ -9,14 +9,14 @@ public class Professor {
         owner = null;
     }
 
-
     void changeOwner(Player owner){
         this.owner = owner;
     }
 
-    public Player getOwner(){
+    Player getOwner(){
         return this.owner;
     }
+
     public Colour getColour(){
         return this.typeColour;
     }

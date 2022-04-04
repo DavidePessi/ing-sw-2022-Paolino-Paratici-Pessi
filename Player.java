@@ -14,34 +14,34 @@ public class Player {
     public Player (String nickname, Team team){
         this.nickname = nickname;
         this.team = team;
-
-        this.deck = new Deck();
-        this.diningRoom = new DiningRoom();
-        this.entrance = new Entrance();
+        diningRoom = new DiningRoom();
+        entrance = new Entrance();
+        deck = new Deck();
     }
 
+    public Team getTeam(){
+        return team;
+    }
     public Card getLastPlayedCard(){
         return currentCard;
     }
 
-    public void playCard(int numCard) {
-        try {
+    public Deck getDeck(){
+        return deck;
+    }
+
+    public int numProfessor(){
+        return professors.size();
+    }
+
+    public void playCard(int numCard){
+        try{
             currentCard = deck.getCard(numCard);
             deck.removeCard(numCard);
-        } catch (MissingCardException e) {
+        } catch (MissingCardException e){
             System.out.println("This card number is not valid, this card is not in the deck!");
         }
     }
-
-    public Team getTeam(){
-        return this.team;
-    }
-    /*public void moveStudentInDiningRoom(Student student) throws MissingStudentException {
-        if(student.getColour()==Colour.BLUE || student.getColour()==Colour.GREEN || student.getColour()==Colour.PINK || student.getColour()==Colour.RED || student.getColour()==Colour.YELLOW) {
-            entrance.removeStudent(student);
-        }
-        else throw new MissingStudentException("Student not found");
-    }*/
 
     public void moveStudentInDiningRoom(Colour colour){
         entrance.removeStudent(colour);
@@ -52,7 +52,9 @@ public class Player {
         try {
             entrance.removeStudent(colour);
             island.addStudent(colour);
-        } catch (IllegalArgumentException e) {}  //Do we want to use the MissingStudentException?
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }  //Do we want to use the MissingStudentException?
     }
 
     //add students of the group given at the entrance
@@ -60,13 +62,13 @@ public class Player {
         entrance.addGroup(students);
     }
 
-    public String getIdClient(){
+    public String getNicknameClient(){
         return nickname;
     }
 
     //rimuove il professore dalla lista dei professori
     public void removeProfessor(Professor professor){
-       professors.remove(professor);
+        professors.remove(professor);
     }
 
     //aggiunge un professore alla lista dei professori
@@ -78,5 +80,4 @@ public class Player {
     public int NumStudents(Colour colour){
         return this.diningRoom.NumStudents(colour);
     }
-
 }
