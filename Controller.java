@@ -6,6 +6,7 @@ import it.polimi.ingsw.VIEW.Client;
 import java.util.*;
 
 // TODO: 21/03/2022 nel metodo takeCloud, numCloud>4...dobbiamo mettere un attributo che ci dice quante nuvole ci sono (perché in base al num di giocatori cambiano)
+// TODO: 05/04/2022 metodo del controller che acquisisce i vari nickname
 
 public class Controller {
 

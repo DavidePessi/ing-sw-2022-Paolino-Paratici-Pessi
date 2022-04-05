@@ -12,8 +12,11 @@ public class Entrance{
         studentGroup.removeStudent(colour);
     }
 
-    //aggiungo studenti alla nuvola
     public void addGroup(StudentGroup students) {
         studentGroup.addStudents(students);
+    }
+
+    public StudentGroup getStudentGroup(){
+        return studentGroup;
     }
 }

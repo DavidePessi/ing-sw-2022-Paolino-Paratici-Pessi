@@ -19,6 +19,7 @@ public class Player {
         diningRoom = new DiningRoom();
         entrance = new Entrance();
         deck = new Deck();
+        professors = new ArrayList<>();
     }
 
     public Team getTeam(){
@@ -32,9 +33,11 @@ public class Player {
         return deck;
     }
 
-    public DiningRoom getDiningRoom(){
-        return diningRoom;
+    public String getNicknameClient(){
+        return nickname;
     }
+
+    public Entrance getEntrance(){return entrance;}
 
     public int numProfessor(){
         return professors.size();
@@ -68,10 +71,6 @@ public class Player {
         entrance.addGroup(students);
     }
 
-    public String getNicknameClient(){
-        return nickname;
-    }
-
     //rimuove il professore dalla lista dei professori
     public void removeProfessor(Professor professor){
         professors.remove(professor);
@@ -83,7 +82,7 @@ public class Player {
     }
 
     //conta il numero di studenti posizionati in DinnerRoom del colore colour
-    public int NumStudents(Colour colour){
-        return this.diningRoom.NumStudents(colour);
+    public int NumStudentsDiningRoom(Colour colour){
+        return diningRoom.NumStudents(colour);
     }
 }

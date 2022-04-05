@@ -4,6 +4,7 @@ import java.util.*;
 
 // TODO: 22/03/2022 aggiungere una variabile per fare il modulo
 // TODO: 03/04/2022 GUARDARE LE DUE IMPLEMENTAZIONI DI "theWinnerIs" E VEDERE SE RIESCI A FINIRE LA SECONDA, ALTRIMENTI LA PRIMA VA BENE
+// TODO: 05/04/2022 gestine delle influenze da fare
 
 public class Game {
     private int numPlayer;
@@ -362,36 +363,39 @@ public class Game {
     }
 
     public void checkProfessor(Colour colour) {
+
+
         Player MaxPlayer = listPlayer.get(0);
 
         //il primo ciclo mi dice chi è il player con più studenti del colore colour
-        for (int i = 1; i < listPlayer.size(); i++) {
-            if (listPlayer.get(i).NumStudents(colour) > 0 &&
-                    listPlayer.get(i).NumStudents(colour) > MaxPlayer.NumStudents(colour)) {
+        for (int i = 0; i < listPlayer.size(); i++) {
+            if (listPlayer.get(i).NumStudentsDiningRoom(colour) > 0 &&
+                    listPlayer.get(i).NumStudentsDiningRoom(colour) >= MaxPlayer.NumStudentsDiningRoom(colour)) {
+                MaxPlayer = listPlayer.get(i);
+            }
+        }
 
-                //a questo punto cerco il professore del colore voluto nella lista
-                for (int j = 1; j < professors.size(); j++) {
+        //cerco il professore dello stesso colore
+        for (int j = 0; j < professors.size(); j++) {
 
-                    if (professors.get(j).getColour().equals( colour)) {
-                        //se il professore non ha owner e il player con più studenti ha almeno uno studente
-                        //assegno il professore
-                        if (professors.get(j).getOwner() == null && MaxPlayer.NumStudents(colour) > 0) {
-                            MaxPlayer.addProfessor(professors.get(j));
-                            professors.get(j).changeOwner(MaxPlayer);
+            if (professors.get(j).getOwner() == null && professors.get(j).getColour() == colour) {
 
-                        }
+                //se il professore non ha owner e il player con più studenti ha almeno uno studente
+                //assegno il professore
+                if (professors.get(j).getOwner() == null && MaxPlayer.NumStudentsDiningRoom(colour) > 0) {
+                    MaxPlayer.addProfessor(professors.get(j));
+                    professors.get(j).changeOwner(MaxPlayer);
 
-                        //se il professore ha un owner e il player con più studenti ha più studenti dell'owner
-                        //assegno il professore
-                        else {
-                            if (MaxPlayer.NumStudents(colour) > professors.get(j).getOwner().NumStudents(colour)) {
-                                MaxPlayer.addProfessor(professors.get(j));
-                                professors.get(j).getOwner().removeProfessor(professors.get(j));
-                                professors.get(j).changeOwner(MaxPlayer);
-                            }
-                        }
+                }
+            }
 
-                    }
+            //se il professore ha un owner e il player con più studenti ha più studenti dell'owner
+            //assegno il professore
+            else {
+                if (professors.get(j).getColour() == colour && MaxPlayer.NumStudentsDiningRoom(colour) > professors.get(j).getOwner().NumStudentsDiningRoom(colour)) {
+                    MaxPlayer.addProfessor(professors.get(j));
+                    professors.get(j).getOwner().removeProfessor(professors.get(j));
+                    professors.get(j).changeOwner(MaxPlayer);
                 }
             }
         }
@@ -400,6 +404,19 @@ public class Game {
     public Player getPlayer(String io){
         for (Player p : listPlayer){
             if(p.getNicknameClient().equals(io)){
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public Cloud getCloud(int num){
+        return listCloud.get(num);
+    }
+
+    public Professor getProfessor(Colour col) {
+        for (Professor p : professors){
+            if(p.getColour().equals(col)){
                 return p;
             }
         }
