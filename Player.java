@@ -1,5 +1,7 @@
 package it.polimi.ingsw.MODEL;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 public class Player {
@@ -30,6 +32,10 @@ public class Player {
         return deck;
     }
 
+    public DiningRoom getDiningRoom(){
+        return diningRoom;
+    }
+
     public int numProfessor(){
         return professors.size();
     }
@@ -48,12 +54,12 @@ public class Player {
         diningRoom.add(colour);
     }
 
-    public void moveStudentInIsland(Colour colour, Island island) {
+    public void moveStudentInIsland(Colour colour, Island island){
         try {
             entrance.removeStudent(colour);
             island.addStudent(colour);
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            System.out.println("You can't move the student with this color in the Island");
         }  //Do we want to use the MissingStudentException?
     }
 

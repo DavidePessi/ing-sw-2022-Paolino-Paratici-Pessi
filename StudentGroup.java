@@ -6,18 +6,31 @@ public class StudentGroup {
     private List<Student> listStudent;
 
     public StudentGroup(){
-        
+        listStudent = new ArrayList<>();
     }
     //create a new StudentGroup that is the copy of the one given
     public StudentGroup(StudentGroup copy){
+        listStudent = new ArrayList<>();
         try {
             for (int i = 0; i < copy.size(); i++) {
                 this.listStudent.add(copy.get(i));
             }
-        }catch(NullPointerException e){}
+        }catch(NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
-    public int countBlueStudent(){
+    public int countStudentsOfColour(Colour colour){
+        int numC=0;
+        for (Student student : listStudent) {
+            if (student.getColour().equals(colour)) {
+                numC++;
+            }
+        }
+        return numC;
+    }
+
+    /*public int countBlueStudent(){
         int numBlue=0;
         for (Student student : listStudent) {
             if (student.getColour().equals(Colour.BLUE)) {
@@ -30,7 +43,7 @@ public class StudentGroup {
         int numGreen=0;
         for (Student student : listStudent) {
             if (student.getColour().equals(Colour.GREEN)) {
-                numGreen++;
+                numGreen += 1;
             }
         }
         return numGreen;
@@ -61,7 +74,7 @@ public class StudentGroup {
             }
         }
         return numYellow;
-    }
+    }*/
 
     /*public void removeStudent(Student student){
         listStudent.remove(listStudent.indexOf(student));
@@ -70,15 +83,13 @@ public class StudentGroup {
 
     public void removeStudent(Colour colour) throws IllegalArgumentException {
         boolean removed = false;
-        for(int i=0; i<listStudent.size() && removed==false; i++){
+        for(int i = 0; i<listStudent.size() && !removed; i++){
             if(listStudent.get(i).getColour().equals(colour)){
                 listStudent.remove(listStudent.get(i));
                 removed = true;
             }
         }
-        if(!removed){
-            throw new IllegalArgumentException() ;
-        }
+        if(!removed) throw new IllegalArgumentException();
     }
 
     //delete every students from the list listStudent
@@ -100,7 +111,9 @@ public class StudentGroup {
             for (int i = 0; i < students.size(); i++) {
                 this.listStudent.add(students.get(i));
             }
-        }catch(NullPointerException e){}
+        }catch(NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addStudent(Colour colour){

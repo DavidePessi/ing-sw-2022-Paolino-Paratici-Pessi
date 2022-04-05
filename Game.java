@@ -19,19 +19,21 @@ public class Game {
 
     public Game(String nickname1, String nickname2) {
 
+        listPlayer = new ArrayList<>();
+        listTeam = new ArrayList<>();
         listTeam.add(new Team(ColourTower.WHITE, 8));
         listTeam.add(new Team(ColourTower.BLACK, 8));
 
         listPlayer.add(new Player(nickname1, listTeam.get(0)));
         listPlayer.add(new Player(nickname2, listTeam.get(1)));
 
-        listCloud = new ArrayList<Cloud>();
+        listCloud = new ArrayList<>();
         listCloud.add(new Cloud());
         listCloud.add(new Cloud());
 
         bag = new Bag();
 
-        listIsland = new ArrayList<Island>();
+        listIsland = new ArrayList<>();
         listIsland.add(new Island(0));
         listIsland.add(new Island(1));
         listIsland.add(new Island(2));
@@ -47,7 +49,7 @@ public class Game {
 
         motherNature = new MotherNature(listIsland.get(0));
 
-        professors = new ArrayList<Professor>();
+        professors = new ArrayList<>();
         professors.add(new Professor(Colour.BLUE));
         professors.add(new Professor(Colour.GREEN));
         professors.add(new Professor(Colour.PINK));
@@ -58,6 +60,7 @@ public class Game {
     public Game(String nickname1, String nickname2, String nickname3) {
 
         listPlayer = new ArrayList<>();
+        listTeam = new ArrayList<>();
         listTeam.add(new Team(ColourTower.WHITE, 6));
         listTeam.add(new Team(ColourTower.BLACK, 6));
         listTeam.add(new Team(ColourTower.GREY, 6));
@@ -101,6 +104,7 @@ public class Game {
     public Game(String nickname1, String nickname2, String nickname3, String nickname4) {
 
         listPlayer = new ArrayList<>();
+        listTeam = new ArrayList<>();
         listTeam.add(new Team(ColourTower.WHITE, 8));
         listTeam.add(new Team(ColourTower.BLACK, 8));
 
@@ -327,7 +331,6 @@ public class Game {
 
     public void doMoveStudentInIsland(String nickname, Colour colour, int numIsland) {
         for (Player player : listPlayer) {
-
             if (player.getNicknameClient().equals(nickname)) {
                 player.moveStudentInIsland(colour, this.getIsland(numIsland));
             }
@@ -340,7 +343,6 @@ public class Game {
             throw new IllegalArgumentException();
         } else {
             for (Island value : listIsland) {
-
                 if (value.getNumIsland() == numIsland) {
                     island = value;
                 }
@@ -393,5 +395,14 @@ public class Game {
                 }
             }
         }
+    }
+
+    public Player getPlayer(String io){
+        for (Player p : listPlayer){
+            if(p.getNicknameClient().equals(io)){
+                return p;
+            }
+        }
+        return null;
     }
 }

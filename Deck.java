@@ -6,11 +6,13 @@ public class Deck {
     private List<Card> listCard;
 
     public void removeCard(int value){
-        for(Card card: listCard){
-            if(card.getValue()==value){
-                listCard.remove(card);
+        Card c = null;
+        for(Card card: listCard) {
+            if (card.getValue() == value) {
+                c = card;
             }
         }
+        listCard.remove(c);
     }
 
     public Card getCard(int value) throws MissingCardException{
@@ -20,6 +22,7 @@ public class Deck {
                 cardToReturn = card;
             }
         }
+
         if(cardToReturn==null){
             throw new MissingCardException("The card you want to play is not in the deck");
         }
