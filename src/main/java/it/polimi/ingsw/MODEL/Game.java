@@ -5,6 +5,8 @@ import java.util.*;
 // TODO: 22/03/2022 aggiungere una variabile per fare il modulo
 // TODO: 03/04/2022 GUARDARE LE DUE IMPLEMENTAZIONI DI "theWinnerIs" E VEDERE SE RIESCI A FINIRE LA SECONDA, ALTRIMENTI LA PRIMA VA BENE
 // TODO: 05/04/2022 gestine delle influenze da fare
+// TODO: 05/04/2022 decorator con ereditarietà
+// TODO: 05/04/2022 dividere il controller
 
 public class Game {
     private int numPlayer;

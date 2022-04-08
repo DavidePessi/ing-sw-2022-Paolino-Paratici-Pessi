@@ -25,6 +25,7 @@ public class Player {
     public Team getTeam(){
         return team;
     }
+
     public Card getLastPlayedCard(){
         return currentCard;
     }

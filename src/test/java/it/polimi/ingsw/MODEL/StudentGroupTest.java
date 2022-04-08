@@ -51,7 +51,6 @@ public class StudentGroupTest extends TestCase {
         }
 
         assertEquals(1, n);
-
     }
 
     public void testGet() {

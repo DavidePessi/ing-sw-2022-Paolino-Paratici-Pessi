@@ -1,14 +1,9 @@
 package it.polimi.ingsw.MODEL;
 
-
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -145,7 +140,7 @@ public class GameTest extends TestCase {
         numProf = numProf + g.getPlayer("io").numProfessor() + g.getPlayer("tu").numProfessor();
 
         Assertions.assertEquals(0, numProf);
-        Assertions.assertEquals(null, g.getProfessor(col).getOwner());
+        Assertions.assertNull(g.getProfessor(col).getOwner());
 
         //verifico che sia dato ad io se ha più studenti
         StudentGroup sg = new StudentGroup();
@@ -156,7 +151,6 @@ public class GameTest extends TestCase {
 
         numProf = numProf + g.getPlayer("io").numProfessor();
         Assertions.assertEquals(1, g.getPlayer("io").NumStudentsDiningRoom(col));
-
         Assertions.assertEquals(1, numProf);
         //assertEquals(g.getPlayer("io"), g.getProfessor(col).getOwner());
     }
