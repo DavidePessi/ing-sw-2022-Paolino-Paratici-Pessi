@@ -17,6 +17,10 @@ public class MotherNature {
         position.setMotherNature(true);
     }
 
+    public Island getPosition(){
+        return this.position;
+    }
+
     public int getNumIsland(){
         return position.getNumIsland();
     }

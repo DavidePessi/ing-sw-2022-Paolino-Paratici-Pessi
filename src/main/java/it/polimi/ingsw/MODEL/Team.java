@@ -10,6 +10,11 @@ public class Team {
     }
 
     public int getNumberOfTower(){
-        return numberOfTower;
+        return this.numberOfTower;
+
+    }
+
+    public ColourTower getColourTower(){
+        return this.colourTower;
     }
 }

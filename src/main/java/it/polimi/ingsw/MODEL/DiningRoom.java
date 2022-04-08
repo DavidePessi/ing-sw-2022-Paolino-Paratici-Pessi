@@ -16,6 +16,9 @@ public class DiningRoom {
 
     public int NumStudents(Colour colour) {
         return studentGroup.countStudentsOfColour(colour);
+    }
 
+    public StudentGroup getStudentGroup(){
+        return this.studentGroup;
     }
 }

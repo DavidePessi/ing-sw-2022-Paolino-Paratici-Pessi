@@ -51,6 +51,7 @@ public class Game {
         listIsland.add(new Island(11));
 
         motherNature = new MotherNature(listIsland.get(0));
+        listIsland.get(0).setMotherNature(true);
 
         professors = new ArrayList<>();
         professors.add(new Professor(Colour.BLUE));
@@ -94,6 +95,7 @@ public class Game {
         listIsland.add(new Island(11));
 
         motherNature = new MotherNature(listIsland.get(0));
+        listIsland.get(0).setMotherNature(true);
 
         professors = new ArrayList<>();
         professors.add(new Professor(Colour.BLUE));
@@ -140,6 +142,7 @@ public class Game {
         listIsland.add(new Island(11));
 
         motherNature = new MotherNature(listIsland.get(0));
+        listIsland.get(0).setMotherNature(true);
 
         professors = new ArrayList<>();
         professors.add(new Professor(Colour.BLUE));
