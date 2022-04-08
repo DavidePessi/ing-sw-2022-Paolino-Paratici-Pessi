@@ -1,0 +1,55 @@
+package it.polimi.ingsw.MODEL;
+
+public class Bag {
+
+    private int numBlue;
+    private int numGreen;
+    private int numRed;
+    private int numPink;
+    private int numYellow;
+
+    public Bag(){
+        numBlue = 26;
+        numGreen = 26;
+        numPink = 26;
+        numRed = 26;
+        numYellow = 26;
+    }
+
+    public int size(){
+        return numBlue+numGreen+numPink+numRed+numYellow;
+    }
+
+    public StudentGroup startingPullOut(){
+        StudentGroup studentGroup = new StudentGroup();
+        studentGroup.addStudent(Colour.BLUE);
+        studentGroup.addStudent(Colour.BLUE);
+        studentGroup.addStudent(Colour.GREEN);
+        studentGroup.addStudent(Colour.GREEN);
+        studentGroup.addStudent(Colour.PINK);
+        studentGroup.addStudent(Colour.PINK);
+        studentGroup.addStudent(Colour.RED);
+        studentGroup.addStudent(Colour.RED);
+        studentGroup.addStudent(Colour.YELLOW);
+        studentGroup.addStudent(Colour.YELLOW);
+        this.numBlue = this.numBlue - 2;
+        this.numGreen = this.numGreen - 2;
+        this.numPink = this.numPink - 2;
+        this.numRed = this.numRed - 2;
+        this.numYellow = this.numYellow - 2;
+
+        return studentGroup;
+    }
+
+    public Colour pullOut(){
+        /*This method returns a random color that represents the student randomly extracted from the bag*/
+
+        /*We have to use a function that returns a random colour of thr enum and then we have to check if the number of
+         * students of that colour is bigger than zero and if it is we have to decrement the number of the students of
+         * the extracted colour and return the colour. If there aren't student of the extracted colour, instead, we have
+         * to reextract a colour till when the student of the extracted colour exists */
+
+
+        return Colour.BLUE; /*return messa per non avere l'errore, il metodo è da implementare*/
+    }
+}
