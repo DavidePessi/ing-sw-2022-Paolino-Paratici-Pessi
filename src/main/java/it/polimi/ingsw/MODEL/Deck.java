@@ -7,23 +7,24 @@ public class Deck {
 
     public void removeCard(int value){
         Card c = null;
+
         for(Card card: listCard) {
             if (card.getValue() == value) {
                 c = card;
             }
         }
-        listCard.remove(c);
+        this.listCard.remove(c);
     }
 
     public Card getCard(int value) throws MissingCardException{
         Card cardToReturn = null;
         for(Card card : listCard){
-            if(card.getValue()==value){
+            if(card.getValue() == value){
                 cardToReturn = card;
             }
         }
 
-        if(cardToReturn==null){
+        if(cardToReturn == null){
             throw new MissingCardException("The card you want to play is not in the deck");
         }
         return cardToReturn;

@@ -18,7 +18,7 @@ public class TeamTest extends TestCase {
         Team t = new Team(ct, nt);
 
         assertEquals(ct, t.getColourTower());
-        assertTrue(t.getColourTower() != null);
+        assertNotNull(t.getColourTower());
         assertTrue(t.getColourTower() instanceof ColourTower);
     }
 }

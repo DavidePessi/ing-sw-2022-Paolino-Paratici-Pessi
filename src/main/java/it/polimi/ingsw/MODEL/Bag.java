@@ -1,5 +1,7 @@
 package it.polimi.ingsw.MODEL;
 
+import java.util.Random;
+
 public class Bag {
 
     private int numBlue;
@@ -41,15 +43,45 @@ public class Bag {
         return studentGroup;
     }
 
-    public Colour pullOut(){
-        /*This method returns a random color that represents the student randomly extracted from the bag*/
+    public Colour pullOut()throws MissingStudentException{
+        /*
+        * il metodo calcola uno studente di colore randomico basato sui colori rimasti nel sacchetto e lo estrae
+        * se non ci sono più studenti nella bag viene lanciata una missingstudentexception per avvisare
+        */
+        int numstudenti = this.numBlue + this.numGreen + this.numPink + this.numYellow + this.numRed;
+        Random random = new Random();
 
-        /*We have to use a function that returns a random colour of thr enum and then we have to check if the number of
-         * students of that colour is bigger than zero and if it is we have to decrement the number of the students of
-         * the extracted colour and return the colour. If there aren't student of the extracted colour, instead, we have
-         * to reextract a colour till when the student of the extracted colour exists */
+        //verifico che ci sia almeno uno studente
+        if(numstudenti == 0) throw new MissingStudentException("studenti finiti nella bag");
 
+        else {
+            int randomNum = random.nextInt(numstudenti) + 1;
 
-        return Colour.BLUE; /*return messa per non avere l'errore, il metodo è da implementare*/
+                //caso estrazione blue
+            if (this.numBlue >= randomNum) {
+                this.numBlue--;
+                return Colour.BLUE;
+
+                //caso estrazione verde
+            } else if (this.numBlue + this.numGreen >= randomNum) {
+                this.numGreen--;
+                return Colour.GREEN;
+
+                //caso estrazione rosa
+            } else if (this.numBlue + this.numGreen + this.numPink >= randomNum) {
+                this.numPink--;
+                return Colour.PINK;
+
+                //caso estrazione rosso
+            } else if (this.numBlue + this.numGreen + this.numPink + this.numRed >= randomNum) {
+                this.numRed--;
+                return Colour.RED;
+
+                //caso estrazione giallo
+            } else {
+                this.numYellow--;
+                return Colour.YELLOW;
+            }
+        }
     }
 }

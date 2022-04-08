@@ -152,7 +152,7 @@ public class Game {
         professors.add(new Professor(Colour.YELLOW));
     }
 
-    public void startGame() {
+    public void startGame() throws MissingStudentException{
 
         for (Cloud cloud : listCloud) { //per ogni nuvola aggiungo 3 studenti estratti casualmente dalla bag
             if (cloud != null) {

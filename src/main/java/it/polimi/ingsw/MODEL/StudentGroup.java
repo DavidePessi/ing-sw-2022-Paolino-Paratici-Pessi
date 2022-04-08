@@ -5,23 +5,24 @@ public class StudentGroup {
 
     private List<Student> listStudent;
 
-    public StudentGroup(){
+    public StudentGroup() {
         listStudent = new ArrayList<>();
     }
+
     //create a new StudentGroup that is the copy of the one given
-    public StudentGroup(StudentGroup copy){
+    public StudentGroup(StudentGroup copy) {
         listStudent = new ArrayList<>();
         try {
             for (int i = 0; i < copy.size(); i++) {
                 this.listStudent.add(copy.get(i));
             }
-        }catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
 
-    public int countStudentsOfColour(Colour colour){
-        int numC=0;
+    public int countStudentsOfColour(Colour colour) {
+        int numC = 0;
         for (Student student : listStudent) {
             if (student.getColour().equals(colour)) {
                 numC++;
@@ -83,46 +84,65 @@ public class StudentGroup {
 
     public void removeStudent(Colour colour) throws IllegalArgumentException {
         boolean removed = false;
-        for(int i = 0; i<listStudent.size() && !removed; i++){
-            if(listStudent.get(i).getColour().equals(colour)){
+        for (int i = 0; i < listStudent.size() && !removed; i++) {
+            if (listStudent.get(i).getColour().equals(colour)) {
                 listStudent.remove(listStudent.get(i));
                 removed = true;
             }
         }
-        if(!removed) throw new IllegalArgumentException();
+        if (!removed) throw new IllegalArgumentException();
     }
 
     //delete every students from the list listStudent
-    public void clear(){listStudent.clear();}
+    public void clear() {
+        listStudent.clear();
+    }
 
     //return the length of the list listStudent (the number of students)
-    public int size(){
+    public int size() {
         return this.listStudent.size();
     }
 
     //return the student in position pos in the list listStudent
-    public Student get(int pos){
+    public Student get(int pos) {
         return this.listStudent.get(pos);
     }
 
     //add every students of the group given to the list listStudent
-    public void addStudents(StudentGroup students){
+    public void addStudents(StudentGroup students) {
         try {
             for (int i = 0; i < students.size(); i++) {
                 this.listStudent.add(students.get(i));
             }
-        }catch(NullPointerException e) {
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
 
-    public void addStudent(Colour colour){
+    public void addStudent(Colour colour) {
         listStudent.add(new Student(colour));
     }
 
-    public Colour pullOut(){
+    public Colour pullOut() {
         /*da implementare:
          * deve estrarre uno studente casuale dalla lista, ritornarne il colore e rimuovere lo studente dalla lista*/
         return Colour.BLUE;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StudentGroup that = (StudentGroup) o;
+
+        boolean returnvalue = true;
+
+        for (Colour col : Colour.values()) {
+            if (((StudentGroup) o).countStudentsOfColour(col) != this.countStudentsOfColour(col)) {
+                returnvalue = false;
+                break;
+            }
+        }
+        return returnvalue;
     }
 }

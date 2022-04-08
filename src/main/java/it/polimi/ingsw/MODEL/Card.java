@@ -1,5 +1,7 @@
 package it.polimi.ingsw.MODEL;
 
+import java.util.Objects;
+
 public class Card {
 
     private int value;
@@ -11,10 +13,23 @@ public class Card {
     }
 
     public int getValue(){
-        return value;
+        return this.value;
     }
 
     public int getMovement(){
-        return movements;
+        return this.movements;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return value == card.value && movements == card.movements;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, movements);
     }
 }
