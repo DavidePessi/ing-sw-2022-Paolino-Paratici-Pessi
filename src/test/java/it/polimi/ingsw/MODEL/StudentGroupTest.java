@@ -54,14 +54,51 @@ public class StudentGroupTest extends TestCase {
     }
 
     public void testGet() {
+        StudentGroup studentGroup = new StudentGroup();
+        studentGroup.addStudent(Colour.GREEN);
+        //studentGroup.addStudent(Colour.PINK);
+        int pos = 0;
+        Colour colour = Colour.RED;
+
+        colour = studentGroup.get(pos).getColour();
+
+        assertEquals(Colour.GREEN, colour);
+
     }
 
     public void testAddStudents() {
+        StudentGroup studentGroup = new StudentGroup();
+        StudentGroup s = new StudentGroup();
+        s.addStudent(Colour.GREEN);
+        int numAfter, numBefore;
+        int colourAfter, colourBefore;
+
+        numBefore = studentGroup.size();
+        colourBefore = studentGroup.countStudentsOfColour(Colour.GREEN);
+        studentGroup.addStudents(s);
+        numAfter = studentGroup.size();
+        colourAfter = studentGroup.countStudentsOfColour(Colour.GREEN);
+
+        assertEquals(colourAfter, colourBefore+1);
+        assertEquals(numAfter, numBefore+1);
+
     }
 
     public void testAddStudent() {
+        StudentGroup studentGroup = new StudentGroup();
+        int numAfter, numBefore;
+        int colourAfter, colourBefore;
+
+        numBefore = studentGroup.size();
+        colourBefore = studentGroup.countStudentsOfColour(Colour.GREEN);
+        studentGroup.addStudent(Colour.GREEN);
+        colourAfter = studentGroup.countStudentsOfColour(Colour.GREEN);
+        numAfter = studentGroup.size();
+
+        assertEquals(colourAfter,colourBefore+1);
+        assertEquals(numAfter, numBefore+1);
     }
 
-    public void testPullOut() {
+    public void testPullOut() {//bisogna prima implementarla
     }
 }

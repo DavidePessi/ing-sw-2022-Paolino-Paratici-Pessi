@@ -8,7 +8,7 @@ public class CloudTest extends TestCase {
         Cloud c = new Cloud();
 
         assertTrue(c.getStudents() instanceof StudentGroup);
-        assertTrue(c.getStudents() != null);
+        assertNotNull(c.getStudents());
     }
 
     public void testAddStudents() {

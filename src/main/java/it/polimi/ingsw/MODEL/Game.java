@@ -206,7 +206,7 @@ public class Game {
                 Team team1 = listPlayer.get(0).getTeam();
                 Team team2 = listPlayer.get(1).getTeam();
 
-                if(team1.getNumberOfTower()<team2.getNumberOfTower()){
+                if(team1.getNumberOfTower()<team2.getNumberOfTower()){ //returns number of tower in Entrance
                     return team1;
                 }
                 else if(team2.getNumberOfTower()<team1.getNumberOfTower()){
@@ -373,23 +373,23 @@ public class Game {
         Player MaxPlayer = listPlayer.get(0);
 
         //il primo ciclo mi dice chi è il player con più studenti del colore colour
-        for (int i = 0; i < listPlayer.size(); i++) {
-            if (listPlayer.get(i).NumStudentsDiningRoom(colour) > 0 &&
-                    listPlayer.get(i).NumStudentsDiningRoom(colour) >= MaxPlayer.NumStudentsDiningRoom(colour)) {
-                MaxPlayer = listPlayer.get(i);
+        for (Player player : listPlayer) {
+            if (player.NumStudentsDiningRoom(colour) > 0 &&
+                    player.NumStudentsDiningRoom(colour) >= MaxPlayer.NumStudentsDiningRoom(colour)) {
+                MaxPlayer = player;
             }
         }
 
         //cerco il professore dello stesso colore
-        for (int j = 0; j < professors.size(); j++) {
+        for (Professor professor : professors) {
 
-            if (professors.get(j).getOwner() == null && professors.get(j).getColour() == colour) {
+            if (professor.getOwner() == null && professor.getColour() == colour) {
 
                 //se il professore non ha owner e il player con più studenti ha almeno uno studente
                 //assegno il professore
-                if (professors.get(j).getOwner() == null && MaxPlayer.NumStudentsDiningRoom(colour) > 0) {
-                    MaxPlayer.addProfessor(professors.get(j));
-                    professors.get(j).changeOwner(MaxPlayer);
+                if (professor.getOwner() == null && MaxPlayer.NumStudentsDiningRoom(colour) > 0) {
+                    MaxPlayer.addProfessor(professor);
+                    professor.changeOwner(MaxPlayer);
 
                 }
             }
@@ -397,10 +397,10 @@ public class Game {
             //se il professore ha un owner e il player con più studenti ha più studenti dell'owner
             //assegno il professore
             else {
-                if (professors.get(j).getColour() == colour && MaxPlayer.NumStudentsDiningRoom(colour) > professors.get(j).getOwner().NumStudentsDiningRoom(colour)) {
-                    MaxPlayer.addProfessor(professors.get(j));
-                    professors.get(j).getOwner().removeProfessor(professors.get(j));
-                    professors.get(j).changeOwner(MaxPlayer);
+                if (professor.getColour() == colour && MaxPlayer.NumStudentsDiningRoom(colour) > professor.getOwner().NumStudentsDiningRoom(colour)) {
+                    MaxPlayer.addProfessor(professor);
+                    professor.getOwner().removeProfessor(professor);
+                    professor.changeOwner(MaxPlayer);
                 }
             }
         }
@@ -498,8 +498,6 @@ public class Game {
 
         }
     }
-
-
 
     public Player getPlayer(String io){
         for (Player p : listPlayer){
