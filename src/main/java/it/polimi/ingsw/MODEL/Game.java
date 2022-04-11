@@ -1,6 +1,7 @@
 package it.polimi.ingsw.MODEL;
 
 import java.util.*;
+import java.util.function.ToDoubleBiFunction;
 
 // TODO: 22/03/2022 aggiungere una variabile per fare il modulo
 // TODO: 03/04/2022 GUARDARE LE DUE IMPLEMENTAZIONI DI "theWinnerIs" E VEDERE SE RIESCI A FINIRE LA SECONDA, ALTRIMENTI LA PRIMA VA BENE
@@ -369,7 +370,6 @@ public class Game {
 
     public void checkProfessor(Colour colour) {
 
-
         Player MaxPlayer = listPlayer.get(0);
 
         //il primo ciclo mi dice chi è il player con più studenti del colore colour
@@ -405,6 +405,101 @@ public class Game {
             }
         }
     }
+
+    //il metodo ha la funzione di calcolare l'influenza degli studenti
+    //sull'isola ed in base a chi ha più influenza sostituire le torri o meno
+    //se c'è un caso di vittoria vien segnalato dalla sua eccezione
+    //se l'isola è assente viene segnalato dalla sua eccezione
+    void checkTowers(int numIsland)throws MissingIslandException, PossibleWinException{
+        Island island = null;
+
+        //cerco l'isola su cui effettuare il controllo
+        for(Island island1 : listIsland){
+            if(island1.getNumIsland() == numIsland) {
+                island = island1;
+            }
+        }
+
+        //se non esiste lancio un eccezione
+        if(island == null){
+            throw new MissingIslandException();
+        }
+
+        //altrimenti effettuo il conto degli studenti per le torri
+        else{
+            //inizializzo i punti per ogni team a 0
+            int team1 = 0;
+            int team2 = 0;
+
+            //associo ai team i corrispettivi punti
+            //(a seconda dei professori che controllano e degli studenti presenti sul terreno)
+            for(Professor prof : professors){
+                if(prof.getOwner() != null &&
+                        prof.getOwner().getTeam() == listTeam.get(0)){
+
+                    team1 = team1 +island.countStudentsOfColour(prof.getColour());
+                }
+                else if(prof.getOwner() != null &&
+                        prof.getOwner().getTeam() == listTeam.get(1)){
+
+                    team2 = team2 +island.countStudentsOfColour(prof.getColour());
+                }
+            }
+
+            //se sono presenti torri aggiungo i punti alla squadra pari al numero di torri
+            try{
+                ColourTower colourTower = island.getColourTower();
+                if(colourTower == listTeam.get(0).getColourTower()){
+                    team1 = team1 + island.getNumSubIsland();
+                }
+                else{
+                    team2 = team2 + island.getNumSubIsland();
+                }
+            }catch(MissingTowerException e){}
+            finally {
+                //a questo punto confronto il valore dei team
+                //e se c'è una maggioranza riassegno le torri e controllo eventuali fusioni
+                //altrimenti chiudo il metodo
+
+                //caso di parità
+                if(team1 == team2){
+                    return;
+                }
+
+                //caso di maggioranza team1
+                //se il team1 ha finito le torri significa che ha vinto e lancio un'eccezione per
+                //richiamare il metodo checkwin
+                else if(team1 > team2){
+                    try {
+                        listTeam.get(0).useTowers(island.getNumSubIsland());
+                        listTeam.get(1).takeTowers(island.getNumSubIsland());
+                        island.setColourTower(listTeam.get(0).getColourTower());
+                    }
+                    catch(MissingTowerException e){
+                        throw new PossibleWinException();
+                    }
+                }
+                //TODO:IL METODO PER UNIRE LE ISOLE CHE DEVE ESSERE RICHIAMATO NEI DUE RAMI
+                //caso di maggioranza team2
+                //se il team2 ha finito le torri significa che ha vinto e lancio un'eccezione per
+                //richiamare il metodo checkwin
+                else{
+                    try {
+                        listTeam.get(1).useTowers(island.getNumSubIsland());
+                        listTeam.get(0).takeTowers(island.getNumSubIsland());
+                        island.setColourTower(listTeam.get(1).getColourTower());
+                    }
+                    catch(MissingTowerException e){
+                        throw new PossibleWinException();
+                    }
+                }
+            }
+
+
+        }
+    }
+
+
 
     public Player getPlayer(String io){
         for (Player p : listPlayer){

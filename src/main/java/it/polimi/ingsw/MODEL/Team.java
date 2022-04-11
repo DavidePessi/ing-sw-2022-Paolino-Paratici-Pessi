@@ -17,4 +17,17 @@ public class Team {
     public ColourTower getColourTower(){
         return this.colourTower;
     }
+
+    public void useTowers(int numTowerUsed)throws MissingTowerException{
+        if(numTowerUsed >= this.numberOfTower){
+            throw new MissingTowerException();
+        }
+        else{
+            this.numberOfTower = this.numberOfTower - numTowerUsed;
+        }
+    }
+
+    public void takeTowers(int numTowerLost) {
+        this.numberOfTower = this.numberOfTower + numTowerLost;
+    }
 }

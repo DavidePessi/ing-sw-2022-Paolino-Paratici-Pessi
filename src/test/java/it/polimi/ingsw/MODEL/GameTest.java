@@ -154,4 +154,87 @@ public class GameTest extends TestCase {
         Assertions.assertEquals(1, numProf);
         //assertEquals(g.getPlayer("io"), g.getProfessor(col).getOwner());
     }
+
+    @Test
+    public void testCheckTowers() throws MissingIslandException, PossibleWinException, MissingTowerException {
+        Game g = new Game("io", "tu");
+
+        //caso non esiste l'isola
+        Assertions.assertThrows(MissingIslandException.class, ()->g.checkTowers(20));
+
+        //caso colore esiste viene presa dal primo team
+        Colour col1 = Colour.BLUE;
+        StudentGroup s1 = new StudentGroup();
+        s1.addStudent(col1);
+        s1.addStudent(col1);
+
+        g.getIsland(1).addStudent(col1);//aggiungo gli studenti all'isola
+        g.getIsland(1).addStudent(col1);
+        g.getIsland(1).setColourTower(ColourTower.BLACK);//setto le torri a black sull'isola
+        g.getPlayer("io").addStudentsToEntrances(s1);//aggiungo il gruppo studenti all'entrata di player
+        g.getPlayer("io").moveStudentInDiningRoom(col1);//aggiungo 2 studenti alla dinner room di "io"
+        g.getPlayer("io").moveStudentInDiningRoom(col1);
+        g.checkProfessor(col1);//riassegno il professore in modo che lo abbiamo "io"
+        g.checkTowers(1);
+
+        assertEquals(g.getIsland(1).getColourTower(), g.getPlayer("io").getTeam().getColourTower());
+
+        //caso colore esiste viene presa dal secondo team
+        Colour col2 = Colour.RED;
+        StudentGroup s2 = new StudentGroup();
+        s2.addStudent(col2);
+        s2.addStudent(col2);
+
+        g.getIsland(2).addStudent(col2);//aggiungo gli studenti all'isola
+        g.getIsland(2).addStudent(col2);
+        g.getIsland(2).setColourTower(ColourTower.WHITE);//setto le torri a black sull'isola
+        g.getPlayer("tu").addStudentsToEntrances(s2);//aggiungo il gruppo studenti all'entrata di player
+        g.getPlayer("tu").moveStudentInDiningRoom(col2);//aggiungo 2 studenti alla dinner room di "io"
+        g.getPlayer("tu").moveStudentInDiningRoom(col2);
+        g.checkProfessor(col2);//riassegno il professore in modo che lo abbiamo "io"
+        g.checkTowers(2);
+
+        assertEquals(g.getIsland(2).getColourTower(), g.getPlayer("tu").getTeam().getColourTower());
+
+        //caso di parità
+        Colour col3 = Colour.YELLOW;
+        StudentGroup s3 = new StudentGroup();
+        s3.addStudent(col3);
+        s3.addStudent(col3);
+
+        g.getIsland(3).addStudent(col3);//aggiungo gli studenti all'isola
+        g.getIsland(3).addStudent(col3);
+        g.getIsland(3).setColourTower(ColourTower.WHITE);//setto le torri a black sull'isola
+        g.getPlayer("io").addStudentsToEntrances(s3);//aggiungo il gruppo studenti all'entrata di player
+        g.getPlayer("io").moveStudentInDiningRoom(col3);//aggiungo 2 studenti alla dinner room di "io"
+        g.getPlayer("io").moveStudentInDiningRoom(col3);
+        g.checkProfessor(col3);//riassegno il professore in modo che lo abbiamo "io"
+        g.getPlayer("tu").addStudentsToEntrances(s3);//aggiungo il gruppo studenti all'entrata di player
+        g.getPlayer("tu").moveStudentInDiningRoom(col3);//aggiungo 2 studenti alla dinner room di "io"
+        g.getPlayer("tu").moveStudentInDiningRoom(col3);
+        g.checkProfessor(col3);//riassegno il professore in modo che lo abbiamo "io"
+        g.checkTowers(3);
+
+        assertEquals(g.getIsland(3).getColourTower(), g.getPlayer("io").getTeam().getColourTower());
+
+        //caso possibile vittoria
+        Colour col4 = Colour.PINK;
+        StudentGroup s4 = new StudentGroup();
+        s4.addStudent(col4);
+        s4.addStudent(col4);
+
+        g.getIsland(4).addStudent(col4);//aggiungo gli studenti all'isola
+        g.getIsland(4).addStudent(col4);
+        g.getIsland(4).setColourTower(ColourTower.BLACK);//setto le torri a black sull'isola
+        g.getPlayer("io").addStudentsToEntrances(s4);//aggiungo il gruppo studenti all'entrata di player
+        g.getPlayer("io").moveStudentInDiningRoom(col4);//aggiungo 2 studenti alla dinner room di "io"
+        g.getPlayer("io").moveStudentInDiningRoom(col4);
+        g.getPlayer("io").getTeam().useTowers(7);
+        g.checkProfessor(col4);//riassegno il professore in modo che lo abbiamo "io"
+        g.checkTowers(4);
+        //todo controllare ste cazzo di exception che non c'ho capito una sega di cosa posso fare una volta fatta la catch
+        Assertions.assertThrows(PossibleWinException.class, ()->g.checkTowers(4));
+
+        //caso di assenza di torri
+    }
 }

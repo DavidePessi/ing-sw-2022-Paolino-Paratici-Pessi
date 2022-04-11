@@ -17,9 +17,10 @@ public class Island {
     /*Why don't we pass 2 attributes of type Island to the constructor? */
     public Island(int numIsland) {
         this.numIsland = numIsland;
-        numSubisland = 1;
-        hasMotherNature = false;
-        students = new StudentGroup();
+        this.numSubisland = 1;
+        this.colourTower = null;
+        this.hasMotherNature = false;
+        this.students = new StudentGroup();
     }
     public Island(Island i1, Island i2) {}
 
@@ -69,5 +70,23 @@ public class Island {
                 ", numIsland=" + numIsland +
                 ", students=" + students +
                 '}';
+    }
+
+    public int getNumSubIsland() {
+        return this.numSubisland;
+    }
+
+    public ColourTower getColourTower() throws MissingTowerException {
+        if(this.colourTower == null){
+            throw new MissingTowerException();
+        }
+        else{
+            return this.colourTower;
+        }
+    }
+
+    //cambia il colore delle torri sull'isola
+    public void setColourTower(ColourTower colourTower){
+        this.colourTower = colourTower;
     }
 }
