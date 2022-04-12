@@ -7,10 +7,15 @@ public class Cloud {
     }
 
     //return group students of the cloud and delete every students from the list of the cloud
-    public StudentGroup getStudents() {
-        StudentGroup result = new StudentGroup(students);
-        students.clear();
-        return result;
+    public StudentGroup getStudents() throws MissingCloudException{
+        if(this.students.size() == 0){
+            throw new MissingCloudException("Cloud empty");
+        }
+        else {
+            StudentGroup result = new StudentGroup(students);
+            students.clear();
+            return result;
+        }
     }
 
     public void addStudents (StudentGroup studentGroup){

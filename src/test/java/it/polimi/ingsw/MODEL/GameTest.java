@@ -5,12 +5,46 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GameTest extends TestCase {
 
     @Test
-    public void testStartGame() {
+    public void testGame1(){
+        assertTrue(new Game("tu","io") instanceof Game);
+        assertTrue(new Game("tu","io","egli") instanceof Game);
+        assertTrue(new Game("tu","io","egli","noi") instanceof Game);
+    }
+
+    @Test
+    public void testStartGame() throws MissingStudentException, MissingCloudException, MissingPlayerException {
+        Game g = new Game("io", "tu");
+        g.startGame();
+
+        //verifico che tutte le nuvole hanno studenti sopra
+        assertTrue(g.getCloud(0).getStudents() instanceof StudentGroup);
+        assertTrue(g.getCloud(1).getStudents() instanceof StudentGroup);
+
+        //verifico che tutti i player hanno ricevuto 7 studenti
+        assertEquals(7, g.getPlayer("io").getEntrance().getStudentGroup().size());
+        assertEquals(7, g.getPlayer("tu").getEntrance().getStudentGroup().size());
+
+        //verifico che ogni isola ha uno studente
+        for(int i = 0; i < 12; i++){
+            int  tot = 0;
+            for(Colour c : Colour.values()) {
+                tot = tot +g.getIsland(i).countStudentsOfColour(c);
+            }
+            if(i != 0 && i != 6)
+                assertEquals(1, tot);
+            else{
+                assertEquals(0, tot);
+            }
+        }
+
+        //verifico che tolgo un totale di 30 studenti dalla bag
+        assertEquals(100, g.getBag().size());
     }
 
     /*Ci sono 3 casi in cui deve restituire true, vanno poi testati gli altri 2*/
@@ -25,7 +59,33 @@ public class GameTest extends TestCase {
     }
 
     @Test
-    public void testTheWinnerIs() {
+    public void testTheWinnerIs() throws MissingPlayerException, MissingTowerException {
+        Game g = new Game("io", "tu");
+        StudentGroup s = new StudentGroup();
+        Colour c = Colour.GREEN;
+
+        //caso parità fra torri e io ha più torri di tu
+        s.addStudent(c);
+        g.getPlayer("io").addStudentsToEntrances(s);
+        g.getPlayer("io").moveStudentInDiningRoom(c);
+        g.checkProfessor(c);
+
+        assertEquals(g.getPlayer("io").getTeam() ,g.theWinnerIs());
+
+        //caso tu ha più torri di io
+        g.getPlayer("tu").getTeam().useTowers(2);
+
+        assertEquals(g.getPlayer("tu").getTeam(), g.theWinnerIs());
+
+        //caso in cui abbiamo una parità e vince qualcuno che non è io
+        g.getPlayer("io").getTeam().useTowers(2);
+        s.addStudent(c);
+        g.getPlayer("tu").addStudentsToEntrances(s);
+        g.getPlayer("tu").moveStudentInDiningRoom(c);
+        g.getPlayer("tu").moveStudentInDiningRoom(c);
+        g.checkProfessor(c);
+
+        assertEquals(g.getPlayer("tu").getTeam(), g.theWinnerIs());
     }
 
     @Test
@@ -43,31 +103,32 @@ public class GameTest extends TestCase {
     }
 
     @Test
-    public void testDoMoveStudentInDiningRoom() {
+    public void testDoMoveStudentInDiningRoom()throws MissingPlayerException {
         Game g = new Game("io",  "tu");
         StudentGroup studentGroup = new StudentGroup();
         studentGroup.addStudent(Colour.GREEN); //aggiungiamo uno studente di quel colore per testare
         g.getPlayer("io").addStudentsToEntrances(studentGroup);
 
         int numPrimaStudentiInDiningRoom = g.getPlayer("io").NumStudentsDiningRoom(Colour.GREEN);
-        try {
-               g.doMoveStudentInDiningRoom("io", Colour.GREEN);
-        } catch (MissingStudentException e) {
-               System.out.println("Error doing testDoMoveStudentInDiningRoom");
-        }
+
+        g.doMoveStudentInDiningRoom("io", Colour.GREEN);
 
         int numDopoStudentiInDiningRoom = g.getPlayer("io").NumStudentsDiningRoom(Colour.GREEN);
         Assertions.assertEquals(numDopoStudentiInDiningRoom, numPrimaStudentiInDiningRoom+1);
+
+        //caso di eccezione
+        g.doMoveStudentInDiningRoom("giorgio", Colour.GREEN);
+
     }
 
     @Test
-    public void testDoTakeCloud() {
+    public void testDoTakeCloud()throws MissingCloudException, MissingPlayerException {
         Game g = new Game("io", "tu");
         int num = 1;
         int numStudInEntrancePrima_Green, numStudInEntranceDopo_Green;
         int numStudInEntrancePrima_Blue, numStudInEntranceDopo_Blue;
 
-        Cloud c = new Cloud();
+        //Cloud c = new Cloud();
         StudentGroup sg = new StudentGroup();
 
         sg.addStudent(Colour.GREEN);
@@ -88,7 +149,7 @@ public class GameTest extends TestCase {
 
     //dobbiamo anche controllare gli studenti in entrance
     @Test
-    public void testDoMoveStudentInIsland() {
+    public void testDoMoveStudentInIsland() throws MissingPlayerException{
         Game g = new Game("io", "tu");
         int num = 3;
         int green_prima, green_dopo;
@@ -112,13 +173,14 @@ public class GameTest extends TestCase {
         int num = 3;
 
         Island i = new Island(num);
-        Island qualcosaugualea=g.getIsland(num);
-
+        Island qualcosaugualea = g.getIsland(num);
         Assertions.assertEquals(i, qualcosaugualea);
+
+        assertThrows(IllegalArgumentException.class, ()->g.getIsland(20));
     }
 
     @Test
-    public void testDoPlayCard() throws MissingCardException {
+    public void testDoPlayCard() throws MissingCardException, MissingPlayerException {
         Game g = new Game("io", "tu");
         int num = 3;
         int size_prima = g.getPlayer("io").getDeck().size();
@@ -129,7 +191,7 @@ public class GameTest extends TestCase {
     }
 
     @Test
-    public void testCheckProfessor() throws MissingStudentException {
+    public void testCheckProfessor() throws MissingStudentException, MissingPlayerException, MissingProfessorException {
         Game g = new Game("io", "tu");
 
         Colour col = Colour.BLUE;
@@ -152,11 +214,22 @@ public class GameTest extends TestCase {
         numProf = numProf + g.getPlayer("io").numProfessor();
         Assertions.assertEquals(1, g.getPlayer("io").NumStudentsDiningRoom(col));
         Assertions.assertEquals(1, numProf);
-        //assertEquals(g.getPlayer("io"), g.getProfessor(col).getOwner());
+        assertEquals(g.getPlayer("io"), g.getProfessor(col).getOwner());
+
+        //verifico che sia dato a tu e tolto ad io se u ha più studenti
+        sg.addStudent(col);
+        g.getPlayer("tu").addStudentsToEntrances(sg);
+        g.doMoveStudentInDiningRoom("tu", col);
+        g.doMoveStudentInDiningRoom("tu", col);
+        g.checkProfessor(col);
+
+        Assertions.assertEquals(1, g.getPlayer("tu").numProfessor());
+        Assertions.assertEquals(0, g.getPlayer("io").numProfessor());
+        assertEquals(g.getPlayer("tu"), g.getProfessor(col).getOwner());
     }
 
     @Test
-    public void testCheckTowers() throws MissingIslandException, PossibleWinException, MissingTowerException {
+    public void testCheckTowers() throws MissingIslandException, MissingPlayerException, MissingTowerException {
         Game g = new Game("io", "tu");
 
         //caso non esiste l'isola
@@ -229,12 +302,34 @@ public class GameTest extends TestCase {
         g.getPlayer("io").addStudentsToEntrances(s4);//aggiungo il gruppo studenti all'entrata di player
         g.getPlayer("io").moveStudentInDiningRoom(col4);//aggiungo 2 studenti alla dinner room di "io"
         g.getPlayer("io").moveStudentInDiningRoom(col4);
-        g.getPlayer("io").getTeam().useTowers(7);
+        g.getPlayer("io").getTeam().useTowers(6);//considerando i casi precedeni rimangono 7 orri ad "io"
         g.checkProfessor(col4);//riassegno il professore in modo che lo abbiamo "io"
-        g.checkTowers(4);
-        //todo controllare ste cazzo di exception che non c'ho capito una sega di cosa posso fare una volta fatta la catch
-        Assertions.assertThrows(PossibleWinException.class, ()->g.checkTowers(4));
+
+        Assertions.assertThrows(MissingTowerException.class, ()->g.checkTowers(4));
 
         //caso di assenza di torri
+    }
+
+    @Test
+    public void TestGetPlayer()throws MissingPlayerException{
+        Game g = new Game("io","tu");
+
+        assertNotNull(g.getPlayer("io"));
+        assertTrue(g.getPlayer("io") instanceof Player);
+        assertThrows(MissingPlayerException.class, ()->g.getPlayer("giorgio"));
+    }
+
+    @Test
+    public void TestGetProfessor()throws MissingProfessorException{
+        Game g = new Game("io", "tu");
+        Colour c = Colour.GREEN;
+        assertNotNull(g.getProfessor(c));
+        assertTrue(g.getProfessor(c) instanceof Professor);
+    }
+
+    @Test public void TestGetBag(){
+        Game g = new Game("io","tu");
+        assertNotNull(g.getBag());
+        assertTrue(g.getBag() instanceof Bag);
     }
 }

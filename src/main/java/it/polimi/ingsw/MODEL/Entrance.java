@@ -17,6 +17,7 @@ public class Entrance{
     }
 
     public StudentGroup getStudentGroup(){
-        return studentGroup;
+
+        return this.studentGroup;
     }
 }

@@ -22,7 +22,7 @@ public class DiningRoomTest extends TestCase {
         assertEquals(d.getStudentGroup().countStudentsOfColour(c), d.NumStudents(c));
     }
 
-    public void testGetStudentGroup(){
+    public void testGetStudentGroup() {
         DiningRoom d = new DiningRoom();
 
         assertTrue(d.getStudentGroup() instanceof StudentGroup);

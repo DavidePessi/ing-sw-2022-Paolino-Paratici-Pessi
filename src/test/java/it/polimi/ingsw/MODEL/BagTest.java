@@ -18,23 +18,24 @@ public class BagTest extends TestCase {
 
     public void testStartingPullOut() {
         Bag b = new Bag();
+        StudentGroup s = new StudentGroup();
 
         int size1 = b.size();
-
-        b.startingPullOut();
-
+        s.addStudents(b.startingPullOut());
         int size2 = b.size();
 
         assertEquals(size1 - 10, size2);
+        for(Colour colour : Colour.values()) {
+            assertEquals(2, s.countStudentsOfColour(colour));
+        }
     }
 
     public void testPullOut() throws MissingStudentException{
         Bag b = new Bag();
         Colour c;
+
         int size1 = b.size();
-
         c = b.pullOut();
-
         int size2 = b.size();
 
         assertEquals(size1 - 1, size2);

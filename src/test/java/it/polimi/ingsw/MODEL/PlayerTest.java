@@ -4,13 +4,13 @@ import junit.framework.TestCase;
 
 public class PlayerTest extends TestCase {
 
-    public void testGetTeam(){
+    public void testGetTeam()throws MissingPlayerException{
         Game g = new Game("io", "tu");
         Team t = g.getPlayer("io").getTeam();
         assertTrue(t instanceof Team);
     }
 
-    public void testGetLastPlayedCard() {
+    public void testGetLastPlayedCard()throws MissingPlayerException {
         Game g = new Game("io", "tu");
         g.getPlayer("io").playCard(3);
         Card c = g.getPlayer("io").getLastPlayedCard();
@@ -18,18 +18,18 @@ public class PlayerTest extends TestCase {
         assertEquals(3, c.getValue());
     }
 
-    public void testGetDeck() {
+    public void testGetDeck()throws  MissingPlayerException {
         Game g = new Game("io", "tu");
         Deck d = g.getPlayer("io").getDeck();
         assertTrue(d instanceof Deck);
     }
 
-    public void testGetNicknameClient() {
+    public void testGetNicknameClient() throws MissingPlayerException{
         Game g = new Game("io", "tu");
         assertEquals("io", g.getPlayer("io").getNicknameClient());
     }
 
-    public void testGetEntrance() {
+    public void testGetEntrance() throws MissingPlayerException{
         Game g = new Game("io", "tu");
         Entrance e = g.getPlayer("io").getEntrance();
         assertTrue(e instanceof Entrance);
@@ -47,7 +47,7 @@ public class PlayerTest extends TestCase {
         assertEquals(num,p.numProfessor());
     }
 
-    public void testPlayCard() {
+    public void testPlayCard() throws MissingPlayerException{
         Game g = new Game("io", "tu");
         int num = 3;
         int numCardInDeck_Prima, numCardInDeck_Dopo;
