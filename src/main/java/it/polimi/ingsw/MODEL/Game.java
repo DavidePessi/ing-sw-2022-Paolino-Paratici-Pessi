@@ -1,14 +1,10 @@
 package it.polimi.ingsw.MODEL;
 
 import java.util.*;
-import java.util.function.ToDoubleBiFunction;
-
-// TODO: 03/04/2022 GUARDARE LE DUE IMPLEMENTAZIONI DI "theWinnerIs" E VEDERE SE RIESCI A FINIRE LA SECONDA, ALTRIMENTI LA PRIMA VA BENE
-// TODO: 05/04/2022 decorator con ereditarietà
-
 
 public class Game {
     private int numPlayer;
+    private boolean throwSatyr;
     private Player lastFirstPlayer;
     private List<Cloud> listCloud;
     private List<Player> listPlayer;
@@ -17,7 +13,7 @@ public class Game {
     private Bag bag;
     private MotherNature motherNature;
     private List<Professor> professors;
-    //private int currentIsland;
+    private List<ConcreteCharacterCard> characterCards;
 
     public Game(String nickname1, String nickname2) {
 
@@ -58,6 +54,8 @@ public class Game {
         professors.add(new Professor(Colour.PINK));
         professors.add(new Professor(Colour.RED));
         professors.add(new Professor(Colour.YELLOW));
+
+        characterCards = new ArrayList<>();
     }
 
     public Game(String nickname1, String nickname2, String nickname3) {
@@ -102,6 +100,8 @@ public class Game {
         professors.add(new Professor(Colour.PINK));
         professors.add(new Professor(Colour.RED));
         professors.add(new Professor(Colour.YELLOW));
+
+        characterCards = new ArrayList<>();
 
     }
 
@@ -149,9 +149,40 @@ public class Game {
         professors.add(new Professor(Colour.PINK));
         professors.add(new Professor(Colour.RED));
         professors.add(new Professor(Colour.YELLOW));
+
+        characterCards = new ArrayList<>();
+
     }
 
     public void startGame() throws MissingStudentException{
+
+        //estrarre casualmente 3 carte
+        Random random = new Random();
+        for(int i=0; i<3; i++) {
+            boolean isPresent = false;
+            int num = random.nextInt(8);
+
+            if(num==0){
+                for(CharacterCard c: characterCards){
+                    if(c.getNameCard().equals("Satyr")){
+                        isPresent = true;
+                    }
+                }
+                if(!isPresent){
+                    characterCards.add(new Satyr(this));
+                }
+                else {
+                    i--;
+                }
+            }
+
+            // TODO: 13/04/2022 ripeti per tutte le carte
+        }
+
+        // TODO: 13/04/2022 da cambiare
+        characterCards.add(0, new Satyr(this));
+        //characterCards.add(1, new ConcreteCharacterCard());
+        //characterCards.add(2, new ConcreteCharacterCard());
 
         for (Cloud cloud : listCloud) { //per ogni nuvola aggiungo 3 studenti estratti casualmente dalla bag
             if (cloud != null) {
@@ -313,22 +344,21 @@ public class Game {
         }catch(MissingPlayerException e){}
     }
 
-
-
     //search the id of the player in the player list
     //once is done it calls the method that add the students from the group to the entrance
     //passing as parameter the studentGroup in the cloud that we want to take
     public void doTakeCloud(String nickname, int numCloud)throws MissingCloudException {
-        for (Player player : listPlayer) {
-            if (player != null) {
-                if (player.getNicknameClient().equals(nickname)) {
-                    player.addStudentsToEntrances(listCloud.get(numCloud).getStudents());
+        if(numCloud < listCloud.size() && numCloud>=0) {
+                for (Player player : listPlayer) {
+                    if (player != null) {
+                        if (player.getNicknameClient().equals(nickname)) {
+                            player.addStudentsToEntrances(listCloud.get(numCloud).getStudents());
+                        }
+                    }
                 }
-            }
         }
+        else throw new MissingCloudException("Error");
     }
-
-
 
     public void doMoveStudentInIsland(String nickname, Colour colour, int numIsland) {
         for (Player player : listPlayer) {
@@ -337,8 +367,6 @@ public class Game {
             }
         }
     }
-
-
 
     public Island getIsland(int numIsland) throws IllegalArgumentException {
         Island island = null;
@@ -354,8 +382,6 @@ public class Game {
         return island;
     }
 
-
-
     public void doPlayCard(String nickname, int numCard){
         for(Player player : listPlayer){
             if(player != null){
@@ -365,8 +391,6 @@ public class Game {
             }
         }
     }
-
-
 
     public void checkProfessor(Colour colour) {
 
@@ -406,8 +430,6 @@ public class Game {
         }
     }
 
-
-
     //il metodo ha la funzione di calcolare l'influenza degli studenti
     //sull'isola ed in base a chi ha più influenza sostituire le torri o meno
     //se c'è un caso di vittoria vien segnalato dalla sua eccezione
@@ -424,6 +446,7 @@ public class Game {
 
         //se non esiste lancio un eccezione
         if(island == null){
+            throwSatyr = false;
             throw new MissingIslandException();
         }
 
@@ -449,52 +472,53 @@ public class Game {
             }
 
             //se sono presenti torri aggiungo i punti alla squadra pari al numero di torri
-            try{
-                ColourTower colourTower = island.getColourTower();
-                if(colourTower == listTeam.get(0).getColourTower()){
-                    team1 = team1 + island.getNumSubIsland();
+
+                try {
+                    if(throwSatyr == false) {
+                        ColourTower colourTower = island.getColourTower();
+                        if (colourTower.equals(listTeam.get(0).getColourTower())){
+                            team1 = team1 + island.getNumSubIsland();
+                        } else {
+                            team2 = team2 + island.getNumSubIsland();
+                        }
+                    }
+                    throwSatyr = false;
+
+                } catch (MissingTowerException e) {
+                } finally {
+                    //a questo punto confronto il valore dei team
+                    //e se c'è una maggioranza riassegno le torri e controllo eventuali fusioni
+                    //altrimenti chiudo il metodo
+
+                    //caso di parità
+                    if (team1 == team2) {
+                        return;
+                    }
+
+                    //caso di maggioranza team1
+                    //se il team1 ha finito le torri significa che ha vinto e lancio un'eccezione per
+                    //richiamare il metodo checkwin
+                    else if (team1 > team2) {
+                        listTeam.get(0).useTowers(island.getNumSubIsland());
+                        listTeam.get(1).takeTowers(island.getNumSubIsland());
+                        island.setColourTower(listTeam.get(0).getColourTower());
+
+                    }
+                    //TODO:IL METODO PER UNIRE LE ISOLE CHE DEVE ESSERE RICHIAMATO NEI DUE RAMI
+                    //caso di maggioranza team2
+                    //se il team2 ha finito le torri significa che ha vinto e lancio un'eccezione per
+                    //richiamare il metodo checkwin
+                    else {
+
+                        listTeam.get(1).useTowers(island.getNumSubIsland());
+                        listTeam.get(0).takeTowers(island.getNumSubIsland());
+                        island.setColourTower(listTeam.get(1).getColourTower());
+
+                    }
                 }
-                else{
-                    team2 = team2 + island.getNumSubIsland();
-                }
-            }catch(MissingTowerException e){}
-            finally {
-                //a questo punto confronto il valore dei team
-                //e se c'è una maggioranza riassegno le torri e controllo eventuali fusioni
-                //altrimenti chiudo il metodo
-
-                //caso di parità
-                if(team1 == team2){
-                    return;
-                }
-
-                //caso di maggioranza team1
-                //se il team1 ha finito le torri significa che ha vinto e lancio un'eccezione per
-                //richiamare il metodo checkwin
-                else if(team1 > team2){
-                    listTeam.get(0).useTowers(island.getNumSubIsland());
-                    listTeam.get(1).takeTowers(island.getNumSubIsland());
-                    island.setColourTower(listTeam.get(0).getColourTower());
-
-                }
-                //TODO:IL METODO PER UNIRE LE ISOLE CHE DEVE ESSERE RICHIAMATO NEI DUE RAMI
-                //caso di maggioranza team2
-                //se il team2 ha finito le torri significa che ha vinto e lancio un'eccezione per
-                //richiamare il metodo checkwin
-                else{
-
-                    listTeam.get(1).useTowers(island.getNumSubIsland());
-                    listTeam.get(0).takeTowers(island.getNumSubIsland());
-                    island.setColourTower(listTeam.get(1).getColourTower());
-
-                }
-            }
-
 
         }
     }
-
-
 
     public Player getPlayer(String io)throws MissingPlayerException{
         Player playerreturn = null;
@@ -511,12 +535,9 @@ public class Game {
         }
     }
 
-
-
     public Cloud getCloud(int num){
         return listCloud.get(num);
     }
-
 
     public Professor getProfessor(Colour col) throws MissingProfessorException{
         Professor professorreturn = null;
@@ -535,5 +556,9 @@ public class Game {
 
     public Bag getBag() {
         return this.bag;
+    }
+
+    public void setThrowSatyr(boolean throwSatyr) {
+        this.throwSatyr = throwSatyr;
     }
 }

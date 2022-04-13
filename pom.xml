@@ -17,7 +17,7 @@
     <sonar.language>java</sonar.language>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-    <sonar.exclusions>**/VIEW/**/*,</sonar.exclusions>  <!--non so se sono giusti i file da controllare-->
+    <sonar.exclusions>**/VIEW/**/*,**/TODO.txt</sonar.exclusions>  <!--non so se sono giusti i file da controllare-->
   </properties>
 
 

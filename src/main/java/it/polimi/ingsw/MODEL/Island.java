@@ -3,8 +3,7 @@ package it.polimi.ingsw.MODEL;
 import java.util.List;
 import java.util.Objects;
 
-// TODO: 21/03/2022 come facciamo il costruttore se non ci sono più i numColour?
-// TODO: 04/04/2022 equals modificata senza: Objects.equals(students, island.students), se da problemi controlliamo questo
+// equals modificata senza: Objects.equals(students, island.students), se da problemi controlliamo questo
 public class Island {
 
     private ColourTower colourTower;

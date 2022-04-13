@@ -1,0 +1,14 @@
+
+Game:
+// TODO: 13/04/2022 ripeti per tutte le carte
+// TODO: 13/04/2022 da cambiare
+
+ControllerTurn:
+//TODO UN METODO PER LANCIARE LE CARTE IN MODO DA RIFARE L'ORDINE
+
+ControllerAction:
+// TODO: 05/04/2022 metodo del controller che acquisisce i vari nickname
+
+
+!!!
+perchè non escono i test delle cose?

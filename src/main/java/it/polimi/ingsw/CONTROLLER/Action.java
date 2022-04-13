@@ -9,5 +9,5 @@ public enum Action {
     MoveStudent3,
     MoveStudentInDiningRoom,
     MoveStudentInIsland,
-    TakeCloud;
+    TakeCloud
 }

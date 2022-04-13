@@ -5,7 +5,6 @@ import it.polimi.ingsw.VIEW.Client;
 
 import java.util.*;
 
-// TODO: 21/03/2022 nel metodo takeCloud, numCloud>4...dobbiamo mettere un attributo che ci dice quante nuvole ci sono (perché in base al num di giocatori cambiano)
 // TODO: 05/04/2022 metodo del controller che acquisisce i vari nickname
 
 public class ControllerAction {
@@ -13,8 +12,6 @@ public class ControllerAction {
     private Game game;
     private List<Client> listClient;
     private Action currentAction;
-
-
 
     public void createGame(String nickname1, String nickname2){
         game = new Game(nickname1, nickname2);
@@ -114,32 +111,19 @@ public class ControllerAction {
 
 
     public void takeCloud(String nickname, int numCloud)throws WrongActionException{
-        if(currentAction == Action.TakeCloud){
-            if(numCloud>=0 && numCloud<=4) {
-                try {
+        try {
+            if(currentAction.equals(Action.TakeCloud)){
                     game.doTakeCloud(nickname, numCloud);
                     this.currentAction = Action.MoveMotherNature;
                 }
-                catch(MissingCloudException e){}
+            else {
+                throw new WrongActionException();
             }
-        }
-        else{
+        }catch (MissingCloudException e) {
             throw new WrongActionException();
         }
     }
 
     public void useCharacter(int numCharacter){}
 
-
-
-
-
-
-
-
-
-
-
-
 }
-
