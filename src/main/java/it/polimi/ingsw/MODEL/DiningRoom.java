@@ -14,11 +14,12 @@ public class DiningRoom {
         studentGroup.addStudent(colour);
     }
 
+    public void remove(Colour colour){studentGroup.removeStudent(colour);}
+
     public int NumStudents(Colour colour) {
         return studentGroup.countStudentsOfColour(colour);
     }
     public StudentGroup getStudentGroup(){
-
         return this.studentGroup;
     }
 }

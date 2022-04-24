@@ -1,12 +1,10 @@
 package it.polimi.ingsw.MODEL;
 
-
-public class Satyr extends ConcreteCharacterCard implements Decorator{
-
+public class Wizard extends ConcreteCharacterCard implements Decorator{
     private Game game;
 
-    public Satyr(Game game){
-        nameCard = "Satyr";
+    public Wizard(Game game) {
+        nameCard = "Wizard";
         this.game = game;
     }
 
@@ -19,6 +17,7 @@ public class Satyr extends ConcreteCharacterCard implements Decorator{
     public void initialization() {
 
     }
+
     @Override
     public void effect(String nickname)throws Exception{
         throw new Exception("Error");
@@ -26,8 +25,7 @@ public class Satyr extends ConcreteCharacterCard implements Decorator{
 
     @Override
     public void effect(String nickname, Colour colour) {
-        //torri non valgono niente
-        game.setCardThrown(this.nameCard);
+        //TODO effeto da guardare, serve un iteratore per i player che non posso chiamare al momento
     }
 
     @Override

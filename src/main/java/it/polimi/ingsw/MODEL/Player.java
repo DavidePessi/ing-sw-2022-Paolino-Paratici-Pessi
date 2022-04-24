@@ -54,8 +54,8 @@ public class Player {
     }
 
     public void moveStudentInDiningRoom(Colour colour){
-        entrance.removeStudent(colour);
-        diningRoom.add(colour);
+        this.removeStudentFromEntrances(colour);
+        this.addStudentToDiningRoom(colour);
     }
 
     public void moveStudentInIsland(Colour colour, Island island){
@@ -71,6 +71,13 @@ public class Player {
     public void addStudentsToEntrances(StudentGroup students) {
         entrance.addGroup(students);
     }
+
+    //remove students from the entrance
+    public void removeStudentFromEntrances(Colour colour){entrance.removeStudent(colour);}
+
+    public void removeStudentFromDiningRoom(Colour colour){this.diningRoom.remove(colour);}
+    //remove students from the entrance
+    public void addStudentToDiningRoom(Colour colour){diningRoom.add(colour);}
 
     //rimuove il professore dalla lista dei professori
     public void removeProfessor(Professor professor){

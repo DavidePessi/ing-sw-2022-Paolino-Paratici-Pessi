@@ -1,33 +1,37 @@
 package it.polimi.ingsw.MODEL;
 
-
-public class Satyr extends ConcreteCharacterCard implements Decorator{
-
+public class Priest extends ConcreteCharacterCard implements Decorator{
     private Game game;
+    private StudentGroup pool;
 
-    public Satyr(Game game){
-        nameCard = "Satyr";
+    public Priest(Game game) {
+        nameCard = "Priest";
         this.game = game;
     }
 
     @Override
     public int getPrice() {
-        return 3;
+        return 1;
     }
 
     @Override
-    public void initialization() {
+    public void initialization()  {
+        try {
+            for(int i = 0; i < 4; i++) {
+                pool.addStudent(game.getBag().pullOut());
+            }
+        }catch(MissingStudentException e){}
 
     }
+
     @Override
     public void effect(String nickname)throws Exception{
         throw new Exception("Error");
     }
 
     @Override
-    public void effect(String nickname, Colour colour) {
-        //torri non valgono niente
-        game.setCardThrown(this.nameCard);
+    public void effect(String nickname, Colour colour) throws Exception{
+        throw new Exception("Error");
     }
 
     @Override
@@ -51,7 +55,12 @@ public class Satyr extends ConcreteCharacterCard implements Decorator{
     }
 
     @Override
-    public void effect(String nickname, int num, Colour colour)  throws Exception{
-        throw new Exception("Error");
+    public void effect(String nickname, int num, Colour colour)  {
+        pool.removeStudent(colour);
+        game.getIsland(num).addStudent(colour);
+
+        try {
+            pool.addStudent(game.getBag().pullOut());
+        }catch(MissingStudentException e){}
     }
 }

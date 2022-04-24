@@ -1,12 +1,10 @@
 package it.polimi.ingsw.MODEL;
 
-
-public class Satyr extends ConcreteCharacterCard implements Decorator{
-
+public class Pirate extends ConcreteCharacterCard implements Decorator{
     private Game game;
 
-    public Satyr(Game game){
-        nameCard = "Satyr";
+    public Pirate(Game game) {
+        nameCard = "Pirate";
         this.game = game;
     }
 
@@ -16,18 +14,17 @@ public class Satyr extends ConcreteCharacterCard implements Decorator{
     }
 
     @Override
-    public void initialization() {
-
+    public void initialization()  {
     }
+
     @Override
     public void effect(String nickname)throws Exception{
         throw new Exception("Error");
     }
 
     @Override
-    public void effect(String nickname, Colour colour) {
-        //torri non valgono niente
-        game.setCardThrown(this.nameCard);
+    public void effect(String nickname, Colour colour) throws Exception{
+        throw new Exception("Error");
     }
 
     @Override
@@ -47,11 +44,11 @@ public class Satyr extends ConcreteCharacterCard implements Decorator{
 
     @Override
     public void effect(String nickname, int num) throws Exception{
-        throw new Exception("Error");
+        game.checkTowers(num);
     }
 
     @Override
-    public void effect(String nickname, int num, Colour colour)  throws Exception{
+    public void effect(String nickname, int num, Colour colour) throws Exception{
         throw new Exception("Error");
     }
 }

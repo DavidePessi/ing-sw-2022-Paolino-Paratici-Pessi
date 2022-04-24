@@ -6,7 +6,8 @@ public interface Decorator {
 
     public void initialization();
 
-    public void effect(String nickname, Colour colour); //satiro, cavaliere,donna, mago
+    public void effect(String nickname) throws Exception; //cavaliere
+    public void effect(String nickname, Colour colour) throws Exception; //satiro,donna, mago
     public void effect(String nickname, Colour c1, Colour c2) throws Exception; //giullare, menestrello
     public void effect(String nickname, Colour c1, Colour c2, Colour c3, Colour c4) throws Exception; //giullare, menestrello
     public void effect(String nickname, Colour c1, Colour c2, Colour c3, Colour c4, Colour c5, Colour c6) throws Exception; //giullare //giullare

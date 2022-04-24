@@ -5,16 +5,18 @@ public class Entrance{
     private StudentGroup studentGroup;
 
     public Entrance(){
-        studentGroup = new StudentGroup();
+        this.studentGroup = new StudentGroup();
     }
 
     public void removeStudent(Colour colour){
-        studentGroup.removeStudent(colour);
+        this.studentGroup.removeStudent(colour);
     }
 
     public void addGroup(StudentGroup students) {
-        studentGroup.addStudents(students);
+        this.studentGroup.addStudents(students);
     }
+
+    public void removeColour(Colour colour){ this.studentGroup.removeStudent(colour);}
 
     public StudentGroup getStudentGroup(){
 

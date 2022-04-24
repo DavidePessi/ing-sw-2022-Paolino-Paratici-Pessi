@@ -2,6 +2,9 @@
 Game:
 // TODO: 13/04/2022 ripeti per tutte le carte
 // TODO: 13/04/2022 da cambiare
+//todo da implementare c'è sempre il problema dei parametri:
+    //o faccio un metodo per ogni effetto oppure devo passare un sacco di parametri
+    //di cui alcuni inutili
 
 ControllerTurn:
 //TODO UN METODO PER LANCIARE LE CARTE IN MODO DA RIFARE L'ORDINE
@@ -9,6 +12,11 @@ ControllerTurn:
 ControllerAction:
 // TODO: 05/04/2022 metodo del controller che acquisisce i vari nickname
 
+Da fare:
+//gestione eccezioni delle charactercard da gestire sia per vittoria
+//che per errori (esempio mancanza di studenti)
+//wizard
+//
 
 !!!
 perchè non escono i test delle cose?

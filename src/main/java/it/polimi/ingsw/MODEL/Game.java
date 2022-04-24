@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Game {
     private int numPlayer;
-    private boolean throwSatyr;
+    private String characterCardThrown;
     private Player lastFirstPlayer;
     private List<Cloud> listCloud;
     private List<Player> listPlayer;
@@ -14,6 +14,7 @@ public class Game {
     private MotherNature motherNature;
     private List<Professor> professors;
     private List<ConcreteCharacterCard> characterCards;
+    private String currentPlayer;
 
     public Game(String nickname1, String nickname2) {
 
@@ -56,6 +57,8 @@ public class Game {
         professors.add(new Professor(Colour.YELLOW));
 
         characterCards = new ArrayList<>();
+        characterCardThrown = "";
+        currentPlayer = listPlayer.get(0).getNicknameClient();
     }
 
     public Game(String nickname1, String nickname2, String nickname3) {
@@ -103,6 +106,8 @@ public class Game {
 
         characterCards = new ArrayList<>();
 
+        characterCardThrown = "";
+        currentPlayer = listPlayer.get(0).getNicknameClient();
     }
 
     public Game(String nickname1, String nickname2, String nickname3, String nickname4) {
@@ -152,6 +157,8 @@ public class Game {
 
         characterCards = new ArrayList<>();
 
+        characterCardThrown = "";
+        currentPlayer = listPlayer.get(0).getNicknameClient();
     }
 
     public void startGame() throws MissingStudentException{
@@ -228,74 +235,6 @@ public class Game {
         }
     }
 
-    /*
-    public Team theWinnerIs() {
-            if(listPlayer.size()==2){
-                Team team1 = listPlayer.get(0).getTeam();
-                Team team2 = listPlayer.get(1).getTeam();
-
-                if(team1.getNumberOfTower()<team2.getNumberOfTower()){
-                    return team1;
-                }
-                else if(team2.getNumberOfTower()<team1.getNumberOfTower()){
-                    return team2;
-                }
-                else {
-                    if (listPlayer.get(0).numProfessor() < listPlayer.get(1).numProfessor()) {
-                        return team2;
-                    }
-                    else {
-                        return team1;
-                    }
-                }
-            }
-            else if(listPlayer.size()==3)
-            {
-                Team team1 = listPlayer.get(0).getTeam();
-                Team team2 = listPlayer.get(1).getTeam();
-                Team team3 = listPlayer.get(2).getTeam();
-
-                if(team1.getNumberOfTower()<team2.getNumberOfTower() && team1.getNumberOfTower()<team3.getNumberOfTower()){
-                    return team1;
-                }
-                else if(team2.getNumberOfTower()<team1.getNumberOfTower() && team2.getNumberOfTower()<team3.getNumberOfTower()){
-                    return team2;
-                }
-                else if(team3.getNumberOfTower()<team1.getNumberOfTower() && team3.getNumberOfTower()<team2.getNumberOfTower()){
-                    return team3;
-                }
-                else {
-                    if(listPlayer.get(0).numProfessor() > listPlayer.get(1).numProfessor() && listPlayer.get(0).numProfessor() > listPlayer.get(2).numProfessor()){
-                        return team1;
-                    }
-                    else if(listPlayer.get(1).numProfessor() > listPlayer.get(0).numProfessor() && listPlayer.get(1).numProfessor() > listPlayer.get(2).numProfessor()){
-                        return team2;
-                    }
-                    else {
-                        return team3;
-                    }
-                }
-            }
-            else{ //4 players
-                Team team1 = listPlayer.get(0).getTeam();
-                Team team2 = listPlayer.get(1).getTeam();
-
-                if(team1.getNumberOfTower()<team2.getNumberOfTower()){
-                    return team1;
-                }
-                else if(team2.getNumberOfTower()<team1.getNumberOfTower()){
-                    return team2;
-                }
-                else{
-                    if(listPlayer.get(0).numProfessor()+listPlayer.get(2).numProfessor() > listPlayer.get(1).numProfessor()+listPlayer.get(3).numProfessor()){
-                        return team1;
-                    }
-                    else {
-                        return team2;
-                    }
-                }
-            }
-    }*/
 
     public Team theWinnerIs() {
             int MinTower = listTeam.get(0).getNumberOfTower();
@@ -446,7 +385,7 @@ public class Game {
 
         //se non esiste lancio un eccezione
         if(island == null){
-            throwSatyr = false;
+            characterCardThrown = "";
             throw new MissingIslandException();
         }
 
@@ -474,18 +413,26 @@ public class Game {
             //se sono presenti torri aggiungo i punti alla squadra pari al numero di torri
 
                 try {
-                    if(throwSatyr == false) {
+                    if(characterCardThrown != "Satyr") {
                         ColourTower colourTower = island.getColourTower();
-                        if (colourTower.equals(listTeam.get(0).getColourTower())){
+                        if (colourTower.equals(listTeam.get(0).getColourTower())) {
                             team1 = team1 + island.getNumSubIsland();
                         } else {
                             team2 = team2 + island.getNumSubIsland();
                         }
                     }
-                    throwSatyr = false;
+                    if(characterCardThrown == "Knight"){
+                        if (getPlayer(currentPlayer).getTeam() == listTeam.get(0))
+                            team1 = team1 + 2;
+                        else {
+                            team2 = team2 + 2;
+                        }
+                    }
+                    characterCardThrown = "";
 
                 } catch (MissingTowerException e) {
-                } finally {
+                } catch (MissingPlayerException e){
+                }finally {
                     //a questo punto confronto il valore dei team
                     //e se c'è una maggioranza riassegno le torri e controllo eventuali fusioni
                     //altrimenti chiudo il metodo
@@ -502,7 +449,7 @@ public class Game {
                         listTeam.get(0).useTowers(island.getNumSubIsland());
                         listTeam.get(1).takeTowers(island.getNumSubIsland());
                         island.setColourTower(listTeam.get(0).getColourTower());
-
+                        //qua
                     }
                     //TODO:IL METODO PER UNIRE LE ISOLE CHE DEVE ESSERE RICHIAMATO NEI DUE RAMI
                     //caso di maggioranza team2
@@ -513,6 +460,7 @@ public class Game {
                         listTeam.get(1).useTowers(island.getNumSubIsland());
                         listTeam.get(0).takeTowers(island.getNumSubIsland());
                         island.setColourTower(listTeam.get(1).getColourTower());
+                        //qua
 
                     }
                 }
@@ -558,7 +506,14 @@ public class Game {
         return this.bag;
     }
 
-    public void setThrowSatyr(boolean throwSatyr) {
-        this.throwSatyr = throwSatyr;
+    public void setCardThrown(String charachterCard) {
+        this.characterCardThrown = charachterCard;
+    }
+
+    //todo da implementare c'è sempre il problema dei parametri:
+    //o faccio un metodo per ogni effetto oppure devo passare un sacco di parametri
+    //di cui alcuni inutili
+    public void  doUseCharacter(int numCharacter){
+
     }
 }
