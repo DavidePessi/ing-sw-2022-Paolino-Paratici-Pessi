@@ -1,6 +1,10 @@
 package it.polimi.ingsw.CONTROLLER;
 
+import it.polimi.ingsw.CONTROLLER.Exception.WrongActionException;
 import it.polimi.ingsw.MODEL.*;
+import it.polimi.ingsw.MODEL.Exception.MissingCloudException;
+import it.polimi.ingsw.MODEL.Exception.MissingIslandException;
+import it.polimi.ingsw.MODEL.Exception.MissingTowerException;
 import it.polimi.ingsw.VIEW.Client;
 
 import java.util.*;
@@ -33,7 +37,7 @@ public class ControllerAction {
 
 
 
-    public void moveMotherNature(int numMovement)throws WrongActionException{
+    public void moveMotherNature(int numMovement)throws WrongActionException {
         if(currentAction == Action.MoveMotherNature) {
             this.game.doMoveMotherNature(numMovement);
             this.currentAction = Action.MoveStudent1;

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.MODEL;
 
+import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 import junit.framework.TestCase;
 
 public class DeckTest extends TestCase {

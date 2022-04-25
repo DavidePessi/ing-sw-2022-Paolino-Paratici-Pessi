@@ -1,6 +1,6 @@
 package it.polimi.ingsw.MODEL;
 
-import org.jetbrains.annotations.NotNull;
+import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 
 import java.util.*;
 
@@ -54,7 +54,7 @@ public class Player {
     }
 
     public void moveStudentInDiningRoom(Colour colour){
-        this.removeStudentFromEntrances(colour);
+        this.removeStudentFromEntrance(colour);
         this.addStudentToDiningRoom(colour);
     }
 
@@ -68,12 +68,12 @@ public class Player {
     }
 
     //add students of the group given at the entrance
-    public void addStudentsToEntrances(StudentGroup students) {
+    public void addStudentsToEntrance(StudentGroup students) {
         entrance.addGroup(students);
     }
 
     //remove students from the entrance
-    public void removeStudentFromEntrances(Colour colour){entrance.removeStudent(colour);}
+    public void removeStudentFromEntrance(Colour colour){entrance.removeStudent(colour);}
 
     public void removeStudentFromDiningRoom(Colour colour){this.diningRoom.remove(colour);}
     //remove students from the entrance
@@ -90,7 +90,7 @@ public class Player {
     }
 
     //conta il numero di studenti posizionati in DinnerRoom del colore colour
-    public int NumStudentsDiningRoom(Colour colour){
-        return diningRoom.NumStudents(colour);
+    public int numStudentsDiningRoom(Colour colour){
+        return diningRoom.numStudents(colour);
     }
 }

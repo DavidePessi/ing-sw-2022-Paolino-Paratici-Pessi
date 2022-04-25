@@ -1,6 +1,7 @@
 package it.polimi.ingsw.MODEL;
 
-import java.util.List;
+import it.polimi.ingsw.MODEL.Exception.MissingTowerException;
+
 import java.util.Objects;
 
 // equals modificata senza: Objects.equals(students, island.students), se da problemi controlliamo questo
@@ -8,7 +9,6 @@ public class Island {
 
     private ColourTower colourTower;
     private boolean hasMotherNature;
-    private int numSubisland;
     private int numIsland;
     private StudentGroup students;
     private int numSubIsland;
@@ -16,12 +16,40 @@ public class Island {
     /*Why don't we pass 2 attributes of type Island to the constructor? */
     public Island(int numIsland) {
         this.numIsland = numIsland;
-        this.numSubisland = 1;
+        this.numSubIsland = 1;
         this.colourTower = null;
         this.hasMotherNature = false;
         this.students = new StudentGroup();
     }
-    public static Island fusion(Island i1, Island i2, List<Island> li) {
+
+    public Island (Island i1, Island i2){
+        if(i1.getNumIsland() < i2.getNumIsland()){
+            this.numIsland = i1.getNumIsland();
+            this.colourTower = i1.colourTower;
+            this.numSubIsland = i1.numSubIsland + i2.numSubIsland;
+            this.students = new StudentGroup();
+            this.students.addStudents(i1.students);
+            this.students.addStudents(i2.students);
+            if(i1.hasMotherNature || i2.hasMotherNature){
+                this.hasMotherNature = true;
+            }
+            else this.hasMotherNature = false;
+        }
+        else{
+            this.numIsland = i2.getNumIsland();
+            this.colourTower = i2.colourTower;
+            this.numSubIsland = i1.numSubIsland + i2.numSubIsland;
+            this.students = new StudentGroup();
+            this.students.addStudents(i1.students);
+            this.students.addStudents(i2.students);
+            if(i1.hasMotherNature || i2.hasMotherNature){
+                this.hasMotherNature = true;
+            }
+            else this.hasMotherNature = false;
+        }
+    }
+
+    /*public static Island fusion(Island i1, Island i2, List<Island> li) {
 
         if (i1 != null && i2 !=null && li!=null){
             Island i = new Island(i1.getNumIsland()); //numero della isola1 < numero della isola2, passate in senso antiorario
@@ -45,7 +73,7 @@ public class Island {
             return i;
         }
         return null;
-    }
+    }*/
 
     public void setMotherNature(boolean hasMotherNature){
         if(hasMotherNature){
@@ -66,7 +94,6 @@ public class Island {
         students.addStudent(colour);
     }
 
-
     public int countStudentsOfColour (Colour colour){
         return this.students.countStudentsOfColour(colour);
     }
@@ -76,12 +103,12 @@ public class Island {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Island island = (Island) o;
-        return hasMotherNature == island.hasMotherNature && numSubisland == island.numSubisland && numIsland == island.numIsland && colourTower == island.colourTower;
+        return hasMotherNature == island.hasMotherNature && numSubIsland == island.numSubIsland && numIsland == island.numIsland && colourTower == island.colourTower;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(colourTower, hasMotherNature, numSubisland, numIsland, students);
+        return Objects.hash(colourTower, hasMotherNature, numSubIsland, numIsland, students);
     }
 
     @Override
@@ -89,14 +116,14 @@ public class Island {
         return "Island{" +
                 "colourTower=" + colourTower +
                 ", hasMotherNature=" + hasMotherNature +
-                ", numSubisland=" + numSubisland +
+                ", numSubisland=" + numSubIsland +
                 ", numIsland=" + numIsland +
                 ", students=" + students +
                 '}';
     }
 
     public int getNumSubIsland() {
-        return this.numSubisland;
+        return this.numSubIsland;
     }
 
     public ColourTower getColourTower() throws MissingTowerException {
@@ -117,7 +144,4 @@ public class Island {
         this.numIsland = numIsland;
     }
 
-    public void setNumSubIsland(int numSubIsland){
-        this.numSubIsland = numSubIsland;
-    }
 }

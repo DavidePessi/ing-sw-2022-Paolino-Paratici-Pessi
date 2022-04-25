@@ -1,5 +1,7 @@
 package it.polimi.ingsw.MODEL;
 
+import it.polimi.ingsw.MODEL.Exception.MissingCardException;
+
 import java.util.*;
 
 public class Deck {
@@ -16,7 +18,7 @@ public class Deck {
         this.listCard.remove(c);
     }
 
-    public Card getCard(int value) throws MissingCardException{
+    public Card getCard(int value) throws MissingCardException {
         Card cardToReturn = null;
         for(Card card : listCard){
             if(card.getValue() == value){

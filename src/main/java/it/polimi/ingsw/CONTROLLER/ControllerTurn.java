@@ -1,11 +1,12 @@
 package it.polimi.ingsw.CONTROLLER;
 
+import it.polimi.ingsw.CONTROLLER.Exception.WrongActionException;
+import it.polimi.ingsw.CONTROLLER.Exception.WrongClientException;
 import it.polimi.ingsw.MODEL.Colour;
 import it.polimi.ingsw.MODEL.Game;
 import it.polimi.ingsw.VIEW.Client;
 
 import java.util.List;
-import java.util.Objects;
 
 public class ControllerTurn {
     private Game game;
@@ -15,8 +16,8 @@ public class ControllerTurn {
 
 
     //restituisce true se il Sender sta facendo il suo turno (è il currentClient)
-    public boolean verifyClient(String Sender){
-        if(Sender.equals(this.currentClient)){
+    public boolean verifyClient(String sender){
+        if(sender.equals(this.currentClient)){
             return true;
         }
         else{
@@ -25,7 +26,7 @@ public class ControllerTurn {
     }
 
     //richiama verifyClient e dopodiche richiama la funzione corretta in ControllerAction
-    public void callAction(Action action, String nickname, Colour colourParameter, int numberParameter)throws WrongClientException{
+    public void callAction(Action action, String nickname, Colour colourParameter, int numberParameter)throws WrongClientException {
         if(verifyClient(nickname)){
 
             if(action.equals(Action.MoveMotherNature)){

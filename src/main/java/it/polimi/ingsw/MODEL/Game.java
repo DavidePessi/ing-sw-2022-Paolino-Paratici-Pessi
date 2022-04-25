@@ -1,6 +1,12 @@
 package it.polimi.ingsw.MODEL;
 
+import it.polimi.ingsw.MODEL.CharacterCards.*;
+import it.polimi.ingsw.MODEL.Exception.*;
+
 import java.util.*;
+
+// TODO scrivere il coso per lanciare di nuovo le carte usando lastFirstPlayer
+// TODO regole semplifi e avanzate scelta (guadagno monete e doPlayCharacterCard)
 
 public class Game {
     private int numPlayer;
@@ -161,7 +167,7 @@ public class Game {
         currentPlayer = listPlayer.get(0).getNicknameClient();
     }
 
-    public void startGame() throws MissingStudentException{
+    public void startGame() throws MissingStudentException {
 
         //estrarre casualmente 3 carte
         Random random = new Random();
@@ -170,6 +176,90 @@ public class Game {
             int num = random.nextInt(8);
 
             if(num==0){
+                for(CharacterCard c: characterCards){
+                    if(c.getNameCard().equals("Jester")){
+                        isPresent = true;
+                    }
+                }
+                if(!isPresent){
+                    characterCards.add(new Jester(this));
+                }
+                else {
+                    i--;
+                }
+            }
+
+            if(num==1){
+                for(CharacterCard c: characterCards){
+                    if(c.getNameCard().equals("Knight")){
+                        isPresent = true;
+                    }
+                }
+                if(!isPresent){
+                    characterCards.add(new Knight(this));
+                }
+                else {
+                    i--;
+                }
+            }
+
+            if(num==2){
+                for(CharacterCard c: characterCards){
+                    if(c.getNameCard().equals("Minestrell")){
+                        isPresent = true;
+                    }
+                }
+                if(!isPresent){
+                    characterCards.add(new Minstrell(this));
+                }
+                else {
+                    i--;
+                }
+            }
+
+            if(num==3){
+                for(CharacterCard c: characterCards){
+                    if(c.getNameCard().equals("Pirate")){
+                        isPresent = true;
+                    }
+                }
+                if(!isPresent){
+                    characterCards.add(new Pirate(this));
+                }
+                else {
+                    i--;
+                }
+            }
+
+            if(num==4){
+                for(CharacterCard c: characterCards){
+                    if(c.getNameCard().equals("PostMan")){
+                        isPresent = true;
+                    }
+                }
+                if(!isPresent){
+                    characterCards.add(new PostMan(this));
+                }
+                else {
+                    i--;
+                }
+            }
+
+            if(num==5){
+                for(CharacterCard c: characterCards){
+                    if(c.getNameCard().equals("Priest")){
+                        isPresent = true;
+                    }
+                }
+                if(!isPresent){
+                    characterCards.add(new Priest(this));
+                }
+                else {
+                    i--;
+                }
+            }
+
+            if(num==6){
                 for(CharacterCard c: characterCards){
                     if(c.getNameCard().equals("Satyr")){
                         isPresent = true;
@@ -183,11 +273,30 @@ public class Game {
                 }
             }
 
-            // TODO: 13/04/2022 ripeti per tutte le carte
+            if(num==7){
+                for(CharacterCard c: characterCards){
+                    if(c.getNameCard().equals("Woman")){
+                        isPresent = true;
+                    }
+                }
+                if(!isPresent){
+                    characterCards.add(new Woman(this));
+                }
+                else {
+                    i--;
+                }
+            }
         }
 
         // TODO: 13/04/2022 da cambiare
-        characterCards.add(0, new Satyr(this));
+        characterCards.add(0, new Jester(this));
+        characterCards.add(1, new Knight(this));
+        characterCards.add(2, new Minstrell(this));
+        characterCards.add(3, new Pirate(this));
+        characterCards.add(4, new PostMan(this));
+        characterCards.add(5, new Priest(this));
+        characterCards.add(6, new Satyr(this));
+        characterCards.add(7, new Woman(this));
         //characterCards.add(1, new ConcreteCharacterCard());
         //characterCards.add(2, new ConcreteCharacterCard());
 
@@ -206,7 +315,8 @@ public class Game {
         for (Island island : listIsland){
             if (island != null && island.getNumIsland()!=motherNature.getNumIsland() && island.getNumIsland()!=((motherNature.getNumIsland()+6)%listIsland.size())){
                 //controlla che l'isola non sia quella di madre natura e nemmeno l'opposta
-                island.addStudent(startingPullOut.pullOut());
+                //island.addStudent(startingPullOut.pullOut());
+                // TODO da fare
             }
         }
 
@@ -215,7 +325,7 @@ public class Game {
                 StudentGroup studentGroup = new StudentGroup();
                 for(int i=0; i<7; i++){
                     studentGroup.addStudent(bag.pullOut());}
-                player.addStudentsToEntrances(studentGroup);
+                player.addStudentsToEntrance(studentGroup);
             }
         }
     }
@@ -274,7 +384,25 @@ public class Game {
         2. si fa modulo num isole che ci sono, si trova il numero dell'isola su cui madre natura si deve spostare
         3. questo numero è dato alla funzione getIsland, che ritorna l'oggetto isola avente quel numero
          */
-        motherNature.move(getIsland((numMovement+motherNature.getNumIsland()) % listIsland.size()));
+        if(characterCardThrown.equals("PostMan")){
+            try {
+                characterCardThrown = "";
+                if(numMovement <= this.getPlayer(currentPlayer).getLastPlayedCard().getMovement()+2){
+                    motherNature.move(getIsland((numMovement+motherNature.getNumIsland()) % listIsland.size()));
+                }
+            } catch (MissingPlayerException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            try {
+                if(numMovement <= this.getPlayer(currentPlayer).getLastPlayedCard().getMovement()){
+                    motherNature.move(getIsland((numMovement+motherNature.getNumIsland()) % listIsland.size()));
+                }
+            } catch (MissingPlayerException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void doMoveStudentInDiningRoom(String nickname, Colour colour) {
@@ -291,7 +419,7 @@ public class Game {
                 for (Player player : listPlayer) {
                     if (player != null) {
                         if (player.getNicknameClient().equals(nickname)) {
-                            player.addStudentsToEntrances(listCloud.get(numCloud).getStudents());
+                            player.addStudentsToEntrance(listCloud.get(numCloud).getStudents());
                         }
                     }
                 }
@@ -337,8 +465,8 @@ public class Game {
 
         //il primo ciclo mi dice chi è il player con più studenti del colore colour
         for (int i = 0; i < listPlayer.size(); i++) {
-            if (listPlayer.get(i).NumStudentsDiningRoom(colour) > 0 &&
-                    listPlayer.get(i).NumStudentsDiningRoom(colour) >= MaxPlayer.NumStudentsDiningRoom(colour)) {
+            if (listPlayer.get(i).numStudentsDiningRoom(colour) > 0 &&
+                    listPlayer.get(i).numStudentsDiningRoom(colour) >= MaxPlayer.numStudentsDiningRoom(colour)) {
                 MaxPlayer = listPlayer.get(i);
             }
         }
@@ -350,7 +478,7 @@ public class Game {
 
                 //se il professore non ha owner e il player con più studenti ha almeno uno studente
                 //assegno il professore
-                if (professors.get(j).getOwner() == null && MaxPlayer.NumStudentsDiningRoom(colour) > 0) {
+                if (professors.get(j).getOwner() == null && MaxPlayer.numStudentsDiningRoom(colour) > 0) {
                     MaxPlayer.addProfessor(professors.get(j));
                     professors.get(j).changeOwner(MaxPlayer);
 
@@ -360,7 +488,7 @@ public class Game {
             //se il professore ha un owner e il player con più studenti ha più studenti dell'owner
             //assegno il professore
             else {
-                if (professors.get(j).getColour() == colour && MaxPlayer.NumStudentsDiningRoom(colour) > professors.get(j).getOwner().NumStudentsDiningRoom(colour)) {
+                if (professors.get(j).getColour() == colour && MaxPlayer.numStudentsDiningRoom(colour) > professors.get(j).getOwner().numStudentsDiningRoom(colour)) {
                     MaxPlayer.addProfessor(professors.get(j));
                     professors.get(j).getOwner().removeProfessor(professors.get(j));
                     professors.get(j).changeOwner(MaxPlayer);
@@ -449,9 +577,9 @@ public class Game {
                         listTeam.get(0).useTowers(island.getNumSubIsland());
                         listTeam.get(1).takeTowers(island.getNumSubIsland());
                         island.setColourTower(listTeam.get(0).getColourTower());
-                        //qua
+                        fusion(numIsland);
                     }
-                    //TODO:IL METODO PER UNIRE LE ISOLE CHE DEVE ESSERE RICHIAMATO NEI DUE RAMI
+                    // IL METODO PER UNIRE LE ISOLE CHE DEVE ESSERE RICHIAMATO NEI DUE RAMI --> fatto
                     //caso di maggioranza team2
                     //se il team2 ha finito le torri significa che ha vinto e lancio un'eccezione per
                     //richiamare il metodo checkwin
@@ -460,11 +588,89 @@ public class Game {
                         listTeam.get(1).useTowers(island.getNumSubIsland());
                         listTeam.get(0).takeTowers(island.getNumSubIsland());
                         island.setColourTower(listTeam.get(1).getColourTower());
-                        //qua
-
+                        fusion(numIsland);
                     }
                 }
 
+        }
+    }
+
+    public void fusion(int numIsland){
+        if(numIsland == 0){
+            try {
+                //controllo isola destra
+                if(listIsland.get(numIsland+1).getColourTower().equals(listIsland.get(numIsland).getColourTower())) {
+                    //fondo isole
+                    Island i = new Island(listIsland.get(numIsland), listIsland.get(numIsland + 1));
+
+                    //rimuovo, aggiungo e riordino lista
+                    motherNature.move(i);
+                    listIsland.remove(numIsland);
+                    listIsland.remove(numIsland+1);
+                    listIsland.add(i);
+                    for(Island island: listIsland){
+                        if (island.getNumIsland() > i.getNumIsland()) {
+                            island.setNumIsland(island.getNumIsland() - 1);
+                        }
+                    }
+                }
+            }catch (MissingTowerException e){e.printStackTrace();}
+            try{
+                //controllo isola sinistra
+                if(listIsland.get(listIsland.size()-1).getColourTower().equals(listIsland.get(numIsland).getColourTower())) {
+                    //fondo isole
+                    Island i = new Island(listIsland.get(numIsland), listIsland.get(listIsland.size()-1));
+
+                    //rimuovo, aggiungo e riordino lista
+                    motherNature.move(i);
+                    listIsland.remove(numIsland);
+                    listIsland.remove(listIsland.size()-1);
+                    listIsland.add(i);
+                    for(Island island: listIsland){
+                        if (island.getNumIsland() > i.getNumIsland()) {
+                            island.setNumIsland(island.getNumIsland() - 1);
+                        }
+                    }
+                }
+            }catch (MissingTowerException e){e.printStackTrace();}
+        }
+        else{
+            try {
+                //controllo isola destra
+                if(listIsland.get((numIsland + 1)%listIsland.size()).getColourTower().equals(listIsland.get(numIsland).getColourTower())) {
+                    //fondo isole
+                    Island i = new Island(listIsland.get(numIsland), listIsland.get((numIsland + 1)%listIsland.size()));
+
+                    //rimuovo, aggiungo e riordino lista
+                    motherNature.move(i);
+                    listIsland.remove(numIsland);
+                    listIsland.remove((numIsland + 1)%listIsland.size());
+                    listIsland.add(i);
+                    for(Island island: listIsland){
+                        if (island.getNumIsland() > i.getNumIsland()) {
+                            island.setNumIsland(island.getNumIsland() - 1);
+                        }
+                    }
+                }
+            }catch (MissingTowerException e){e.printStackTrace();}
+            try {
+                //controllo isola sinistra
+                if(listIsland.get(numIsland -1).getColourTower().equals(listIsland.get(numIsland).getColourTower())) {
+                    //fondo isole
+                    Island i = new Island(listIsland.get(numIsland), listIsland.get(numIsland-1));
+
+                    //rimuovo, aggiungo e riordino lista
+                    motherNature.move(i);
+                    listIsland.remove(numIsland);
+                    listIsland.remove(numIsland-1);
+                    listIsland.add(i);
+                    for(Island island: listIsland){
+                        if (island.getNumIsland() > i.getNumIsland()) {
+                            island.setNumIsland(island.getNumIsland() - 1);
+                        }
+                    }
+                }
+            }catch (MissingTowerException e){e.printStackTrace();}
         }
     }
 
@@ -487,7 +693,7 @@ public class Game {
         return listCloud.get(num);
     }
 
-    public Professor getProfessor(Colour col) throws MissingProfessorException{
+    public Professor getProfessor(Colour col) throws MissingProfessorException {
         Professor professorreturn = null;
 
         for (Professor p : professors){
@@ -506,14 +712,14 @@ public class Game {
         return this.bag;
     }
 
-    public void setCardThrown(String charachterCard) {
-        this.characterCardThrown = charachterCard;
+    public void setCardThrown(String characterCard) {
+        this.characterCardThrown = characterCard;
     }
 
     //todo da implementare c'è sempre il problema dei parametri:
     //o faccio un metodo per ogni effetto oppure devo passare un sacco di parametri
     //di cui alcuni inutili
-    public void  doUseCharacter(int numCharacter){
+    public void  doPlayCharacterCard(int numCharacter){
 
     }
 }

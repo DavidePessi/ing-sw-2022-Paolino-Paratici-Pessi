@@ -19,7 +19,6 @@ public class Entrance{
     public void removeColour(Colour colour){ this.studentGroup.removeStudent(colour);}
 
     public StudentGroup getStudentGroup(){
-
         return this.studentGroup;
     }
 }

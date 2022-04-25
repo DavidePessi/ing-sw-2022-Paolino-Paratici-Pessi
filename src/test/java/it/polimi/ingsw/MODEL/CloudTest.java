@@ -1,11 +1,12 @@
 package it.polimi.ingsw.MODEL;
 
+import it.polimi.ingsw.MODEL.Exception.MissingCloudException;
 import junit.framework.TestCase;
 import org.junit.jupiter.api.Assertions;
 
 public class CloudTest extends TestCase {
 
-    public void testGetStudents()throws MissingCloudException{
+    public void testGetStudents()throws MissingCloudException {
         Cloud c = new Cloud();
         StudentGroup s = new StudentGroup();
         Colour colour = Colour.GREEN;

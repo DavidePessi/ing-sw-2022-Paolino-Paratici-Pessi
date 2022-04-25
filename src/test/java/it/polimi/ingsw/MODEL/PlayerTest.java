@@ -1,10 +1,11 @@
 package it.polimi.ingsw.MODEL;
 
+import it.polimi.ingsw.MODEL.Exception.MissingPlayerException;
 import junit.framework.TestCase;
 
 public class PlayerTest extends TestCase {
 
-    public void testGetTeam()throws MissingPlayerException{
+    public void testGetTeam()throws MissingPlayerException {
         Game g = new Game("io", "tu");
         Team t = g.getPlayer("io").getTeam();
         assertTrue(t instanceof Team);
@@ -65,12 +66,12 @@ public class PlayerTest extends TestCase {
         Player pl = new Player("io", t);
         StudentGroup studentGroup = new StudentGroup();
         studentGroup.addStudent(Colour.GREEN); //aggiungiamo uno studente di quel colore per testare
-        pl.addStudentsToEntrances(studentGroup);
+        pl.addStudentsToEntrance(studentGroup);
 
-        int numPrimaStudentiInDiningRoom = pl.NumStudentsDiningRoom(Colour.GREEN);
+        int numPrimaStudentiInDiningRoom = pl.numStudentsDiningRoom(Colour.GREEN);
         pl.moveStudentInDiningRoom(Colour.GREEN);
 
-        int numDopoStudentiInDiningRoom = pl.NumStudentsDiningRoom(Colour.GREEN);
+        int numDopoStudentiInDiningRoom = pl.numStudentsDiningRoom(Colour.GREEN);
         assertEquals(numDopoStudentiInDiningRoom, numPrimaStudentiInDiningRoom+1);
     }
 
@@ -83,10 +84,10 @@ public class PlayerTest extends TestCase {
 
         s.addStudent(c);
 
-        p.addStudentsToEntrances(s);
+        p.addStudentsToEntrance(s);
         p.moveStudentInIsland(c,i);
 
-        assertEquals(0,p.NumStudentsDiningRoom(c));
+        assertEquals(0,p.numStudentsDiningRoom(c));
         assertEquals(1, i.countStudentsOfColour(c));
     }
 
@@ -99,7 +100,7 @@ public class PlayerTest extends TestCase {
         studentGroup.addStudent(Colour.YELLOW);
 
         Entrance oldEntrance = pl.getEntrance();
-        pl.addStudentsToEntrances(studentGroup);
+        pl.addStudentsToEntrance(studentGroup);
         Entrance newEntrance = pl.getEntrance();
 
         oldEntrance.addGroup(studentGroup);
@@ -136,9 +137,9 @@ public class PlayerTest extends TestCase {
 
         s.addStudent(c);
 
-        p.addStudentsToEntrances(s);
+        p.addStudentsToEntrance(s);
         p.moveStudentInDiningRoom(c);
 
-        assertEquals(1,p.NumStudentsDiningRoom(c));
+        assertEquals(1,p.numStudentsDiningRoom(c));
     }
 }

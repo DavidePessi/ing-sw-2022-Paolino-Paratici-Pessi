@@ -1,5 +1,7 @@
 package it.polimi.ingsw.MODEL;
 
+import it.polimi.ingsw.MODEL.Exception.MissingTowerException;
+
 public class Team {
     private ColourTower colourTower;
     private int numberOfTower;
@@ -18,7 +20,7 @@ public class Team {
         return this.colourTower;
     }
 
-    public void useTowers(int numTowerUsed)throws MissingTowerException{
+    public void useTowers(int numTowerUsed)throws MissingTowerException {
         if(numTowerUsed >= this.numberOfTower){
             throw new MissingTowerException();
         }

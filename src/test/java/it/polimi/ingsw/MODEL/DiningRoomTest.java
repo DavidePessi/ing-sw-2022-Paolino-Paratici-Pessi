@@ -9,17 +9,17 @@ public class DiningRoomTest extends TestCase {
         Colour c = Colour.GREEN;
 
         d.add(c);
-        assertEquals(1, d.NumStudents(c));
+        assertEquals(1, d.numStudents(c));
     }
 
     public void testNumStudents() {
         DiningRoom d = new DiningRoom();
         Colour c = Colour.GREEN;
 
-        assertEquals(0, d.NumStudents(c));
+        assertEquals(0, d.numStudents(c));
 
         d.add(c);
-        assertEquals(d.getStudentGroup().countStudentsOfColour(c), d.NumStudents(c));
+        assertEquals(d.getStudentGroup().countStudentsOfColour(c), d.numStudents(c));
     }
 
     public void testGetStudentGroup() {

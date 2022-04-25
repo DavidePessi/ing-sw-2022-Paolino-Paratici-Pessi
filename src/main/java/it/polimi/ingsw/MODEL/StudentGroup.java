@@ -123,12 +123,6 @@ public class StudentGroup {
         listStudent.add(new Student(colour));
     }
 
-    public Colour pullOut() {
-        /*da implementare:
-         * deve estrarre uno studente casuale dalla lista, ritornarne il colore e rimuovere lo studente dalla lista*/
-        return Colour.BLUE;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.MODEL;
 
+import it.polimi.ingsw.MODEL.Exception.MissingCloudException;
+
 public class Cloud {
     private StudentGroup students;
     public Cloud (){
@@ -7,7 +9,7 @@ public class Cloud {
     }
 
     //return group students of the cloud and delete every students from the list of the cloud
-    public StudentGroup getStudents() throws MissingCloudException{
+    public StudentGroup getStudents() throws MissingCloudException {
         if(this.students.size() == 0){
             throw new MissingCloudException("Cloud empty");
         }

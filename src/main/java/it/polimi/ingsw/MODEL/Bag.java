@@ -1,5 +1,7 @@
 package it.polimi.ingsw.MODEL;
 
+import it.polimi.ingsw.MODEL.Exception.MissingStudentException;
+
 import java.util.Random;
 
 public class Bag {
@@ -43,7 +45,7 @@ public class Bag {
         return studentGroup;
     }
 
-    public Colour pullOut()throws MissingStudentException{
+    public Colour pullOut()throws MissingStudentException {
         /*
         * il metodo calcola uno studente di colore randomico basato sui colori rimasti nel sacchetto e lo estrae
         * se non ci sono più studenti nella bag viene lanciata una missingstudentexception per avvisare

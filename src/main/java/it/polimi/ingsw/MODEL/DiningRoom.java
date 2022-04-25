@@ -16,7 +16,7 @@ public class DiningRoom {
 
     public void remove(Colour colour){studentGroup.removeStudent(colour);}
 
-    public int NumStudents(Colour colour) {
+    public int numStudents(Colour colour) {
         return studentGroup.countStudentsOfColour(colour);
     }
     public StudentGroup getStudentGroup(){
