@@ -83,6 +83,7 @@ public class ControllerAction {
     //1. richiamo la funzione se è il momento di spostare gli studenti (altrimenti lancio un'eccezione)
     //2. se è l'ultimo studente devo verifico le influenze sulll'isola e sostituisco eventuali torri
     //3. cambio azione corrente
+    //todo da sistemare
     public void moveStudentInIsland(String nickname, Colour colour, int numIsland)throws WrongActionException{
         if(currentAction == Action.MoveStudent1 || currentAction == Action.MoveStudent2 || currentAction == Action.MoveStudent3) {
             this.game.doMoveStudentInIsland(nickname, colour, numIsland);

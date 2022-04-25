@@ -176,7 +176,7 @@ public class Game {
             int num = random.nextInt(8);
 
             if(num==0){
-                for(CharacterCard c: characterCards){
+                for(ConcreteCharacterCard c: characterCards){
                     if(c.getNameCard().equals("Jester")){
                         isPresent = true;
                     }
