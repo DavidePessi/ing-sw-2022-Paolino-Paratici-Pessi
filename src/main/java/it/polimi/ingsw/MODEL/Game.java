@@ -176,7 +176,7 @@ public class Game {
             int num = random.nextInt(8);
 
             if(num==0){
-                for(ConcreteCharacterCard c: characterCards){
+                for(CharacterCard c: characterCards){
                     if(c.getNameCard().equals("Jester")){
                         isPresent = true;
                     }
@@ -344,7 +344,6 @@ public class Game {
             return false;
         }
     }
-
 
     public Team theWinnerIs() {
             int MinTower = listTeam.get(0).getNumberOfTower();

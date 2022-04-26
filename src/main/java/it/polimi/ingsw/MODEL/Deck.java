@@ -32,6 +32,15 @@ public class Deck {
         return cardToReturn;
     }
 
+    public Card getCardOfIndex(int index) throws MissingCardException{
+        if(this.size()<=index || index<0){
+            throw new MissingCardException("Error");
+        }
+        else{
+            return listCard.get(index);
+        }
+    }
+
     public Deck(){
         listCard = new ArrayList<Card>();
 

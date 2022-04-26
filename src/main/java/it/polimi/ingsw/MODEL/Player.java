@@ -93,4 +93,9 @@ public class Player {
     public int numStudentsDiningRoom(Colour colour){
         return diningRoom.numStudents(colour);
     }
+
+    //serve per permettere al primo giocatore che lancia la carta di lanciare una carta giocata da un altro giocatore nel turno precedente
+    public void setLastPlayedCardZero() {
+        this.currentCard = new Card(0,0);
+    }
 }

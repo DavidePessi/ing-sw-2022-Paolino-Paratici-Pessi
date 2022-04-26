@@ -3,17 +3,20 @@ package it.polimi.ingsw.CONTROLLER;
 import it.polimi.ingsw.CONTROLLER.Exception.WrongActionException;
 import it.polimi.ingsw.CONTROLLER.Exception.WrongClientException;
 import it.polimi.ingsw.MODEL.Colour;
+import it.polimi.ingsw.MODEL.Exception.MissingCardException;
+import it.polimi.ingsw.MODEL.Exception.MissingPlayerException;
 import it.polimi.ingsw.MODEL.Game;
 import it.polimi.ingsw.VIEW.Client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControllerTurn {
     private Game game;
     private ControllerAction controllerAction;
-    private List<Client> clientList;
+    private List<String> clientList;
     private String currentClient;
-
+    private boolean mulligan;
 
     //restituisce true se il Sender sta facendo il suo turno (è il currentClient)
     public boolean verifyClient(String sender){
@@ -29,33 +32,40 @@ public class ControllerTurn {
     public void callAction(Action action, String nickname, Colour colourParameter, int numberParameter)throws WrongClientException {
         if(verifyClient(nickname)){
 
-            if(action.equals(Action.MoveMotherNature)){
-                try{
-                this.controllerAction.moveMotherNature(numberParameter);
-                }catch(WrongActionException e){}
-            }
-            else if(action.equals(Action.MoveStudentInDiningRoom)){
-                try {
-                    this.controllerAction.moveStudentInDiningRoom(nickname, colourParameter);
-                }catch(WrongActionException e){}
-            }
-            else if(action.equals(Action.MoveStudentInIsland)){
-                try {
-                    this.controllerAction.moveStudentInIsland(nickname, colourParameter, numberParameter);
-                }catch(WrongActionException e){}
-            }
-            else if(action.equals(Action.PlayCard)){
-                    this.controllerAction.playCard(nickname, numberParameter);
-            }
-            else if(action.equals(Action.TakeCloud)){
-                try {
-                    this.controllerAction.takeCloud(nickname, numberParameter);
+            if(mulligan==true){
+                if(action.equals(Action.PlayCard)) {
+                    try {
+                        this.controllerAction.playCard(nickname, numberParameter);
+                    } catch (MissingCardException e) {}
                     this.endTurn();
-
-                }catch(WrongActionException e){}
+                }
             }
-            else if(action.equals(Action.UseCharacter)){
-                this.controllerAction.useCharacter(numberParameter);
+            else{
+                if(action.equals(Action.MoveMotherNature)){
+                    try{
+                        this.controllerAction.moveMotherNature(numberParameter);
+                    }catch(WrongActionException e){}
+                }
+                else if(action.equals(Action.MoveStudentInDiningRoom)){
+                    try {
+                        this.controllerAction.moveStudentInDiningRoom(nickname, colourParameter);
+                    }catch(WrongActionException e){}
+                }
+                else if(action.equals(Action.MoveStudentInIsland)){
+                    try {
+                        this.controllerAction.moveStudentInIsland(nickname, colourParameter, numberParameter);
+                    }catch(WrongActionException e){}
+                }
+                else if(action.equals(Action.TakeCloud)){
+                    try {
+                        this.controllerAction.takeCloud(nickname, numberParameter);
+                        this.endTurn();
+
+                    }catch(WrongActionException e){}
+                }
+                else if(action.equals(Action.UseCharacter)){
+                    this.controllerAction.useCharacter(numberParameter);
+                }
             }
         }
         else{
@@ -71,15 +81,43 @@ public class ControllerTurn {
         return this.currentClient;
     }
 
-
     public void endTurn(){
-        if(currentClient.equals(clientList.get(clientList.size()-1).getNickname())){
-            //TODO UN METODO PER LANCIARE LE CARTE IN MODO DA RIFARE L'ORDINE
+        //se il giocatore è l'ultimo allora significa che è finito il giro e dobbiamo rilanciare le carte
+        if(currentClient.equals(clientList.get(clientList.size()-1))){
+
+            String temp = "";
+            if(mulligan==true){
+                mulligan = false;
+                //riordino
+                for(int i=0; i<clientList.size()-1; i++){
+                    for(int j=i+1; j< clientList.size(); j++){
+                        try {
+                            if(game.getPlayer(clientList.get(i)).getLastPlayedCard().getValue() > game.getPlayer(clientList.get(j)).getLastPlayedCard().getValue()){
+                                temp = clientList.get(i);
+                                clientList.set(i,clientList.get(j));
+                                clientList.set(j,temp);
+                            }
+                        } catch (MissingPlayerException e) {}
+                    }
+                }
+            }
+            else{
+                mulligan = true;
+                currentClient = this.clientList.get(0);
+                //tutti i client hanno la carta giocata 0,0 così si può scegliere qualsiasi tipo di carta senza avere problemi
+                for(String client : clientList){
+                    try {
+                        game.getPlayer(client).setLastPlayedCardZero();
+                    } catch (MissingPlayerException e) {}
+                }
+
+            }
         }
+        //altrimenti vado al prossimo
         else{
             for(int i = 0 ; i < clientList.size(); i++){
-                if(this.clientList.get(i).getNickname().equals(currentClient)){
-                    currentClient = this.clientList.get(i+1).getNickname();
+                if(this.clientList.get(i).equals(currentClient)){
+                    currentClient = this.clientList.get(i+1);
                 }
             }
         }
