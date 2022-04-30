@@ -2,13 +2,14 @@ package it.polimi.ingsw.MODEL;
 
 import it.polimi.ingsw.MODEL.CharacterCards.*;
 import it.polimi.ingsw.MODEL.Exception.*;
-
+import it.polimi.ingsw.NETWORK.VIEW.RemoteView;
+import it.polimi.ingsw.NETWORK.UTILS.Observable;
 import java.util.*;
 
 // TODO scrivere il coso per lanciare di nuovo le carte usando lastFirstPlayer
 // TODO regole semplifi e avanzate scelta (guadagno monete e doPlayCharacterCard)
 
-public class Game {
+public class Game extends Observable{
     private int numPlayer;
     private String characterCardThrown;
     private Player lastFirstPlayer;

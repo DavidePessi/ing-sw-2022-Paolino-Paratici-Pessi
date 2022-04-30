@@ -6,17 +6,24 @@ import it.polimi.ingsw.MODEL.Colour;
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 import it.polimi.ingsw.MODEL.Exception.MissingPlayerException;
 import it.polimi.ingsw.MODEL.Game;
-import it.polimi.ingsw.VIEW.Client;
+import it.polimi.ingsw.NETWORK.UTILS.Observer;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ControllerTurn {
+public class ControllerTurn implements Observer{
     private Game game;
     private ControllerAction controllerAction;
     private List<String> clientList;
     private String currentClient;
     private boolean mulligan;
+
+    public ControllerTurn(ControllerAction controllerAction, Game game, List<String> nicknames){
+        this.clientList.addAll(nicknames);
+        this.game=game;
+        this.controllerAction=controllerAction;
+        this.mulligan= true;
+        currentClient = clientList.get(0);
+    }
 
     //restituisce true se il Sender sta facendo il suo turno (è il currentClient)
     public boolean verifyClient(String sender){
@@ -121,5 +128,10 @@ public class ControllerTurn {
                 }
             }
         }
+    }
+
+    @Override
+    public void update(Object message) {
+        //this.callAction(message......, message.......);
     }
 }

@@ -5,10 +5,10 @@ Game:
 //todo da implementare c'è sempre il problema dei parametri:
     //o faccio un metodo per ogni effetto oppure devo passare un sacco di parametri
     //di cui alcuni inutili
-// TODO scrivere il coso per lanciare di nuovo le carte usando lastFirstPlayer
+// TODO scrivere il coso per lanciare di nuovo le carte usando lastFirstPlayer --> fatto
 
 ControllerTurn:
-//TODO UN METODO PER LANCIARE LE CARTE IN MODO DA RIFARE L'ORDINE
+//TODO UN METODO PER LANCIARE LE CARTE IN MODO DA RIFARE L'ORDINE --> fatto
 
 ControllerAction:
 // TODO: 05/04/2022 metodo del controller che acquisisce i vari nickname

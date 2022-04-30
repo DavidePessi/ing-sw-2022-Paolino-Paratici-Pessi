@@ -3,7 +3,6 @@ package it.polimi.ingsw.CONTROLLER;
 import it.polimi.ingsw.CONTROLLER.Exception.WrongActionException;
 import it.polimi.ingsw.MODEL.*;
 import it.polimi.ingsw.MODEL.Exception.*;
-import it.polimi.ingsw.VIEW.Client;
 
 import java.util.*;
 
@@ -14,6 +13,12 @@ public class ControllerAction {
     private Game game;
     private List<String> listClient;
     private Action currentAction;
+    
+    public ControllerAction(Game game, List<String> nicknames){
+        listClient.addAll(nicknames);
+        this.game = game;
+        this.currentAction = Action.PlayCard;
+    }
 
     public boolean checkCardToPlay(int numCard, String nickname){
         boolean toReturn = true;
