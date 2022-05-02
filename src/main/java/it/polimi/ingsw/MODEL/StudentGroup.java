@@ -1,4 +1,6 @@
 package it.polimi.ingsw.MODEL;
+import it.polimi.ingsw.MODEL.Exception.MissingStudentException;
+
 import java.util.*;
 
 public class StudentGroup {
@@ -138,5 +140,54 @@ public class StudentGroup {
             }
         }
         return returnvalue;
+    }
+
+    public Colour pullOut()throws MissingStudentException {
+        /*
+         * il metodo calcola uno studente di colore randomico basato sui colori rimasti nelLO StudentGroup e lo estrae
+         * se non ci sono più studenti nella bag viene lanciata una missingstudentexception per avvisare
+         */
+        int NumBlue = this.countStudentsOfColour(Colour.BLUE);
+        int NumRed = this.countStudentsOfColour(Colour.RED);
+        int NumGreen = this.countStudentsOfColour(Colour.GREEN);
+        int NumYellow = this.countStudentsOfColour(Colour.YELLOW);
+        int NumPink = this.countStudentsOfColour(Colour.PINK);
+
+        int numstudenti = NumBlue + NumPink +NumGreen + NumRed + NumYellow;
+
+        Random random = new Random();
+
+        //verifico che ci sia almeno uno studente
+        if(numstudenti == 0) throw new MissingStudentException("studenti finiti nella bag");
+
+        else {
+            int randomNum = random.nextInt(numstudenti) + 1;
+
+            //caso estrazione blue
+            if (NumBlue >= randomNum) {
+                this.removeStudent(Colour.BLUE);
+                return Colour.BLUE;
+
+                //caso estrazione verde
+            } else if (NumBlue + NumGreen >= randomNum) {
+                this.removeStudent(Colour.GREEN);
+                return Colour.GREEN;
+
+                //caso estrazione rosa
+            } else if (NumBlue + NumGreen + NumPink >= randomNum) {
+                this.removeStudent(Colour.PINK);
+                return Colour.PINK;
+
+                //caso estrazione rosso
+            } else if (NumBlue + NumGreen + NumPink + NumRed >= randomNum) {
+                this.removeStudent(Colour.RED);
+                return Colour.RED;
+
+                //caso estrazione giallo
+            } else {
+                this.removeStudent(Colour.YELLOW);
+                return Colour.YELLOW;
+            }
+        }
     }
 }

@@ -10,7 +10,7 @@ public class Knight extends ConcreteCharacterCard implements Decorator {
     private Game game;
 
     public Knight(Game game){
-        nameCard = "Satyr";
+        nameCard = "Knight";
         this.game = game;
         initialPrice = 3;
         price = 3;

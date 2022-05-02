@@ -3,10 +3,10 @@ package it.polimi.ingsw.MODEL;
 import it.polimi.ingsw.MODEL.Exception.*;
 import junit.framework.TestCase;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest extends TestCase {
 
@@ -17,8 +17,9 @@ public class GameTest extends TestCase {
         assertTrue(new Game("tu","io","egli","noi") instanceof Game);
     }
 
-    /*@Test
-    public void testStartGame() throws MissingStudentException, MissingCloudException, MissingPlayerException {
+    @Test
+    @RepeatedTest(100)
+    public void testStartGame() throws MissingStudentException, MissingCloudException, MissingPlayerException, Exception {
         Game g = new Game("io", "tu");
         g.startGame();
 
@@ -45,7 +46,13 @@ public class GameTest extends TestCase {
 
         //verifico che tolgo un totale di 30 studenti dalla bag
         assertEquals(100, g.getBag().size());
-    }*/
+
+        //verifico che le carte personaggio siano 3 e siano diverse
+
+        assertNotEquals(g.getCharacterCard(0).getNameCard(), g.getCharacterCard(1).getNameCard());
+        assertNotEquals(g.getCharacterCard(0).getNameCard(), g.getCharacterCard(2).getNameCard());
+        assertNotEquals(g.getCharacterCard(1).getNameCard(), g.getCharacterCard(2).getNameCard());
+    }
 
     /*Ci sono 3 casi in cui deve restituire true, vanno poi testati gli altri 2*/
     @Test
@@ -89,7 +96,7 @@ public class GameTest extends TestCase {
     }
 
 
-    /*@Test
+    @Test
     public void testDoMoveMotherNature() throws MissingPlayerException {
         Game g = new Game ("io", "tu");
 
@@ -98,11 +105,11 @@ public class GameTest extends TestCase {
 
         g.getPlayer("io").playCard(4);
         g.doMoveMotherNature(2);
-        Island newIsland = g.getIsland(3);
+        Island newIsland = g.getIsland(2);
 
         Assertions.assertEquals(oldIsland.getHasMotherNature(), false);
         Assertions.assertEquals(newIsland.getHasMotherNature(), true);
-    }*/
+    }
 
     @Test
     public void testDoMoveStudentInDiningRoom()throws MissingPlayerException {
@@ -329,9 +336,36 @@ public class GameTest extends TestCase {
         assertTrue(g.getProfessor(c) instanceof Professor);
     }
 
-    @Test public void TestGetBag(){
+    @Test
+    public void TestGetBag(){
         Game g = new Game("io","tu");
         assertNotNull(g.getBag());
         assertTrue(g.getBag() instanceof Bag);
+    }
+
+    @Test
+    public void TestFusion(){
+        Game g1 = new Game("io", "tu");
+        Game g2 = new Game("io", "tu");
+
+        //caso in cui fondo l'isola con quella a destra e quella a sinistra e sono nell'isola 0
+
+        g1.getIsland(0).setColourTower(ColourTower.BLACK);
+        g1.getIsland(1).setColourTower(ColourTower.BLACK);
+        g1.getIsland(11).setColourTower(ColourTower.BLACK);
+        g1.fusion(0);
+
+        assertThrows(IllegalArgumentException.class, ()->g1.getIsland(10));
+        assertEquals(3, g1.getIsland(0).getNumSubIsland());
+
+        //caso in cui fondo l'isola con quella a destra e quella a sinistra e non sono nell'isola 0
+        g2.getIsland(5).setColourTower(ColourTower.BLACK);
+        g2.getIsland(6).setColourTower(ColourTower.BLACK);
+        g2.getIsland(7).setColourTower(ColourTower.BLACK);
+        g2.fusion(6);
+
+        //assertThrows(IllegalArgumentException.class, ()->g2.getIsland(6));
+        //assertEquals(1, g2.getIsland(6).getNumSubIsland());
+        assertEquals(3, g2.getIsland(5).getNumSubIsland());
     }
 }

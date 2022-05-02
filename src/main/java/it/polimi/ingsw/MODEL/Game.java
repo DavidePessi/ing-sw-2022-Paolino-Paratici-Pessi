@@ -206,7 +206,7 @@ public class Game extends Observable{
 
             if(num==2){
                 for(CharacterCard c: characterCards){
-                    if(c.getNameCard().equals("Minestrell")){
+                    if(c.getNameCard().equals("Minstrell")){
                         isPresent = true;
                     }
                 }
@@ -288,16 +288,16 @@ public class Game extends Observable{
                 }
             }
         }
-
-        // TODO: 13/04/2022 da cambiare
-        characterCards.add(0, new Jester(this));
-        characterCards.add(1, new Knight(this));
-        characterCards.add(2, new Minstrell(this));
-        characterCards.add(3, new Pirate(this));
-        characterCards.add(4, new PostMan(this));
-        characterCards.add(5, new Priest(this));
-        characterCards.add(6, new Satyr(this));
-        characterCards.add(7, new Woman(this));
+        /*
+            characterCards.add(0, new Jester(this));
+            characterCards.add(1, new Knight(this));
+            characterCards.add(2, new Minstrell(this));
+            characterCards.add(3, new Pirate(this));
+            characterCards.add(4, new PostMan(this));
+            characterCards.add(5, new Priest(this));
+            characterCards.add(6, new Satyr(this));
+            characterCards.add(7, new Woman(this));
+        */
         //characterCards.add(1, new ConcreteCharacterCard());
         //characterCards.add(2, new ConcreteCharacterCard());
 
@@ -310,14 +310,17 @@ public class Game extends Observable{
             }
         }
 
-        /*devo tirar fuori dalla bag 2 studenti per colore e
-        posizionarli a caso sulle isole tranne sull'isola di madre natura e la sua opposta */
+
+        /*
+        * creo una lista di studenti (2 per ogni tipo)
+        * ne metto 2 in ogni isola eccetto per l'isola dove c'è madre natura e quella opposta
+         */
         StudentGroup startingPullOut = bag.startingPullOut();
         for (Island island : listIsland){
-            if (island != null && island.getNumIsland()!=motherNature.getNumIsland() && island.getNumIsland()!=((motherNature.getNumIsland()+6)%listIsland.size())){
+            if (island != null && island.getNumIsland() != 0 && island.getNumIsland() != 6){
                 //controlla che l'isola non sia quella di madre natura e nemmeno l'opposta
-                //island.addStudent(startingPullOut.pullOut());
-                // TODO da fare
+                island.addStudent(startingPullOut.pullOut());
+
             }
         }
 
@@ -386,7 +389,10 @@ public class Game extends Observable{
          */
         if(characterCardThrown.equals("PostMan")){
             try {
+                //risetto la carta lanciata a nessuna
                 characterCardThrown = "";
+
+                //faccio il controllo del movimento di madre natura con +2
                 if(numMovement <= this.getPlayer(currentPlayer).getLastPlayedCard().getMovement()+2){
                     motherNature.move(getIsland((numMovement+motherNature.getNumIsland()) % listIsland.size()));
                 }
@@ -397,7 +403,7 @@ public class Game extends Observable{
         else {
             try {
                 if(numMovement <= this.getPlayer(currentPlayer).getLastPlayedCard().getMovement()){
-                    motherNature.move(getIsland((numMovement+motherNature.getNumIsland()) % listIsland.size()));
+                    motherNature.move(getIsland((numMovement + motherNature.getNumIsland()) % listIsland.size()));
                 }
             } catch (MissingPlayerException e) {
                 e.printStackTrace();
@@ -437,7 +443,7 @@ public class Game extends Observable{
 
     public Island getIsland(int numIsland) throws IllegalArgumentException {
         Island island = null;
-        if (numIsland < 0 || numIsland > listIsland.size()) {
+        if (numIsland < 0 || numIsland > (listIsland.size()-1)) {
             throw new IllegalArgumentException();
         } else {
             for (Island value : listIsland) {
@@ -597,24 +603,6 @@ public class Game extends Observable{
 
     public void fusion(int numIsland){
         if(numIsland == 0){
-            try {
-                //controllo isola destra
-                if(listIsland.get(numIsland+1).getColourTower().equals(listIsland.get(numIsland).getColourTower())) {
-                    //fondo isole
-                    Island i = new Island(listIsland.get(numIsland), listIsland.get(numIsland + 1));
-
-                    //rimuovo, aggiungo e riordino lista
-                    motherNature.move(i);
-                    listIsland.remove(numIsland);
-                    listIsland.remove(numIsland+1);
-                    listIsland.add(i);
-                    for(Island island: listIsland){
-                        if (island.getNumIsland() > i.getNumIsland()) {
-                            island.setNumIsland(island.getNumIsland() - 1);
-                        }
-                    }
-                }
-            }catch (MissingTowerException e){e.printStackTrace();}
             try{
                 //controllo isola sinistra
                 if(listIsland.get(listIsland.size()-1).getColourTower().equals(listIsland.get(numIsland).getColourTower())) {
@@ -623,54 +611,112 @@ public class Game extends Observable{
 
                     //rimuovo, aggiungo e riordino lista
                     motherNature.move(i);
-                    listIsland.remove(numIsland);
+
+                    listIsland.set(numIsland,i);
                     listIsland.remove(listIsland.size()-1);
-                    listIsland.add(i);
+
+                    //non serve perché dato che numIsland è 0 allora 1 c'è ancora ma non devo farlo arretrare a 0 ecc.
+                    /*
                     for(Island island: listIsland){
                         if (island.getNumIsland() > i.getNumIsland()) {
                             island.setNumIsland(island.getNumIsland() - 1);
                         }
-                    }
+                    }*/
+
                 }
             }catch (MissingTowerException e){e.printStackTrace();}
-        }
-        else{
             try {
                 //controllo isola destra
-                if(listIsland.get((numIsland + 1)%listIsland.size()).getColourTower().equals(listIsland.get(numIsland).getColourTower())) {
+                if(listIsland.get(numIsland+1).getColourTower().equals(listIsland.get(numIsland).getColourTower())) {
                     //fondo isole
-                    Island i = new Island(listIsland.get(numIsland), listIsland.get((numIsland + 1)%listIsland.size()));
+                    Island i = new Island(listIsland.get(numIsland), listIsland.get(numIsland + 1));
 
                     //rimuovo, aggiungo e riordino lista
                     motherNature.move(i);
-                    listIsland.remove(numIsland);
-                    listIsland.remove((numIsland + 1)%listIsland.size());
-                    listIsland.add(i);
+
+                    listIsland.set(numIsland,i);
+                    listIsland.remove(numIsland+1);
+
+
                     for(Island island: listIsland){
                         if (island.getNumIsland() > i.getNumIsland()) {
                             island.setNumIsland(island.getNumIsland() - 1);
                         }
                     }
                 }
-            }catch (MissingTowerException e){e.printStackTrace();}
+            }catch (MissingTowerException e){}
+        }
+        else{
             try {
                 //controllo isola sinistra
                 if(listIsland.get(numIsland -1).getColourTower().equals(listIsland.get(numIsland).getColourTower())) {
+                    System.out.println("bla bla1");
+
                     //fondo isole
                     Island i = new Island(listIsland.get(numIsland), listIsland.get(numIsland-1));
 
                     //rimuovo, aggiungo e riordino lista
                     motherNature.move(i);
-                    listIsland.remove(numIsland);
-                    listIsland.remove(numIsland-1);
-                    listIsland.add(i);
+
+                        listIsland.set(numIsland-1,i);
+                        listIsland.remove(numIsland);
+
+
+
                     for(Island island: listIsland){
                         if (island.getNumIsland() > i.getNumIsland()) {
                             island.setNumIsland(island.getNumIsland() - 1);
                         }
                     }
+
+                    for(Island iii : listIsland){
+                        System.out.println("isole" + iii.getNumIsland());
+                    }
+                    //System.out.println("isole" + );
+
+                    //devo decrementare il numero dell'isola che considero nel caso in cui la fondo
+                    //perchè se fondo 2 con 1 l'isola fusa avrà numero 1 quindi faccio il controllo
+                    //il secondo controllo con 1 non con 2
+                    numIsland = numIsland -1;
                 }
-            }catch (MissingTowerException e){e.printStackTrace();}
+
+            }catch (MissingTowerException e){}
+            try {
+                //System.out.println("bla bla2" + listIsland.get(numIsland).getColourTower());
+                //System.out.println("bla bla3" + (numIsland + 1)%listIsland.size());
+
+                //controllo isola destra
+                if(listIsland.get((numIsland + 1)%listIsland.size()).getColourTower().equals(listIsland.get(numIsland).getColourTower())) {
+                    //System.out.println("bla bla4");
+                    //System.out.println("bla bla" + listIsland.get(numIsland).getNumSubIsland());
+
+                    //fondo isole
+                    Island i = new Island(listIsland.get(numIsland), listIsland.get((numIsland + 1) % listIsland.size()));
+
+                    //rimuovo, aggiungo e riordino lista
+
+                    motherNature.move(i);
+
+                    if((numIsland + 1) % listIsland.size() < numIsland){
+                        listIsland.set((numIsland + 1) % listIsland.size(),i);
+                        listIsland.remove(numIsland);
+                    }
+                    else{
+                        listIsland.set(numIsland,i);
+                        listIsland.remove((numIsland + 1) % listIsland.size());
+                    }
+
+                    //listIsland.add(i);
+
+                    if(numIsland != listIsland.size()+1){
+                        for (Island island : listIsland) {
+                            if (island.getNumIsland() > i.getNumIsland()) {
+                            island.setNumIsland(island.getNumIsland() - 1);
+                            }
+                        }
+                    }
+                }
+            }catch (MissingTowerException e){}
         }
     }
 
@@ -710,6 +756,13 @@ public class Game extends Observable{
 
     public Bag getBag() {
         return this.bag;
+    }
+
+    public ConcreteCharacterCard getCharacterCard(int index)throws Exception{
+        if(index < 0 || index > characterCards.size()) throw new Exception();
+        else{
+            return characterCards.get(index);
+        }
     }
 
     public void setCardThrown(String characterCard) {
