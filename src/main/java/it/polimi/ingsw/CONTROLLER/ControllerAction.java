@@ -15,29 +15,43 @@ public class ControllerAction {
     private Action currentAction;
     
     public ControllerAction(Game game, List<String> nicknames){
-        listClient.addAll(nicknames);
+        listClient = new ArrayList<>();
+        for(String n : nicknames){
+            listClient.add(n);
+        }
         this.game = game;
-        this.currentAction = Action.PlayCard;
+        this.currentAction = Action.MoveStudent1;
     }
 
+
+    /*
+    * il metodo ha la funzione di verificare se la carta giocata dall'utente nickname
+    * è valida ovvero, se nessuno ha ancora giocato quella carta o (nel caso sia già stata giocata)
+    * tutte le carte del player sono state giocate da altri quindi il player può giocarne una qualsiasi
+     */
     public boolean checkCardToPlay(int numCard, String nickname){
         boolean toReturn = true;
         //controllo se la carta che voglio giocare è già stata giocata
         //se non è stata giocata ritorno true(cioè puoi giocarla), altrimenti devo verificare se ho altre carte giocabili
         for(String client : listClient){
             try {
-                if(game.getPlayer(client).getLastPlayedCard().equals(numCard)){
-                     toReturn = false;
-                     break;
+                if(client != nickname) {
+
+                    if (game.getPlayer(client).getLastPlayedCard().getValue() == numCard) {
+
+                        toReturn = false;
+                        break;
+                    }
                 }
-            } catch (MissingPlayerException e) {
+            } catch (MissingPlayerException | MissingCardException e) {
                 e.printStackTrace();
             }
         }
 
         //controllo se ho altre carte che sono giocabili, cioè nessun altro giocatore le ha giocate
         //se si allora ritorno false(non posso giocare la carta), altrimenti ritorno true(cioè la giochi lo stesso perchè tutte le carte che hai in mano sono state giocate)
-        if (toReturn==false){
+        if (toReturn == false){
+
             try {
                 toReturn = true;
                 boolean temp;
@@ -45,8 +59,10 @@ public class ControllerAction {
                     temp = false;
                     for(String s: listClient){
                         try {
-                            if(game.getPlayer(s).getLastPlayedCard().getValue() == game.getPlayer(nickname).getDeck().getCardOfIndex(i).getValue()){
-                                temp = true;
+                            if(s != nickname) {
+                                if (game.getPlayer(s).getLastPlayedCard().getValue() == game.getPlayer(nickname).getDeck().getCardOfIndex(i).getValue()) {
+                                    temp = true;
+                                }
                             }
                         } catch (MissingCardException e) {}
                     }
@@ -61,17 +77,6 @@ public class ControllerAction {
         return toReturn;
     }
 
-    public void createGame(String nickname1, String nickname2){
-        game = new Game(nickname1, nickname2);
-    }
-
-    public void createGame(String nickname1, String nickname2, String nickname3){
-        game = new Game(nickname1, nickname2, nickname3);
-    }
-
-    public void createGame(String nickname1, String nickname2, String nickname3, String nickname4){
-        game = new Game(nickname1, nickname2, nickname3, nickname4);
-    }
 
     public void playCard(String nickname, int numCard) throws MissingCardException {
         if(checkCardToPlay(numCard,nickname)){
@@ -85,7 +90,7 @@ public class ControllerAction {
     public void moveMotherNature(int numMovement)throws WrongActionException {
         if(currentAction == Action.MoveMotherNature) {
             this.game.doMoveMotherNature(numMovement);
-            this.currentAction = Action.MoveStudent1;
+            setCurrentAction(Action.TakeCloud);
         }
         else{
             throw new WrongActionException();
@@ -101,17 +106,17 @@ public class ControllerAction {
 
             game.doMoveStudentInDiningRoom(nickname, colour);
             if(this.currentAction == Action.MoveStudent1){
-                this.currentAction = Action.MoveStudent2;
+                setCurrentAction(Action.MoveStudent2);
 
                 this.game.checkProfessor(colour);
             }
             else if(this.currentAction == Action.MoveStudent2){
-                this.currentAction = Action.MoveStudent3;
+                setCurrentAction(Action.MoveStudent3);
 
                 this.game.checkProfessor(colour);
             }
             else if(this.currentAction == Action.MoveStudent3){
-                this.currentAction = Action.TakeCloud;
+                setCurrentAction(Action.MoveMotherNature);
 
                 this.game.checkProfessor(colour);
             }
@@ -131,15 +136,15 @@ public class ControllerAction {
             this.game.doMoveStudentInIsland(nickname, colour, numIsland);
 
             if(this.currentAction == Action.MoveStudent1){
-                this.currentAction = Action.MoveStudent2;
+                setCurrentAction(Action.MoveStudent2);
 
             }
             else if(this.currentAction == Action.MoveStudent2){
-                this.currentAction = Action.MoveStudent3;
+                setCurrentAction(Action.MoveStudent3);
 
             }
             else if(this.currentAction == Action.MoveStudent3){
-                this.currentAction = Action.TakeCloud;
+                setCurrentAction(Action.MoveMotherNature);
 
                 try {
                     this.game.checkTowers(4);
@@ -161,7 +166,7 @@ public class ControllerAction {
         try {
             if(currentAction.equals(Action.TakeCloud)){
                     game.doTakeCloud(nickname, numCloud);
-                    this.currentAction = Action.MoveMotherNature;
+                    setCurrentAction(Action.MoveStudent1);
                 }
             else {
                 throw new WrongActionException();
@@ -171,6 +176,16 @@ public class ControllerAction {
         }
     }
 
-    public void useCharacter(int numCharacter){}
+    public void useCharacter(CharacterParameters charPar) throws Exception {
+        game.doPlayCharacterCard(charPar);
 
+    }
+
+    public void setCurrentAction(Action action){
+        this.currentAction = action;
+    }
+
+    public Action getCurrentAction(){
+        return this.currentAction;
+    }
 }

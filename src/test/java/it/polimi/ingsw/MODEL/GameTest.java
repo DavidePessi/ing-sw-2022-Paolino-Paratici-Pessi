@@ -100,7 +100,6 @@ public class GameTest extends TestCase {
     public void testDoMoveMotherNature() throws MissingPlayerException {
         Game g = new Game ("io", "tu");
 
-        g.getIsland(0).setMotherNature(true);
         Island oldIsland = g.getIsland(0);
 
         g.getPlayer("io").playCard(4);
@@ -124,9 +123,6 @@ public class GameTest extends TestCase {
 
         int numDopoStudentiInDiningRoom = g.getPlayer("io").numStudentsDiningRoom(Colour.GREEN);
         Assertions.assertEquals(numDopoStudentiInDiningRoom, numPrimaStudentiInDiningRoom+1);
-
-        //caso di eccezione
-        g.doMoveStudentInDiningRoom("giorgio", Colour.GREEN);
 
     }
 

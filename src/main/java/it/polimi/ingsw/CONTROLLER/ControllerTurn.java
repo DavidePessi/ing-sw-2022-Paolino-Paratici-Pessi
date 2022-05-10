@@ -2,12 +2,14 @@ package it.polimi.ingsw.CONTROLLER;
 
 import it.polimi.ingsw.CONTROLLER.Exception.WrongActionException;
 import it.polimi.ingsw.CONTROLLER.Exception.WrongClientException;
+import it.polimi.ingsw.MODEL.CharacterParameters;
 import it.polimi.ingsw.MODEL.Colour;
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 import it.polimi.ingsw.MODEL.Exception.MissingPlayerException;
 import it.polimi.ingsw.MODEL.Game;
 import it.polimi.ingsw.NETWORK.UTILS.Observer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControllerTurn implements Observer{
@@ -16,12 +18,15 @@ public class ControllerTurn implements Observer{
     private List<String> clientList;
     private String currentClient;
     private boolean mulligan;
+    private boolean youCanPlayCharacterCard;
 
     public ControllerTurn(ControllerAction controllerAction, Game game, List<String> nicknames){
+        this.clientList = new ArrayList<>();
         this.clientList.addAll(nicknames);
         this.game=game;
         this.controllerAction=controllerAction;
         this.mulligan= true;
+        this.youCanPlayCharacterCard = true;
         currentClient = clientList.get(0);
     }
 
@@ -36,7 +41,12 @@ public class ControllerTurn implements Observer{
     }
 
     //richiama verifyClient e dopodiche richiama la funzione corretta in ControllerAction
-    public void callAction(Action action, String nickname, Colour colourParameter, int numberParameter)throws WrongClientException {
+
+    /*
+    * la funzione richiama il metodo richiesto dal client sse il player che sta chiamando è lo stesso che deve
+    * effettuare la mossa
+    */
+    public void callAction(Action action, String nickname, Colour colourParameter, int numberParameter, CharacterParameters charPar)throws WrongClientException {
         if(verifyClient(nickname)){
 
             if(mulligan==true){
@@ -71,7 +81,12 @@ public class ControllerTurn implements Observer{
                     }catch(WrongActionException e){}
                 }
                 else if(action.equals(Action.UseCharacter)){
-                    this.controllerAction.useCharacter(numberParameter);
+                    if(this.youCanPlayCharacterCard == true) {
+                        try {
+                            this.controllerAction.useCharacter(charPar);
+                            this.youCanPlayCharacterCard = false;
+                        }catch(Exception e){}
+                    }//TODO NON LO SO UN ELSE
                 }
             }
         }
@@ -88,14 +103,25 @@ public class ControllerTurn implements Observer{
         return this.currentClient;
     }
 
+
+
+    /*
+    * la funzione permette di selezionare il prossimo giocatore che deve effettuare la mossa sulla base
+    * dell'ordine imposto dalle carte assistente
+    * oppure ordina i player in base alle carte giocate
+    */
     public void endTurn(){
+        //nel prossimo turno posso giocare un'altra carta
+
+        this.youCanPlayCharacterCard = true;
         //se il giocatore è l'ultimo allora significa che è finito il giro e dobbiamo rilanciare le carte
         if(currentClient.equals(clientList.get(clientList.size()-1))){
 
             String temp = "";
+            //caso in cui ordino i player in base alle carte
             if(mulligan==true){
                 mulligan = false;
-                //riordino
+
                 for(int i=0; i<clientList.size()-1; i++){
                     for(int j=i+1; j< clientList.size(); j++){
                         try {
@@ -104,10 +130,12 @@ public class ControllerTurn implements Observer{
                                 clientList.set(i,clientList.get(j));
                                 clientList.set(j,temp);
                             }
-                        } catch (MissingPlayerException e) {}
+                        } catch (MissingPlayerException | MissingCardException e) {}
                     }
                 }
             }
+
+            //caso in cui devo ancora far lanciare la carta a qualcuno
             else{
                 mulligan = true;
                 currentClient = this.clientList.get(0);
@@ -120,7 +148,8 @@ public class ControllerTurn implements Observer{
 
             }
         }
-        //altrimenti vado al prossimo
+
+        //passo al turno del prossimo player
         else{
             for(int i = 0 ; i < clientList.size(); i++){
                 if(this.clientList.get(i).equals(currentClient)){

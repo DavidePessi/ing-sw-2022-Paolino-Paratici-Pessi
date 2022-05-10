@@ -1,5 +1,6 @@
 package it.polimi.ingsw.MODEL;
 
+import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 import it.polimi.ingsw.MODEL.Exception.MissingPlayerException;
 import junit.framework.TestCase;
 
@@ -11,7 +12,7 @@ public class PlayerTest extends TestCase {
         assertTrue(t instanceof Team);
     }
 
-    public void testGetLastPlayedCard()throws MissingPlayerException {
+    public void testGetLastPlayedCard()throws MissingPlayerException, MissingCardException {
         Game g = new Game("io", "tu");
         g.getPlayer("io").playCard(3);
         Card c = g.getPlayer("io").getLastPlayedCard();

@@ -2,7 +2,8 @@ package it.polimi.ingsw.MODEL.CharacterCards;
 
 import it.polimi.ingsw.MODEL.CharacterCards.CharacterCard;
 
-public class ConcreteCharacterCard implements CharacterCard {
+public class ConcreteCharacterCard extends CharacterCard {
+
 
     String nameCard = "";
     protected int initialPrice;

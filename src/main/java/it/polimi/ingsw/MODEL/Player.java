@@ -26,8 +26,9 @@ public class Player {
         return team;
     }
 
-    public Card getLastPlayedCard(){
-        return currentCard;
+    public Card getLastPlayedCard() throws MissingCardException{
+        if(this.currentCard == null) throw new MissingCardException();
+        else return currentCard;
     }
 
     public Deck getDeck(){
