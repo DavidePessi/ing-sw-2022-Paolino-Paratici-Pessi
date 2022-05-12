@@ -6,7 +6,6 @@ import it.polimi.ingsw.NETWORK.VIEW.RemoteView;
 import it.polimi.ingsw.NETWORK.UTILS.Observable;
 import java.util.*;
 
-// TODO scrivere il coso per lanciare di nuovo le carte usando lastFirstPlayer
 // TODO regole semplifi e avanzate scelta (guadagno monete e doPlayCharacterCard)
 
 public class Game extends Observable {
@@ -495,10 +494,13 @@ public class Game extends Observable {
         }
     }
 
-    //il metodo ha la funzione di calcolare l'influenza degli studenti
-    //sull'isola ed in base a chi ha più influenza sostituire le torri o meno
-    //se c'è un caso di vittoria vien segnalato dalla sua eccezione
-    //se l'isola è assente viene segnalato dalla sua eccezione
+
+    /*
+    * il metodo ha la funzione di calcolare l'influenza degli studenti
+    * sull'isola ed in base a chi ha più influenza sostituire le torri o meno
+    * se c'è un caso di vittoria vien segnalato dalla sua eccezione
+    * se l'isola è assente viene segnalato dalla sua eccezione
+    */
     public void checkTowers(int numIsland) throws MissingIslandException, MissingTowerException {
         Island island = null;
 
@@ -749,6 +751,10 @@ public class Game extends Observable {
         return this.bag;
     }
 
+    public String getCharacterCardThrown(){
+        return this.characterCardThrown;
+    }
+
     public ConcreteCharacterCard getCharacterCard(int index) throws Exception {
         if (index < 0 || index > characterCards.size()) throw new Exception();
         else {
@@ -759,11 +765,6 @@ public class Game extends Observable {
     public void setCardThrown(String characterCard) {
         this.characterCardThrown = characterCard;
     }
-
-    //todo da implementare c'è sempre il problema dei parametri:
-    //o faccio un metodo per ogni effetto oppure devo passare un sacco di parametri
-    //di cui alcuni inutili
-
 
     public void doPlayCharacterCard(CharacterParameters charPar) throws MissingCardException, Exception {
 
@@ -777,11 +778,11 @@ public class Game extends Observable {
 
                 } else if (cha.getNameCard().equals("Satyr")) {
                     Satyr s = (Satyr) cha;
-                    s.effect(charPar.getPlayerName(), charPar.getColour1());
+                    s.effect(charPar.getPlayerName());
 
                 } else if (cha.getNameCard().equals("Woman")) {
                     Woman w = (Woman) cha;
-                    w.effect(charPar.getPlayerName());
+                    w.effect(charPar.getPlayerName(), charPar.getColour1());
 
                 } else if (cha.getNameCard().equals("Priest")) {
                     Priest p = (Priest) cha;

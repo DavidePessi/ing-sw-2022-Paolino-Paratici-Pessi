@@ -6,7 +6,6 @@ import it.polimi.ingsw.MODEL.Exception.*;
 
 import java.util.*;
 
-// TODO: 05/04/2022 metodo del controller che acquisisce i vari nickname
 
 public class ControllerAction {
 
@@ -36,14 +35,15 @@ public class ControllerAction {
         for(String client : listClient){
             try {
                 if(client != nickname) {
+                    try {
+                        if (game.getPlayer(client).getLastPlayedCard().getValue() == numCard) {
 
-                    if (game.getPlayer(client).getLastPlayedCard().getValue() == numCard) {
-
-                        toReturn = false;
-                        break;
-                    }
+                            toReturn = false;
+                            break;
+                        }
+                    }catch(MissingCardException e){}
                 }
-            } catch (MissingPlayerException | MissingCardException e) {
+            } catch (MissingPlayerException e) {
                 e.printStackTrace();
             }
         }
@@ -105,6 +105,7 @@ public class ControllerAction {
         if(currentAction == Action.MoveStudent1 || currentAction == Action.MoveStudent2 || currentAction == Action.MoveStudent3) {
 
             game.doMoveStudentInDiningRoom(nickname, colour);
+
             if(this.currentAction == Action.MoveStudent1){
                 setCurrentAction(Action.MoveStudent2);
 

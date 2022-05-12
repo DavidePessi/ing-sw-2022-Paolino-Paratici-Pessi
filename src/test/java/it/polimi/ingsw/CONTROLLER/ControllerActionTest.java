@@ -1,14 +1,13 @@
 package it.polimi.ingsw.CONTROLLER;
 
 import it.polimi.ingsw.CONTROLLER.Exception.WrongActionException;
-import it.polimi.ingsw.MODEL.Colour;
+import it.polimi.ingsw.MODEL.*;
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 import it.polimi.ingsw.MODEL.Exception.MissingStudentException;
-import it.polimi.ingsw.MODEL.Game;
-import it.polimi.ingsw.MODEL.Island;
-import it.polimi.ingsw.MODEL.StudentGroup;
 import junit.framework.TestCase;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ControllerActionTest extends TestCase {
 
+    @Test
     public void testCheckCardToPlay() throws Exception{
         Game g = new Game("io", "tu");
         List<String> l = new ArrayList<>();
@@ -46,6 +46,7 @@ public class ControllerActionTest extends TestCase {
 
     }
 
+    @Test
     public void testPlayCard() throws Exception{
         Game g = new Game("io", "tu");
         List<String> l = new ArrayList<>();
@@ -64,6 +65,7 @@ public class ControllerActionTest extends TestCase {
         Exception exception = assertThrows(MissingCardException.class, ()->g.getPlayer("io").getDeck().getCard(3));
     }
 
+    @Test
     public void testMoveMotherNature() throws Exception{
         Game g = new Game("io", "tu");
         List<String> l = new ArrayList<>();
@@ -85,6 +87,7 @@ public class ControllerActionTest extends TestCase {
         Assertions.assertEquals(Action.TakeCloud,ca.getCurrentAction());
     }
 
+    @Test
     public void testMoveStudentInDiningRoom() throws Exception{
         Game g = new Game("io", "tu");
         List<String> l = new ArrayList<>();
@@ -121,6 +124,7 @@ public class ControllerActionTest extends TestCase {
         assertEquals(Action.MoveMotherNature, ca.getCurrentAction());
     }
 
+    @Test
     public void testMoveStudentInIsland() throws Exception {
         Game g = new Game("io", "tu");
         List<String> l = new ArrayList<>();
@@ -161,6 +165,7 @@ public class ControllerActionTest extends TestCase {
         assertEquals(Action.MoveMotherNature, ca.getCurrentAction());
     }
 
+    @Test
     public void testTakeCloud() throws Exception{
         Game g = new Game("io", "tu");
         List<String> l = new ArrayList<>();
@@ -191,6 +196,28 @@ public class ControllerActionTest extends TestCase {
         Assertions.assertEquals(numStudInEntranceDopo_Green, numStudInEntrancePrima_Green+2);
     }
 
-    public void testUseCharacter() {
+    @RepeatedTest(100)
+    public void testUseCharacter() throws Exception{
+        Game g = new Game("io", "tu");
+        g.startGame();
+        List<String> l = new ArrayList<>();
+        l.add("io");
+        l.add("tu");
+        ControllerAction ca = new ControllerAction(g, l);
+
+        if (g.getCharacterCard(0).getNameCard() == "Knight") {
+
+            ca.useCharacter(new CharacterParameters("io", "Knight"));
+
+            assertEquals("Knight", g.getCharacterCardThrown());
+        } else if(g.getCharacterCard(0).getNameCard() == "PostMan"){
+
+            ca.useCharacter(new CharacterParameters("io", "PostMan"));
+
+            assertEquals("PostMan", g.getCharacterCardThrown());
+        } else if(g.getCharacterCard(0).getNameCard() == "Satyr"){
+
+            ca.useCharacter(new CharacterParameters("io", "Satyr"));
+        }
     }
 }

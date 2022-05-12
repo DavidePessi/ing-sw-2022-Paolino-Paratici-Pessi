@@ -16,8 +16,6 @@ public class Entrance{
         this.studentGroup.addStudents(students);
     }
 
-    public void removeColour(Colour colour){ this.studentGroup.removeStudent(colour);}
-
     public StudentGroup getStudentGroup(){
         return this.studentGroup;
     }

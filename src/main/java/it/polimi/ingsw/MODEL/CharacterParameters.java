@@ -22,6 +22,14 @@ public class CharacterParameters {
         this.num = num;
     }
 
+
+    public CharacterParameters(String nickname, String characterName, int num , Colour colour){
+        this.nickname = nickname;
+        this.characterName = characterName;
+        this.num = num;
+        this.c1 = colour;
+    }
+
     public CharacterParameters(String nickname,  String characterName,List<Colour> colours){
         this.nickname = nickname;
         this.characterName = characterName;

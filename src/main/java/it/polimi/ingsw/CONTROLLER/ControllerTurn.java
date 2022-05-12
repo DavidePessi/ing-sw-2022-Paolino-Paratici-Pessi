@@ -23,9 +23,9 @@ public class ControllerTurn implements Observer{
     public ControllerTurn(ControllerAction controllerAction, Game game, List<String> nicknames){
         this.clientList = new ArrayList<>();
         this.clientList.addAll(nicknames);
-        this.game=game;
-        this.controllerAction=controllerAction;
-        this.mulligan= true;
+        this.game = game;
+        this.controllerAction = controllerAction;
+        this.mulligan = true;
         this.youCanPlayCharacterCard = true;
         currentClient = clientList.get(0);
     }
@@ -35,6 +35,7 @@ public class ControllerTurn implements Observer{
         if(sender.equals(this.currentClient)){
             return true;
         }
+
         else{
             return false;
         }
@@ -93,6 +94,7 @@ public class ControllerTurn implements Observer{
         else{
             throw new WrongClientException();
         }
+
     }
 
     public void setCurrentClient(String newCurrentClient){
@@ -102,8 +104,6 @@ public class ControllerTurn implements Observer{
     public String getCurrentClient(){
         return this.currentClient;
     }
-
-
 
     /*
     * la funzione permette di selezionare il prossimo giocatore che deve effettuare la mossa sulla base
@@ -115,12 +115,13 @@ public class ControllerTurn implements Observer{
 
         this.youCanPlayCharacterCard = true;
         //se il giocatore è l'ultimo allora significa che è finito il giro e dobbiamo rilanciare le carte
+
         if(currentClient.equals(clientList.get(clientList.size()-1))){
 
             String temp = "";
             //caso in cui ordino i player in base alle carte
-            if(mulligan==true){
-                mulligan = false;
+            if(mulligan == true){
+                this.setMulligan(false);
 
                 for(int i=0; i<clientList.size()-1; i++){
                     for(int j=i+1; j< clientList.size(); j++){
@@ -133,11 +134,13 @@ public class ControllerTurn implements Observer{
                         } catch (MissingPlayerException | MissingCardException e) {}
                     }
                 }
+                //setto il prossimo player al primo
+                this.setCurrentClient(this.clientList.get(0));
             }
 
             //caso in cui devo ancora far lanciare la carta a qualcuno
             else{
-                mulligan = true;
+                this.setMulligan(true);
                 currentClient = this.clientList.get(0);
                 //tutti i client hanno la carta giocata 0,0 così si può scegliere qualsiasi tipo di carta senza avere problemi
                 for(String client : clientList){
@@ -151,7 +154,7 @@ public class ControllerTurn implements Observer{
 
         //passo al turno del prossimo player
         else{
-            for(int i = 0 ; i < clientList.size(); i++){
+            for(int i = 0 ; i < clientList.size() - 1; i++){
                 if(this.clientList.get(i).equals(currentClient)){
                     currentClient = this.clientList.get(i+1);
                 }
@@ -163,4 +166,12 @@ public class ControllerTurn implements Observer{
     public void update(Object message) {
         //this.callAction(message......, message.......);
     }
+
+    public void setMulligan(boolean mulligan) {
+        this.mulligan = mulligan;
+    }
+    public boolean getMulligan() {
+        return this.mulligan;
+    }
 }
+
