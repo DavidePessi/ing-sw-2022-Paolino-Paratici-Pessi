@@ -13,7 +13,7 @@ public class Payload  implements Serializable{
         parameters.put(key1, nickname);
     }
 
-    public Payload(String key1, int value){
+    public Payload(String key1, Integer value){
         parameters = new HashMap<>();
         parameters.put(key1, value);
     }

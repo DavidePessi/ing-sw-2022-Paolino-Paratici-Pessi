@@ -3,9 +3,7 @@ package it.polimi.ingsw.NETWORK.SERVER;
 import it.polimi.ingsw.CONTROLLER.ControllerAction;
 import it.polimi.ingsw.CONTROLLER.ControllerTurn;
 import it.polimi.ingsw.MODEL.Game;
-import it.polimi.ingsw.MODEL.Player;
 import it.polimi.ingsw.NETWORK.VIEW.RemoteView;
-import it.polimi.ingsw.NETWORK.VIEW.View;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -19,8 +17,8 @@ public class Server {
     private static final int PORT = 12345;
     private ServerSocket serverSocket;
     private ExecutorService executor = Executors.newFixedThreadPool(128);
-    private Map<String, ClientConnection> waitingRoom = new HashMap<>();
-    private Map<ClientConnection, ClientConnection> playingConnection = new HashMap<>();
+    private Map<String, SocketClientConnection> waitingRoom = new HashMap<>();
+    private Map<SocketClientConnection, SocketClientConnection> playingConnection = new HashMap<>();
 
     //Deregister connection
     public synchronized void deregisterConnection(ClientConnection c) {
@@ -39,13 +37,13 @@ public class Server {
     }
 
     //Wait for another player
-    public synchronized void lobby(ClientConnection c, String name){
+    public synchronized void lobby(SocketClientConnection c, String name){
         //public synchronized void lobby(Connection c, String name){
             waitingRoom.put(name, c);
             if(waitingRoom.size() == 2) {
                 List<String> keys = new ArrayList<>(waitingRoom.keySet());
-                ClientConnection c1 = waitingRoom.get(keys.get(0));
-                ClientConnection c2 = waitingRoom.get(keys.get(1));
+                SocketClientConnection c1 = waitingRoom.get(keys.get(0));
+                SocketClientConnection c2 = waitingRoom.get(keys.get(1));
                 RemoteView player1 = new RemoteView(c1);
                 RemoteView player2 = new RemoteView(c2);
                 Game model = new Game(keys.get(0), keys.get(1));

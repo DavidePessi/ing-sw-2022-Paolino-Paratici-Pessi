@@ -45,17 +45,21 @@ public class Client {
                         ServerMessage in2 = (ServerMessage) inputObject;
                         //verifico che è un messaggio di servizio e non un update quindi che il suo
                         //header contenga SET_UP
-                        if (in2.getServerHeader().getServerAction().equals(ServerAction.SET_UP)) {
-                            System.out.println(in2.getPayload().getParameter("SET_UP"));
-
                             //sposto l'azione che può effettuare il client alla successiva
-                            if (ServerAction.SET_UP.equals(in2.getServerHeader().getServerAction())) {
-                                if(clientAction.equals(ClientAction.SEND_NICKNAME)) clientAction = ClientAction.SEND_NICKNAME;
-                                else if(clientAction.equals(ClientAction.SEND_NUM_PLAYERS)) clientAction = ClientAction.SEND_GAMEMODE;
-
+                            if (ServerAction.SET_UP_NICKNAME.equals(in2.getServerHeader().getServerAction())) {
+                                System.out.println(in2.getPayload().getParameter("SET_UP_NICKNAME"));
+                                clientAction = ClientAction.SEND_NICKNAME;
+                            } else if (ServerAction.SET_UP_NUM_PLAYERS.equals(in2.getServerHeader().getServerAction())) {
+                                System.out.println(in2.getPayload().getParameter("SET_UP_NUM_PLAYERS"));
+                                clientAction = ClientAction.SEND_NUM_PLAYERS;
+                            } else if (ServerAction.SET_UP_GAMEMODE.equals(in2.getServerHeader().getServerAction())) {
+                                System.out.println(in2.getPayload().getParameter("SET_UP_GAMEMODE"));
+                                clientAction = ClientAction.SEND_GAMEMODE;
                             }
 
-                        }
+
+
+
                     }
 
                 } catch (Exception e) {
@@ -71,6 +75,7 @@ public class Client {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
+                String nick = null;
                 try {
                     while (isActive()) {
 
@@ -78,25 +83,29 @@ public class Client {
                         ClientHeader ch;
                         Payload pay;
                         ClientMessage cm;
+
                         if(clientAction.equals(ClientAction.SEND_NICKNAME)) {
 
                             ch = new ClientHeader(inputLine, ClientAction.SEND_NICKNAME);
                             pay = new Payload("nickname", inputLine);
                             cm = new ClientMessage(ch, pay);
-
+                            nick = (String) pay.getParameter("nickname");
+                            //System.out.println("send_nick" + nick);
                             socketOut.writeObject(cm); //Write byte stream to file system.
                             socketOut.flush();
 
                         } else if(clientAction.equals(ClientAction.SEND_NUM_PLAYERS)){
-                            ch = new ClientHeader(inputLine, ClientAction.SEND_NUM_PLAYERS);
-                            pay = new Payload("numPlayer", Integer.parseInt(inputLine));
+                            ch = new ClientHeader(nick, ClientAction.SEND_NUM_PLAYERS);
+                            int n = Integer.parseInt(inputLine);
+                            pay = new Payload("numPlayer", n);
                             cm = new ClientMessage(ch, pay);
-
+                            //System.out.println("send_num (nickname) " + nick);
+                            //System.out.println("send_num " + n);
                             socketOut.writeObject(cm); //Write byte stream to file system.
                             socketOut.flush();
 
                         } else if(clientAction.equals(ClientAction.SEND_GAMEMODE)){
-                            ch = new ClientHeader(inputLine, ClientAction.SEND_NUM_PLAYERS);
+                            ch = new ClientHeader(nick, ClientAction.SEND_GAMEMODE);
                             pay = new Payload("typeGame", inputLine);
                             cm = new ClientMessage(ch, pay);
 

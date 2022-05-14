@@ -78,30 +78,41 @@ public class SocketClientConnection extends Observable<String> implements Client
         try{
             out = new ObjectOutputStream(socket.getOutputStream());
 
-            ServerHeader sh = new ServerHeader(ServerAction.SET_UP);
-            Payload pay = new Payload("SET_UP", "Welcome! What is your name?");
+            ServerHeader sh = new ServerHeader(ServerAction.SET_UP_NICKNAME);
+            Payload pay = new Payload("SET_UP_NICKNAME", "Welcome! What is your name?");
             ServerMessage sm = new ServerMessage(sh, pay);
 
-            //send(sm.toString());
             out.writeObject(sm); //Write byte stream to file system.
             out.flush();
-
-            System.out.println("ciao");
 
             in = new ObjectInputStream(socket.getInputStream());
             ClientMessage cm = (ClientMessage) in.readObject();
 
             name = (String)cm.getPayload().getParameter("nickname");
-            System.out.println("ciao " + name);
+            //System.out.println("ciao " + name);
 
-            send("Con quanti giocatori vuoi fare la partita?");
+            sh = new ServerHeader(ServerAction.SET_UP_NUM_PLAYERS);
+            pay = new Payload("SET_UP_NUM_PLAYERS", "Quanti giocatori siete?");
+            sm = new ServerMessage(sh, pay);
+
+            out.writeObject(sm); //Write byte stream to file system.
+            out.flush();
+
             cm = (ClientMessage) in.readObject();
-            Integer n = (Integer)cm.getPayload().getParameter("numPlayer");
+
+            Integer n = (Integer) cm.getPayload().getParameter("numPlayer");
+            System.out.println("numplayers: "+n);
             numPlayers = n.intValue();
 
+            sh = new ServerHeader(ServerAction.SET_UP_GAMEMODE);
+            pay = new Payload("SET_UP_GAMEMODE", "tipo partita");
+            sm = new ServerMessage(sh, pay);
 
-            send("che modalità di gioco preferisci?");
+            out.writeObject(sm); //Write byte stream to file system.
+            out.flush();
+
             cm = (ClientMessage) in.readObject();
+
             typeGame = (String)cm.getPayload().getParameter("typeGame");
 
             System.out.println("ciao " + name + " hai scelto partita con " + numPlayers + " giocatori e tipo " + typeGame);

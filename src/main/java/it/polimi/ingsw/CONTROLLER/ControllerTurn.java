@@ -7,6 +7,7 @@ import it.polimi.ingsw.MODEL.Colour;
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 import it.polimi.ingsw.MODEL.Exception.MissingPlayerException;
 import it.polimi.ingsw.MODEL.Game;
+import it.polimi.ingsw.NETWORK.MESSAGES.ClientMessage;
 import it.polimi.ingsw.NETWORK.UTILS.Observer;
 
 import java.util.ArrayList;
@@ -164,6 +165,12 @@ public class ControllerTurn implements Observer{
 
     @Override
     public void update(Object message) {
+        ClientMessage cm = (ClientMessage) message;
+        try {
+            callAction((Action) cm.getPayload().getParameter("Action"), (String) cm.getPayload().getParameter("nickname"), (Colour) cm.getPayload().getParameter("Colour"), (int)cm.getPayload().getParameter("num"), (CharacterParameters) cm.getPayload().getParameter("CharacterParameters"));
+        } catch (WrongClientException e) {
+
+        }
         //this.callAction(message......, message.......);
     }
 
@@ -173,5 +180,7 @@ public class ControllerTurn implements Observer{
     public boolean getMulligan() {
         return this.mulligan;
     }
+
+
 }
 
