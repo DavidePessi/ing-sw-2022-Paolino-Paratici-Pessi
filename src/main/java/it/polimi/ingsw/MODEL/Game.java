@@ -824,4 +824,9 @@ public class Game extends Observable {
 
         }
     }
+
+    //per testing
+    public void addCharacterCard(ConcreteCharacterCard cc){
+        characterCards.add(cc);
+    }
 }

@@ -60,6 +60,15 @@ public class Client {
                             } else if (ServerAction.SET_UP_GAMEMODE.equals(in2.getServerHeader().getServerAction())) {
                                 System.out.println(in2.getPayload().getParameter("SET_UP_GAMEMODE"));
                                 clientAction = ClientAction.SEND_GAMEMODE;
+                            } else if (ServerAction.ERROR_GAMEMODE.equals(in2.getServerHeader().getServerAction())){
+                                System.out.println(in2.getPayload().getParameter("ERROR_GAMEMODE"));
+                                clientAction = ClientAction.SEND_GAMEMODE;
+                            } else if (ServerAction.ERROR_NUMPLAYERS.equals(in2.getServerHeader().getServerAction())){
+                                System.out.println(in2.getPayload().getParameter("ERROR_NUMPLAYERS"));
+                                clientAction = ClientAction.SEND_NUM_PLAYERS;
+                            } else if (ServerAction.OK_START.equals(in2.getServerHeader().getServerAction())){
+                                System.out.println(in2.getPayload().getParameter("OK_START"));
+                                //azione che deve fare il client
                             }
 
 

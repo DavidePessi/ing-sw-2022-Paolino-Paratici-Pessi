@@ -44,6 +44,7 @@ public class CharacterParameters {
 
     public CharacterParameters(String nickname, String characterName, int num){
         this.nickname = nickname;
+        this.characterName = characterName;
         this.num = num;
     }
 

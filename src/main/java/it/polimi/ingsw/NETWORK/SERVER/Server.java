@@ -1,6 +1,7 @@
 package it.polimi.ingsw.NETWORK.SERVER;
 
 import it.polimi.ingsw.CONTROLLER.ControllerAction;
+import it.polimi.ingsw.CONTROLLER.ControllerActionDifficult;
 import it.polimi.ingsw.CONTROLLER.ControllerTurn;
 import it.polimi.ingsw.MODEL.Game;
 import it.polimi.ingsw.NETWORK.VIEW.RemoteView;
@@ -37,7 +38,7 @@ public class Server {
     }
 
     //Wait for another player
-    public synchronized void lobby(SocketClientConnection c, String name){
+    public synchronized void lobby2E(SocketClientConnection c, String name, String typeGame){
         //public synchronized void lobby(Connection c, String name){
             waitingRoom.put(name, c);
             if(waitingRoom.size() == 2) {
@@ -48,8 +49,14 @@ public class Server {
                 RemoteView player2 = new RemoteView(c2);
                 Game model = new Game(keys.get(0), keys.get(1));
 
-                ControllerAction controllerAction = new ControllerAction(model, keys);
+                /*ControllerAction controllerAction = null;
+                if(typeGame.equals("difficult")){
+                    controllerAction = new ControllerActionDifficult(model, keys);
+                } else if(typeGame.equals("easy")) {
+                    controllerAction = new ControllerAction(model, keys);
+                }*/
 
+                ControllerAction controllerAction = new ControllerAction(model, keys);
                 ControllerTurn controllerTurn = new ControllerTurn(controllerAction, model, keys);
 
                 model.addObserver(player1);
@@ -63,6 +70,173 @@ public class Server {
                 waitingRoom.clear();
                 System.out.println("Game created");
             }
+    }
+    public synchronized void lobby2D(SocketClientConnection c, String name, String typeGame){
+        //public synchronized void lobby(Connection c, String name){
+        waitingRoom.put(name, c);
+        if(waitingRoom.size() == 2) {
+            List<String> keys = new ArrayList<>(waitingRoom.keySet());
+            SocketClientConnection c1 = waitingRoom.get(keys.get(0));
+            SocketClientConnection c2 = waitingRoom.get(keys.get(1));
+            RemoteView player1 = new RemoteView(c1);
+            RemoteView player2 = new RemoteView(c2);
+            Game model = new Game(keys.get(0), keys.get(1));
+
+                /*ControllerAction controllerAction = null;
+                if(typeGame.equals("difficult")){
+                    controllerAction = new ControllerActionDifficult(model, keys);
+                } else if(typeGame.equals("easy")) {
+                    controllerAction = new ControllerAction(model, keys);
+                }*/
+
+            ControllerAction controllerAction = new ControllerActionDifficult(model, keys);
+            ControllerTurn controllerTurn = new ControllerTurn(controllerAction, model, keys);
+
+            model.addObserver(player1);
+            model.addObserver(player2);
+            player1.addObserver(controllerTurn);
+            player2.addObserver(controllerTurn);
+
+            // TODO: 30/04/2022 opponent
+            playingConnection.put(c1, c2);
+            playingConnection.put(c2, c1);
+            waitingRoom.clear();
+            System.out.println("Game created");
+        }
+    }
+
+    public synchronized void lobby3E(SocketClientConnection c, String name, String typeGame){
+        //public synchronized void lobby(Connection c, String name){
+        waitingRoom.put(name, c);
+        if(waitingRoom.size() == 2) {
+            List<String> keys = new ArrayList<>(waitingRoom.keySet());
+            SocketClientConnection c1 = waitingRoom.get(keys.get(0));
+            SocketClientConnection c2 = waitingRoom.get(keys.get(1));
+            RemoteView player1 = new RemoteView(c1);
+            RemoteView player2 = new RemoteView(c2);
+            Game model = new Game(keys.get(0), keys.get(1));
+
+                /*ControllerAction controllerAction = null;
+                if(typeGame.equals("difficult")){
+                    controllerAction = new ControllerActionDifficult(model, keys);
+                } else if(typeGame.equals("easy")) {
+                    controllerAction = new ControllerAction(model, keys);
+                }*/
+
+            ControllerAction controllerAction = new ControllerAction(model, keys);
+            ControllerTurn controllerTurn = new ControllerTurn(controllerAction, model, keys);
+
+            model.addObserver(player1);
+            model.addObserver(player2);
+            player1.addObserver(controllerTurn);
+            player2.addObserver(controllerTurn);
+
+            // TODO: 30/04/2022 opponent
+            playingConnection.put(c1, c2);
+            playingConnection.put(c2, c1);
+            waitingRoom.clear();
+            System.out.println("Game created");
+        }
+    }
+    public synchronized void lobby3D(SocketClientConnection c, String name, String typeGame){
+        //public synchronized void lobby(Connection c, String name){
+        waitingRoom.put(name, c);
+        if(waitingRoom.size() == 2) {
+            List<String> keys = new ArrayList<>(waitingRoom.keySet());
+            SocketClientConnection c1 = waitingRoom.get(keys.get(0));
+            SocketClientConnection c2 = waitingRoom.get(keys.get(1));
+            RemoteView player1 = new RemoteView(c1);
+            RemoteView player2 = new RemoteView(c2);
+            Game model = new Game(keys.get(0), keys.get(1));
+
+                /*ControllerAction controllerAction = null;
+                if(typeGame.equals("difficult")){
+                    controllerAction = new ControllerActionDifficult(model, keys);
+                } else if(typeGame.equals("easy")) {
+                    controllerAction = new ControllerAction(model, keys);
+                }*/
+
+            ControllerAction controllerAction = new ControllerActionDifficult(model, keys);
+            ControllerTurn controllerTurn = new ControllerTurn(controllerAction, model, keys);
+
+            model.addObserver(player1);
+            model.addObserver(player2);
+            player1.addObserver(controllerTurn);
+            player2.addObserver(controllerTurn);
+
+            // TODO: 30/04/2022 opponent
+            playingConnection.put(c1, c2);
+            playingConnection.put(c2, c1);
+            waitingRoom.clear();
+            System.out.println("Game created");
+        }
+    }
+
+    public synchronized void lobby4E(SocketClientConnection c, String name, String typeGame){
+        //public synchronized void lobby(Connection c, String name){
+        waitingRoom.put(name, c);
+        if(waitingRoom.size() == 2) {
+            List<String> keys = new ArrayList<>(waitingRoom.keySet());
+            SocketClientConnection c1 = waitingRoom.get(keys.get(0));
+            SocketClientConnection c2 = waitingRoom.get(keys.get(1));
+            RemoteView player1 = new RemoteView(c1);
+            RemoteView player2 = new RemoteView(c2);
+            Game model = new Game(keys.get(0), keys.get(1));
+
+                /*ControllerAction controllerAction = null;
+                if(typeGame.equals("difficult")){
+                    controllerAction = new ControllerActionDifficult(model, keys);
+                } else if(typeGame.equals("easy")) {
+                    controllerAction = new ControllerAction(model, keys);
+                }*/
+
+            ControllerAction controllerAction = new ControllerAction(model, keys);
+            ControllerTurn controllerTurn = new ControllerTurn(controllerAction, model, keys);
+
+            model.addObserver(player1);
+            model.addObserver(player2);
+            player1.addObserver(controllerTurn);
+            player2.addObserver(controllerTurn);
+
+            // TODO: 30/04/2022 opponent
+            playingConnection.put(c1, c2);
+            playingConnection.put(c2, c1);
+            waitingRoom.clear();
+            System.out.println("Game created");
+        }
+    }
+    public synchronized void lobby4D(SocketClientConnection c, String name, String typeGame){
+        //public synchronized void lobby(Connection c, String name){
+        waitingRoom.put(name, c);
+        if(waitingRoom.size() == 2) {
+            List<String> keys = new ArrayList<>(waitingRoom.keySet());
+            SocketClientConnection c1 = waitingRoom.get(keys.get(0));
+            SocketClientConnection c2 = waitingRoom.get(keys.get(1));
+            RemoteView player1 = new RemoteView(c1);
+            RemoteView player2 = new RemoteView(c2);
+            Game model = new Game(keys.get(0), keys.get(1));
+
+                /*ControllerAction controllerAction = null;
+                if(typeGame.equals("difficult")){
+                    controllerAction = new ControllerActionDifficult(model, keys);
+                } else if(typeGame.equals("easy")) {
+                    controllerAction = new ControllerAction(model, keys);
+                }*/
+
+            ControllerAction controllerAction = new ControllerActionDifficult(model, keys);
+            ControllerTurn controllerTurn = new ControllerTurn(controllerAction, model, keys);
+
+            model.addObserver(player1);
+            model.addObserver(player2);
+            player1.addObserver(controllerTurn);
+            player2.addObserver(controllerTurn);
+
+            // TODO: 30/04/2022 opponent
+            playingConnection.put(c1, c2);
+            playingConnection.put(c2, c1);
+            waitingRoom.clear();
+            System.out.println("Game created");
+        }
     }
 
     public Server() throws IOException {

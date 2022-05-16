@@ -1,5 +1,7 @@
 package it.polimi.ingsw.MODEL;
 
+import it.polimi.ingsw.MODEL.CharacterCards.ConcreteCharacterCard;
+import it.polimi.ingsw.MODEL.CharacterCards.Pirate;
 import it.polimi.ingsw.MODEL.Exception.*;
 import junit.framework.TestCase;
 import org.junit.jupiter.api.Assertions;
@@ -363,5 +365,65 @@ public class GameTest extends TestCase {
         //assertThrows(IllegalArgumentException.class, ()->g2.getIsland(6));
         //assertEquals(1, g2.getIsland(6).getNumSubIsland());
         assertEquals(3, g2.getIsland(5).getNumSubIsland());
+    }
+
+    @Test
+    public void TestdoPlayCharacterCard() throws MissingCardException, Exception{
+        Game game = new Game("gio", "ila");
+        CharacterParameters cp = new CharacterParameters("tu", "Pirate", 3);
+        //TODO dobbiamo verificare che esiste poi qualcosa che ci controlla: che "tu" sia nel game, che "tu" stia giocando in quel momento
+        ConcreteCharacterCard cc = new Pirate(game);
+        game.addCharacterCard(cc);
+
+        StudentGroup sg_io = new StudentGroup();
+        sg_io.addStudent(Colour.RED);
+        sg_io.addStudent(Colour.RED);
+        sg_io.addStudent(Colour.RED);
+        sg_io.addStudent(Colour.RED);
+        sg_io.addStudent(Colour.RED);
+        sg_io.addStudent(Colour.RED);
+        sg_io.addStudent(Colour.RED);
+        game.getPlayer("ila").getEntrance().addGroup(sg_io);
+
+        StudentGroup sg_tu = new StudentGroup();
+        sg_tu.addStudent(Colour.GREEN);
+        sg_tu.addStudent(Colour.GREEN);
+        sg_tu.addStudent(Colour.GREEN);
+        sg_tu.addStudent(Colour.GREEN);
+        sg_tu.addStudent(Colour.GREEN);
+        sg_tu.addStudent(Colour.GREEN);
+        sg_tu.addStudent(Colour.GREEN);
+        game.getPlayer("gio").getEntrance().addGroup(sg_tu);
+
+        game.getPlayer("gio").playCard(6);
+        game.getPlayer("ila").playCard(8);
+        game.getPlayer("gio").moveStudentInDiningRoom(Colour.GREEN);
+        game.getPlayer("gio").moveStudentInIsland(Colour.GREEN, game.getIsland(3));
+        game.getPlayer("gio").moveStudentInIsland(Colour.GREEN, game.getIsland(3));
+
+        game.checkProfessor(Colour.GREEN);
+
+
+        game.doMoveMotherNature(3);
+        game.checkTowers(3);
+
+        game.getPlayer("ila").moveStudentInDiningRoom(Colour.RED);
+        game.getPlayer("ila").moveStudentInIsland(Colour.RED, game.getIsland(3));
+        game.getPlayer("ila").moveStudentInIsland(Colour.RED, game.getIsland(3));
+        game.getPlayer("ila").moveStudentInIsland(Colour.RED, game.getIsland(3));
+        game.getPlayer("ila").moveStudentInIsland(Colour.RED, game.getIsland(3));
+        game.getPlayer("ila").moveStudentInIsland(Colour.RED, game.getIsland(3));
+        game.checkProfessor(Colour.RED);
+
+        game.doPlayCharacterCard(cp);
+
+        /*System.out.println(game.getIsland(3).getColourTower());
+        System.out.println(game.getPlayer("ila").getTeam().getColourTower());
+        System.out.println(game.getIsland(3).countStudentsOfColour(Colour.RED));
+        System.out.println(game.getIsland(3).countStudentsOfColour(Colour.GREEN));
+        System.out.println(game.getProfessor(Colour.GREEN).getOwner().getNicknameClient());
+        System.out.println(game.getProfessor(Colour.RED).getOwner().getNicknameClient());*/
+
+        assertEquals(game.getPlayer("ila").getTeam().getColourTower(), game.getIsland(3).getColourTower());
     }
 }

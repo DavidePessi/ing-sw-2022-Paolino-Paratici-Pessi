@@ -137,7 +137,7 @@ public class ClientModelCLI {
             Board = Board +( "]\n");
 
 
-            Board = Board +( "DinnerRoom : \n[");
+            Board = Board +( "DiningRoom : \n[");
             for (int i = 0; i < player.numStudentsDiningRoom(Colour.RED); i++) {
                 Board = Board +((char) 27 + "[31m" + "▪" + "\u001B[0m");
             }

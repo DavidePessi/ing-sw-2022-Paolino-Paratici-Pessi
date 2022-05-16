@@ -1,5 +1,6 @@
 package it.polimi.ingsw.NETWORK.SERVER;
 
+
 import it.polimi.ingsw.NETWORK.MESSAGES.*;
 import it.polimi.ingsw.NETWORK.UTILS.Observable;
 
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.function.ToDoubleBiFunction;
 
 public class SocketClientConnection extends Observable<String> implements ClientConnection, Runnable {
 
@@ -73,7 +75,7 @@ public class SocketClientConnection extends Observable<String> implements Client
     @Override
     public void run() {
         String name;
-        int numPlayers;
+        int numPlayers=0;
         String typeGame;
         try{
             out = new ObjectOutputStream(socket.getOutputStream());
@@ -98,26 +100,88 @@ public class SocketClientConnection extends Observable<String> implements Client
             out.writeObject(sm); //Write byte stream to file system.
             out.flush();
 
-            cm = (ClientMessage) in.readObject();
+            boolean okNumPlayers = false;
+            while(okNumPlayers==false) {
+                cm = (ClientMessage) in.readObject();
 
-            Integer n = (Integer) cm.getPayload().getParameter("numPlayer");
-            System.out.println("numplayers: "+n);
-            numPlayers = n.intValue();
+                Integer n = (Integer) cm.getPayload().getParameter("numPlayer");
+                System.out.println("numplayers: " + n);
+                numPlayers = n.intValue();
+                if(numPlayers==2 || numPlayers==3 || numPlayers==4) {
+                    sh = new ServerHeader(ServerAction.SET_UP_GAMEMODE, "");
+                    pay = new Payload("SET_UP_GAMEMODE", "tipo partita");
+                    sm = new ServerMessage(sh, pay);
 
-            sh = new ServerHeader(ServerAction.SET_UP_GAMEMODE, "");
-            pay = new Payload("SET_UP_GAMEMODE", "tipo partita");
+                    out.writeObject(sm); //Write byte stream to file system.
+                    out.flush();
+
+                    okNumPlayers = true;
+                }
+                else{
+                    sh = new ServerHeader(ServerAction.ERROR_NUMPLAYERS, "");
+                    pay = new Payload("ERROR_NUMPLAYERS", "Attenzione puoi giocare con 2,3,4 giocatori");
+                    sm = new ServerMessage(sh, pay);
+
+                    out.writeObject(sm); //Write byte stream to file system.
+                    out.flush();
+
+                    sh = new ServerHeader(ServerAction.SET_UP_NUM_PLAYERS, "");
+                    pay = new Payload("SET_UP_NUM_PLAYERS", "scegli numero di giocatori");
+                    sm = new ServerMessage(sh, pay);
+
+                    out.writeObject(sm); //Write byte stream to file system.
+                    out.flush();
+                }
+            }
+
+            boolean oktypeGame = false;
+            while(oktypeGame==false) {
+                cm = (ClientMessage) in.readObject();
+                typeGame = (String)cm.getPayload().getParameter("typeGame");
+                System.out.println("ciao " + name + " hai scelto partita con " + numPlayers + " giocatori e tipo " + typeGame);
+
+                if(typeGame.equals("difficult") || typeGame.equals("easy")){
+                    if(typeGame.equals("difficult") && numPlayers==2){
+                        server.lobby2D(this, name, typeGame);
+                    } else if(typeGame.equals("easy") && numPlayers==2){
+                        server.lobby2E(this, name, typeGame);
+                    } else if(typeGame.equals("difficult") && numPlayers==3){
+                        server.lobby3D(this, name, typeGame);
+                    } else if(typeGame.equals("easy") && numPlayers==3){
+                        server.lobby3E(this, name, typeGame);
+                    } else if(typeGame.equals("difficult") && numPlayers==4){
+                        server.lobby4D(this, name, typeGame);
+                    } else if(typeGame.equals("easy") && numPlayers==4){
+                        server.lobby4E(this, name, typeGame);
+                    }
+
+                    oktypeGame = true;
+                }
+                else{
+                    sh = new ServerHeader(ServerAction.ERROR_GAMEMODE, "");
+                    pay = new Payload("ERROR_GAMEMODE", "Attenzione devi scegliere tra difficult o easy");
+                    sm = new ServerMessage(sh, pay);
+
+                    out.writeObject(sm); //Write byte stream to file system.
+                    out.flush();
+
+                    sh = new ServerHeader(ServerAction.SET_UP_GAMEMODE, "");
+                    pay = new Payload("SET_UP_GAMEMODE", "scegli tipo di partita");
+                    sm = new ServerMessage(sh, pay);
+
+                    out.writeObject(sm); //Write byte stream to file system.
+                    out.flush();
+                }
+            }
+
+            sh = new ServerHeader(ServerAction.OK_START, "");
+            pay = new Payload("OK_START", "Parametri corretti, sei in LOBBY");
             sm = new ServerMessage(sh, pay);
 
             out.writeObject(sm); //Write byte stream to file system.
             out.flush();
 
-            cm = (ClientMessage) in.readObject();
-
-            typeGame = (String)cm.getPayload().getParameter("typeGame");
-
-            System.out.println("ciao " + name + " hai scelto partita con " + numPlayers + " giocatori e tipo " + typeGame);
-            server.lobby(this, name);
-
+            //TODO a cosa serve?
             while(isActive()){
                 cm = (ClientMessage) in.readObject();
                 typeGame = (String)cm.getPayload().getParameter("typeGame");

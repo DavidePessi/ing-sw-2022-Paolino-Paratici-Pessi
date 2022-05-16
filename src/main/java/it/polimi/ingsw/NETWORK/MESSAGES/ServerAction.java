@@ -5,6 +5,9 @@ public enum ServerAction {
     SET_UP_NICKNAME,
     SET_UP_NUM_PLAYERS,
     SET_UP_GAMEMODE,
-    ERROR,
+    ERROR_GAMEMODE,
+    ERROR_NICKNAME,
+    ERROR_NUMPLAYERS,
+    OK_START,
     END_GAME;
 }

@@ -8,9 +8,9 @@ public class Payload  implements Serializable{
     private static final long serialVersionUID = 1L;
     private Map<String,Object> parameters;
 
-    public Payload(String key1, String nickname){
+    public Payload(String key1, String message){
         parameters = new HashMap<>();
-        parameters.put(key1, nickname);
+        parameters.put(key1, message);
     }
 
     public Payload(String key1, Integer value){

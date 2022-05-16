@@ -9,9 +9,9 @@ import java.util.*;
 
 public class ControllerAction {
 
-    private Game game;
-    private List<String> listClient;
-    private Action currentAction;
+    protected Game game;
+    protected List<String> listClient;
+    protected Action currentAction;
     
     public ControllerAction(Game game, List<String> nicknames){
         listClient = new ArrayList<>();
