@@ -99,4 +99,13 @@ public class Player {
     public void setLastPlayedCardZero() {
         this.currentCard = new Card(0,0);
     }
+
+    public boolean professorPresent(Colour colour){
+        for(Professor professor : professors){
+            if(professor.getColour().equals(colour)){
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -23,6 +23,10 @@ public class Payload  implements Serializable{
 
     }
 
+    public boolean containsParameter(String type){
+        return parameters.containsKey(type);
+    }
+
 
 
     public String toString() {

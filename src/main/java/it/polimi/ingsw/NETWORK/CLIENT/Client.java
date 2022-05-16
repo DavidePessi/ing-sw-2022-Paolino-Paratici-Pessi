@@ -4,6 +4,7 @@ import it.polimi.ingsw.MODEL.Game;
 import it.polimi.ingsw.NETWORK.MESSAGES.*;
 import it.polimi.ingsw.NETWORK.SERVER.ClientConnection;
 
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.NoSuchElementException;
@@ -15,11 +16,13 @@ public class Client {
     private String ip;
     private int port;
     private ClientAction clientAction;
+    private ClientModelCLI model;
 
     public Client(String ip, int port){
         this.ip = ip;
         this.port = port;
         this.clientAction = ClientAction.SEND_NICKNAME;
+        this.model = new ClientModelCLI();
     }
     private boolean active = true;
 
@@ -37,6 +40,8 @@ public class Client {
             @Override
             public void run() {
                 try {
+
+
                     while (isActive()) {
 
                         //leggo da inputStream
@@ -126,6 +131,8 @@ public class Client {
     public void run() throws IOException{
         Socket socket = new Socket(ip, port);
         System.out.println("Connection estabilished");
+
+        model.showBoard();//todo da togliere quando finito il testing
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         //Scanner socketIn = new Scanner(socket.getInputStream());
         //PrintWriter socketOut = new PrintWriter(socket.getOutputStream());

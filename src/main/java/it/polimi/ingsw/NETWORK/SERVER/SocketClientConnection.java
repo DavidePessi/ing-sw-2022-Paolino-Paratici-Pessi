@@ -78,7 +78,7 @@ public class SocketClientConnection extends Observable<String> implements Client
         try{
             out = new ObjectOutputStream(socket.getOutputStream());
 
-            ServerHeader sh = new ServerHeader(ServerAction.SET_UP_NICKNAME);
+            ServerHeader sh = new ServerHeader(ServerAction.SET_UP_NICKNAME, "");
             Payload pay = new Payload("SET_UP_NICKNAME", "Welcome! What is your name?");
             ServerMessage sm = new ServerMessage(sh, pay);
 
@@ -91,7 +91,7 @@ public class SocketClientConnection extends Observable<String> implements Client
             name = (String)cm.getPayload().getParameter("nickname");
             //System.out.println("ciao " + name);
 
-            sh = new ServerHeader(ServerAction.SET_UP_NUM_PLAYERS);
+            sh = new ServerHeader(ServerAction.SET_UP_NUM_PLAYERS, "");
             pay = new Payload("SET_UP_NUM_PLAYERS", "Quanti giocatori siete?");
             sm = new ServerMessage(sh, pay);
 
@@ -104,7 +104,7 @@ public class SocketClientConnection extends Observable<String> implements Client
             System.out.println("numplayers: "+n);
             numPlayers = n.intValue();
 
-            sh = new ServerHeader(ServerAction.SET_UP_GAMEMODE);
+            sh = new ServerHeader(ServerAction.SET_UP_GAMEMODE, "");
             pay = new Payload("SET_UP_GAMEMODE", "tipo partita");
             sm = new ServerMessage(sh, pay);
 
