@@ -135,34 +135,96 @@ public class SocketClientConnection extends Observable<String> implements Client
                             while (okNickname == false) {
 
 
-                                    sh = new ServerHeader(ServerAction.SET_UP_NICKNAME, "");
-                                    pay = new Payload("SET_UP_NICKNAME", "Inserisci nickname");
-                                    sm = new ServerMessage(sh, pay);
+                                sh = new ServerHeader(ServerAction.SET_UP_NICKNAME, "");
+                                pay = new Payload("SET_UP_NICKNAME", "Inserisci nickname");
+                                sm = new ServerMessage(sh, pay);
 
-                                    out.writeObject(sm); //Write byte stream to file system.
-                                    out.flush();
+                                out.writeObject(sm); //Write byte stream to file system.
+                                out.flush();
 
-                                    cm = (ClientMessage) in.readObject();
-                                    name = (String) cm.getPayload().getParameter("nickname");
+                                cm = (ClientMessage) in.readObject();
+                                name = (String) cm.getPayload().getParameter("nickname");
 
-                                    if (typeGame.equals("difficult") && numPlayers == 2) {
+                                if (typeGame.equals("difficult") && numPlayers == 2) {
+                                    try {
                                         server.lobby2D(this, name, typeGame);
-                                    } else if (typeGame.equals("easy") && numPlayers == 2) {
-                                        try {
-                                            server.lobby2E(this, name, typeGame);
-                                            okNickname = true;
-                                        } catch (Exception e) {
-                                            okNickname = false;
-                                        }
-                                    } else if (typeGame.equals("difficult") && numPlayers == 3) {
-                                        server.lobby3D(this, name, typeGame);
-                                    } else if (typeGame.equals("easy") && numPlayers == 3) {
-                                        server.lobby3E(this, name, typeGame);
-                                    } else if (typeGame.equals("difficult") && numPlayers == 4) {
-                                        server.lobby4D(this, name, typeGame);
-                                    } else if (typeGame.equals("easy") && numPlayers == 4) {
-                                        server.lobby4E(this, name, typeGame);
+                                        okNickname = true;
+                                    } catch (Exception e) {
+                                        okNickname = false;
+                                        sh = new ServerHeader(ServerAction.ERROR_NUMPLAYERS, "");
+                                        pay = new Payload("ERROR_NUMPLAYERS", "Attenzione nickname già in uso");
+                                        sm = new ServerMessage(sh, pay);
+
+                                        out.writeObject(sm); //Write byte stream to file system.
+                                        out.flush();
                                     }
+                                } else if (typeGame.equals("easy") && numPlayers == 2) {
+                                    try {
+                                        server.lobby2E(this, name, typeGame);
+                                        okNickname = true;
+                                    } catch (Exception e) {
+                                        okNickname = false;
+                                        sh = new ServerHeader(ServerAction.ERROR_NUMPLAYERS, "");
+                                        pay = new Payload("ERROR_NUMPLAYERS", "Attenzione nickname già in uso");
+                                        sm = new ServerMessage(sh, pay);
+
+                                        out.writeObject(sm); //Write byte stream to file system.
+                                        out.flush();
+                                    }
+                                } else if (typeGame.equals("difficult") && numPlayers == 3) {
+                                    try {
+                                        server.lobby3D(this, name, typeGame);
+                                        okNickname = true;
+                                    } catch (Exception e) {
+                                        okNickname = false;
+                                        sh = new ServerHeader(ServerAction.ERROR_NUMPLAYERS, "");
+                                        pay = new Payload("ERROR_NUMPLAYERS", "Attenzione nickname già in uso");
+                                        sm = new ServerMessage(sh, pay);
+
+                                        out.writeObject(sm); //Write byte stream to file system.
+                                        out.flush();
+                                    }
+                                } else if (typeGame.equals("easy") && numPlayers == 3) {
+                                    try {
+                                        server.lobby3E(this, name, typeGame);
+                                        okNickname = true;
+                                    } catch (Exception e) {
+                                        okNickname = false;
+                                        sh = new ServerHeader(ServerAction.ERROR_NUMPLAYERS, "");
+                                        pay = new Payload("ERROR_NUMPLAYERS", "Attenzione nickname già in uso");
+                                        sm = new ServerMessage(sh, pay);
+
+                                        out.writeObject(sm); //Write byte stream to file system.
+                                        out.flush();
+
+                                    }
+                                } else if (typeGame.equals("difficult") && numPlayers == 4) {
+                                    try {
+                                        server.lobby4D(this, name, typeGame);
+                                        okNickname = true;
+                                    } catch (Exception e) {
+                                        okNickname = false;
+                                        sh = new ServerHeader(ServerAction.ERROR_NUMPLAYERS, "");
+                                        pay = new Payload("ERROR_NUMPLAYERS", "Attenzione nickname già in uso");
+                                        sm = new ServerMessage(sh, pay);
+
+                                        out.writeObject(sm); //Write byte stream to file system.
+                                        out.flush();
+                                    }
+                                } else if (typeGame.equals("easy") && numPlayers == 4) {
+                                    try {
+                                        server.lobby4E(this, name, typeGame);
+                                        okNickname = true;
+                                    } catch (Exception e) {
+                                        okNickname = false;
+                                        sh = new ServerHeader(ServerAction.ERROR_NUMPLAYERS, "");
+                                        pay = new Payload("ERROR_NUMPLAYERS", "Attenzione nickname già in uso");
+                                        sm = new ServerMessage(sh, pay);
+
+                                        out.writeObject(sm); //Write byte stream to file system.
+                                        out.flush();
+                                    }
+                                }
 
                             }
 

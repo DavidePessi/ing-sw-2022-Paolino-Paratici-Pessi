@@ -89,12 +89,12 @@ public class Server {
             throw new Exception();
         }
         if(waitingRoom2E.size() == 2) {
-                List<String> keys = new ArrayList<>(waitingRoom2E.keySet());
-                SocketClientConnection c1 = waitingRoom2E.get(keys.get(0));
-                SocketClientConnection c2 = waitingRoom2E.get(keys.get(1));
-                RemoteView player1 = new RemoteView(c1);
-                RemoteView player2 = new RemoteView(c2);
-                Game model = new Game(keys.get(0), keys.get(1));
+            List<String> keys = new ArrayList<>(waitingRoom2E.keySet());
+            SocketClientConnection c1 = waitingRoom2E.get(keys.get(0));
+            SocketClientConnection c2 = waitingRoom2E.get(keys.get(1));
+            RemoteView player1 = new RemoteView(c1);
+            RemoteView player2 = new RemoteView(c2);
+            Game model = new Game(keys.get(0), keys.get(1));
 
                 /*ControllerAction controllerAction = null;
                 if(typeGame.equals("difficult")){
@@ -103,28 +103,33 @@ public class Server {
                     controllerAction = new ControllerAction(model, keys);
                 }*/
 
-                ControllerAction controllerAction = new ControllerAction(model, keys);
-                ControllerTurn controllerTurn = new ControllerTurn(controllerAction, model, keys);
+            ControllerAction controllerAction = new ControllerAction(model, keys);
+            ControllerTurn controllerTurn = new ControllerTurn(controllerAction, model, keys);
 
-                //la remoteView osserva il game e la connection
-                //il controller osserva la remote view
-                model.addObserver(player1);
-                model.addObserver(player2);
-                c1.addObserver(player1);
-                c2.addObserver(player2);
-                player1.addObserver(controllerTurn);
-                player2.addObserver(controllerTurn);
+            //la remoteView osserva il game e la connection
+            //il controller osserva la remote view
+            model.addObserver(player1);
+            model.addObserver(player2);
+            c1.addObserver(player1);
+            c2.addObserver(player2);
+            player1.addObserver(controllerTurn);
+            player2.addObserver(controllerTurn);
 
-                // TODO: 30/04/2022 opponent
-                playingConnection.put(c1, c2);
-                playingConnection.put(c2, c1);
-                waitingRoom2E.clear();
-                System.out.println("Game created");
+            // TODO: 30/04/2022 opponent
+            playingConnection.put(c1, c2);
+            playingConnection.put(c2, c1);
+            waitingRoom2E.clear();
+            System.out.println("Game created");
         }
     }
-    public synchronized void lobby2D(SocketClientConnection c, String name, String typeGame){
+    public synchronized void lobby2D(SocketClientConnection c, String name, String typeGame) throws Exception{
         //public synchronized void lobby(Connection c, String name){
-        waitingRoom2D.put(name, c);
+        if(!waitingRoom2D.containsKey(name)){
+            waitingRoom2D.put(name, c);
+        }else{
+            throw new Exception();
+        }
+
         if(waitingRoom2D.size() == 2) {
             List<String> keys = new ArrayList<>(waitingRoom2D.keySet());
             SocketClientConnection c1 = waitingRoom2D.get(keys.get(0));
@@ -160,9 +165,13 @@ public class Server {
         }
     }
 
-    public synchronized void lobby3E(SocketClientConnection c, String name, String typeGame){
+    public synchronized void lobby3E(SocketClientConnection c, String name, String typeGame) throws Exception{
         //public synchronized void lobby(Connection c, String name){
-        waitingRoom3E.put(name, c);
+        if(!waitingRoom3E.containsKey(name)){
+            waitingRoom3E.put(name, c);
+        }else{
+            throw new Exception();
+        }
         if(waitingRoom3E.size() == 3) {
             List<String> keys = new ArrayList<>(waitingRoom3E.keySet());
             SocketClientConnection c1 = waitingRoom3E.get(keys.get(0));
@@ -206,9 +215,13 @@ public class Server {
             System.out.println("Game created");
         }
     }
-    public synchronized void lobby3D(SocketClientConnection c, String name, String typeGame){
+    public synchronized void lobby3D(SocketClientConnection c, String name, String typeGame) throws Exception{
         //public synchronized void lobby(Connection c, String name){
-        waitingRoom3D.put(name, c);
+        if(!waitingRoom3D.containsKey(name)){
+            waitingRoom3D.put(name, c);
+        }else{
+            throw new Exception();
+        }
         if(waitingRoom3D.size() == 3) {
             List<String> keys = new ArrayList<>(waitingRoom3D.keySet());
             SocketClientConnection c1 = waitingRoom3D.get(keys.get(0));
@@ -252,9 +265,13 @@ public class Server {
         }
     }
 
-    public synchronized void lobby4E(SocketClientConnection c, String name, String typeGame){
+    public synchronized void lobby4E(SocketClientConnection c, String name, String typeGame) throws Exception{
         //public synchronized void lobby(Connection c, String name){
-        waitingRoom4E.put(name, c);
+        if(!waitingRoom4E.containsKey(name)){
+            waitingRoom4E.put(name, c);
+        }else{
+            throw new Exception();
+        }
         if(waitingRoom4E.size() == 4) {
             List<String> keys = new ArrayList<>(waitingRoom4E.keySet());
             SocketClientConnection c1 = waitingRoom4E.get(keys.get(0));
@@ -308,9 +325,13 @@ public class Server {
             System.out.println("Game created");
         }
     }
-    public synchronized void lobby4D(SocketClientConnection c, String name, String typeGame){
+    public synchronized void lobby4D(SocketClientConnection c, String name, String typeGame) throws Exception{
         //public synchronized void lobby(Connection c, String name){
-        waitingRoom4D.put(name, c);
+        if(!waitingRoom4D.containsKey(name)){
+            waitingRoom4D.put(name, c);
+        }else{
+            throw new Exception();
+        }
         if(waitingRoom4D.size() == 4) {
             List<String> keys = new ArrayList<>(waitingRoom4D.keySet());
             SocketClientConnection c1 = waitingRoom4D.get(keys.get(0));
