@@ -69,10 +69,9 @@ public class Client {
                             } else if (ServerAction.OK_START.equals(in2.getServerHeader().getServerAction())){
                                 System.out.println(in2.getPayload().getParameter("OK_START"));
                                 //azione che deve fare il client
+                            } else if(ServerAction.UPDATE_BOARD.equals(in2.getServerHeader().getServerAction())){
+                                model.update(in2);
                             }
-
-
-
 
                     }
 

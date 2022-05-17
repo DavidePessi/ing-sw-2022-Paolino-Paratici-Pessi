@@ -18,6 +18,14 @@ public class Payload  implements Serializable{
         parameters.put(key1, value);
     }
 
+    public Payload(){
+        parameters = new HashMap<>();
+    }
+
+    public void addParameter(String key, Object value){
+        parameters.put(key, value);
+    }
+
     public Object getParameter(String type){
         return parameters.get(type);
 

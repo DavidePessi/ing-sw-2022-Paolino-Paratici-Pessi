@@ -177,6 +177,7 @@ public class ControllerAction {
         }
     }
 
+    //todo da togliere o cambiare siccome esiste già in controller action difficult
     public void useCharacter(CharacterParameters charPar) throws Exception {
         game.doPlayCharacterCard(charPar);
 

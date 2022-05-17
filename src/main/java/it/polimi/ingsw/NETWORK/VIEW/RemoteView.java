@@ -23,7 +23,7 @@ public class RemoteView extends View {
         if(message instanceof ClientMessage){
             notify(message);
         } else if(message instanceof ServerMessage){
-
+            connection.asyncSend(message);
         }
     }
 

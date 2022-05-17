@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Observable<T> {
 
-    private List<Observer<T>> observers = new ArrayList<>();
+    protected List<Observer<T>> observers = new ArrayList<>();
 
     public void addObserver(Observer<T> observer){
         synchronized (observers) {
@@ -19,7 +19,7 @@ public class Observable<T> {
         }
     }
 
-    public void notify(T message){
+    public void notify(Object message){
         synchronized (observers) {
             for (Observer<T> observer : observers) {
                 observer.update(message);

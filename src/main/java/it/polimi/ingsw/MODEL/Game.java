@@ -2,6 +2,10 @@ package it.polimi.ingsw.MODEL;
 
 import it.polimi.ingsw.MODEL.CharacterCards.*;
 import it.polimi.ingsw.MODEL.Exception.*;
+import it.polimi.ingsw.NETWORK.MESSAGES.Payload;
+import it.polimi.ingsw.NETWORK.MESSAGES.ServerAction;
+import it.polimi.ingsw.NETWORK.MESSAGES.ServerHeader;
+import it.polimi.ingsw.NETWORK.MESSAGES.ServerMessage;
 import it.polimi.ingsw.NETWORK.VIEW.RemoteView;
 import it.polimi.ingsw.NETWORK.UTILS.Observable;
 import java.util.*;
@@ -328,6 +332,8 @@ public class Game extends Observable {
     }
 
     /*if the game is finished and there's a winner return True, else return False*/
+
+    //
     public boolean checkWin() {
         if (listIsland.size() <= 3 || bag.size() == 0) { //if there's 3 or less island or the bag is empty, the game ends
             return true;
@@ -373,6 +379,7 @@ public class Game extends Observable {
         return WinTeam;
     }
 
+    //
     public void doMoveMotherNature(int numMovement) { //metti eccezione
         /*
         1. viene sommato il numero dell'isola su cui si trova madre natura con il numero di spostamenti che deve fare
@@ -402,6 +409,7 @@ public class Game extends Observable {
         }
     }
 
+    //
     public void doMoveStudentInDiningRoom(String nickname, Colour colour) {
         try {
             this.getPlayer(nickname).moveStudentInDiningRoom(colour);
@@ -412,6 +420,8 @@ public class Game extends Observable {
     //search the id of the player in the player list
     //once is done it calls the method that add the students from the group to the entrance
     //passing as parameter the studentGroup in the cloud that we want to take
+
+    //
     public void doTakeCloud(String nickname, int numCloud) throws MissingCloudException {
         if (numCloud < listCloud.size() && numCloud >= 0) {
             for (Player player : listPlayer) {
@@ -424,6 +434,7 @@ public class Game extends Observable {
         } else throw new MissingCloudException("Error");
     }
 
+    //
     public void doMoveStudentInIsland(String nickname, Colour colour, int numIsland) {
         for (Player player : listPlayer) {
             if (player.getNicknameClient().equals(nickname)) {
@@ -446,6 +457,7 @@ public class Game extends Observable {
         return island;
     }
 
+    //
     public void doPlayCard(String nickname, int numCard) {
         for (Player player : listPlayer) {
             if (player != null) {
@@ -454,8 +466,28 @@ public class Game extends Observable {
                 }
             }
         }
+        sendBoard("PlayCard");
     }
 
+    public void sendBoard(String s){
+        ServerMessage sm;
+        ServerHeader sh = new ServerHeader(ServerAction.UPDATE_BOARD, s);
+        Payload pay;
+
+        if(s.equals("PlayCard")){
+
+
+            pay = new Payload();
+
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
+            sm = new ServerMessage(sh, pay);
+            notify(sm);
+        }
+    }
+
+    //
     public void checkProfessor(Colour colour) {
 
         Player MaxPlayer = listPlayer.get(0);
@@ -501,6 +533,8 @@ public class Game extends Observable {
     * se c'è un caso di vittoria vien segnalato dalla sua eccezione
     * se l'isola è assente viene segnalato dalla sua eccezione
     */
+
+    //
     public void checkTowers(int numIsland) throws MissingIslandException, MissingTowerException {
         Island island = null;
 
@@ -594,6 +628,7 @@ public class Game extends Observable {
         }
     }
 
+    //
     public void fusion(int numIsland) {
         if (numIsland == 0) {
             try {
@@ -762,10 +797,12 @@ public class Game extends Observable {
         }
     }
 
+
     public void setCardThrown(String characterCard) {
         this.characterCardThrown = characterCard;
     }
 
+    //
     public void doPlayCharacterCard(CharacterParameters charPar) throws MissingCardException, Exception {
 
         //verifio che esiste tra le carte in gioco
