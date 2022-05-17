@@ -810,27 +810,33 @@ public class Game extends Observable {
             if (cha.getNameCard().equals(charPar.getCharacterName())) {
 
                 if (cha.getNameCard().equals("Pirate")) {
+                    getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     Pirate p = (Pirate) cha;
-                    p.effect(charPar.getPlayerName(), charPar.getNum());
+                    p.effect(charPar.getPlayerName());
 
                 } else if (cha.getNameCard().equals("Satyr")) {
+                    getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     Satyr s = (Satyr) cha;
                     s.effect(charPar.getPlayerName());
 
                 } else if (cha.getNameCard().equals("Woman")) {
+                    getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     Woman w = (Woman) cha;
                     w.effect(charPar.getPlayerName(), charPar.getColour1());
 
                 } else if (cha.getNameCard().equals("Priest")) {
+                    getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     Priest p = (Priest) cha;
                     p.effect(charPar.getPlayerName(), charPar.getNum(), charPar.getColour1());
 
 
                 } else if (cha.getNameCard().equals("PostMan")) {
+                    getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     PostMan p = (PostMan) cha;
                     p.effect(charPar.getPlayerName());
 
                 } else if (cha.getNameCard().equals("Minstrell")) {
+                    getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     Minstrell m = (Minstrell) cha;
                     try {
                         m.effect(charPar.getPlayerName(), charPar.getColour1(), charPar.getColour2(), charPar.getColour3(), charPar.getColour4());
@@ -839,10 +845,12 @@ public class Game extends Observable {
                     }
 
                 } else if (cha.getNameCard().equals("Knight")) {
+                    getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     Knight k = (Knight) cha;
                     k.effect(charPar.getPlayerName());
 
                 } else if (cha.getNameCard().equals("Jester")) {
+                    getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     Jester j = (Jester) cha;
 
                     try {

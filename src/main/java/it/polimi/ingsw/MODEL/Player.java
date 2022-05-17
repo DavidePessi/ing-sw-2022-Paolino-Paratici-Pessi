@@ -12,6 +12,7 @@ public class Player {
     private Card currentCard;
     private DiningRoom diningRoom;
     private Entrance entrance;
+    private int numCoins;
 
     public Player (String nickname, Team team){
         this.nickname = nickname;
@@ -20,6 +21,7 @@ public class Player {
         entrance = new Entrance();
         deck = new Deck();
         professors = new ArrayList<>();
+        numCoins = 1;
     }
 
     public Team getTeam(){
@@ -29,6 +31,20 @@ public class Player {
     public Card getLastPlayedCard() throws MissingCardException{
         if(this.currentCard == null) throw new MissingCardException();
         else return currentCard;
+    }
+
+    public void receiveCoin(){
+        numCoins++;
+    }
+
+    public void useCoins(int coins) throws Exception{
+        if(numCoins >= coins) {
+            numCoins = numCoins - coins;
+        }
+        else{
+            throw new Exception();
+        }
+
     }
 
     public Deck getDeck(){
@@ -78,7 +94,12 @@ public class Player {
 
     public void removeStudentFromDiningRoom(Colour colour){this.diningRoom.remove(colour);}
     //remove students from the entrance
-    public void addStudentToDiningRoom(Colour colour){diningRoom.add(colour);}
+    public void addStudentToDiningRoom(Colour colour){
+        diningRoom.add(colour);
+        if(diningRoom.numStudents(colour)==3 || diningRoom.numStudents(colour)==6 || diningRoom.numStudents(colour)==9){
+            this.receiveCoin();
+        }
+    }
 
     //rimuove il professore dalla lista dei professori
     public void removeProfessor(Professor professor){
