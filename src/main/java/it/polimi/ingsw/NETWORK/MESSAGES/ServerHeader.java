@@ -11,5 +11,9 @@ public class ServerHeader implements Serializable {
         this.description = description;
     }
 
+    public String getDescription(){
+        return this.description;
+    }
+
     public ServerAction getServerAction(){return serverAction;}
 }

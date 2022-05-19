@@ -10,7 +10,6 @@ import it.polimi.ingsw.NETWORK.VIEW.RemoteView;
 import it.polimi.ingsw.NETWORK.UTILS.Observable;
 import java.util.*;
 
-// TODO regole semplifi e avanzate scelta (guadagno monete e doPlayCharacterCard)
 
 public class Game extends Observable {
     private int numPlayer;
@@ -407,6 +406,7 @@ public class Game extends Observable {
                 e.printStackTrace();
             }
         }
+        sendBoard("MoveMotherNature");
     }
 
     //
@@ -415,6 +415,7 @@ public class Game extends Observable {
             this.getPlayer(nickname).moveStudentInDiningRoom(colour);
         } catch (MissingPlayerException e) {
         }
+        sendBoard("MoveStudentInDiningRoom");
     }
 
     //search the id of the player in the player list
@@ -432,6 +433,7 @@ public class Game extends Observable {
                 }
             }
         } else throw new MissingCloudException("Error");
+        sendBoard("TakeCloud");
     }
 
     //
@@ -441,6 +443,7 @@ public class Game extends Observable {
                 player.moveStudentInIsland(colour, this.getIsland(numIsland));
             }
         }
+        sendBoard("MoveStudentInIsland");
     }
 
     public Island getIsland(int numIsland) throws IllegalArgumentException {
@@ -472,19 +475,139 @@ public class Game extends Observable {
     public void sendBoard(String s){
         ServerMessage sm;
         ServerHeader sh = new ServerHeader(ServerAction.UPDATE_BOARD, s);
-        Payload pay;
+        Payload pay = new Payload();
 
         if(s.equals("PlayCard")){
-
-
-            pay = new Payload();
 
             for(int i = 1; i <= listPlayer.size(); i++) {
                 pay.addParameter("player" + i, listPlayer.get(i-1));
             }
             sm = new ServerMessage(sh, pay);
             notify(sm);
+        } else if(s.equals("MoveStudentInDiningRoom")){
+
+            for(int i = 1; i <= professors.size(); i++) {
+                pay.addParameter("professor" + i, professors.get(i-1));
+            }
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
+
+            sm = new ServerMessage(sh, pay);
+            notify(sm);
+
+        } else if(s.equals("MoveStudentInIsland")){
+
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
+            for(int i = 1; i <= listIsland.size(); i++) {
+                pay.addParameter("island" + i, listIsland.get(i-1));
+            }
+
+            sm = new ServerMessage(sh, pay);
+            notify(sm);
+
+
+        } else if(s.equals("TakeCloud")){
+
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
+            for(int i = 1; i <= listCloud.size(); i++) {
+                pay.addParameter("cloud" + i, listCloud.get(i-1));
+            }
+
+            sm = new ServerMessage(sh, pay);
+            notify(sm);
+
+
+        } else if(s.equals("MoveMotherNature")){
+
+            for(int i = 1; i <= listIsland.size(); i++) {
+                pay.addParameter("island" + i, listIsland.get(i-1));
+            }
+
+            for(int i = 1; i <= listTeam.size(); i++) {
+                pay.addParameter("team" + i, listTeam.get(i-1));
+            }
+
+            pay.addParameter("mothernature", motherNature);
+
+            sm = new ServerMessage(sh, pay);
+            notify(sm);
+
+        } else if(s.equals("Fusion")){
+
+            for(int i = 1; i <= listIsland.size(); i++) {
+                pay.addParameter("island" + i, listPlayer.get(i-1));
+            }
+
+            sm = new ServerMessage(sh, pay);
+            notify(sm);
+
+        } else if(s.equals("PlayCharacterCard")){
+
+            for(int i = 1; i <= characterCards.size(); i++) {
+                pay.addParameter("charactercard" + i, characterCards.get(i-1));
+            }
+
+            pay.addParameter("cardthrown", characterCardThrown);
+
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
+        } else if(s.equals("CheckProfessor")){
+
+            for(int i = 1; i <= professors.size(); i++) {
+                pay.addParameter("professor" + i, professors.get(i-1));
+            }
+
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
+        } else if(s.equals("CheckTowers")){
+
+            for(int i = 1; i <= listIsland.size(); i++) {
+                pay.addParameter("island" + i, listIsland.get(i-1));
+            }
+
+            for(int i = 1; i <= listTeam.size(); i++) {
+                pay.addParameter("team" + i, listTeam.get(i-1));
+            }
+
+
+        }else if(s.equals("STRATGAME")){
+
+            for(int i = 1; i <= listIsland.size(); i++) {
+                pay.addParameter("island" + i, listIsland.get(i-1));
+            }
+
+            for(int i = 1; i <= listTeam.size(); i++) {
+                pay.addParameter("team" + i, listTeam.get(i-1));
+            }
+
+            for(int i = 1; i <= professors.size(); i++) {
+                pay.addParameter("professor" + i, professors.get(i-1));
+            }
+
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
+
+            pay.addParameter("mothernature", motherNature);
+
+            for(int i = 1; i <= characterCards.size(); i++) {
+                pay.addParameter("charactercard" + i, characterCards.get(i-1));
+            }
+
+            pay.addParameter("cardthrown", characterCardThrown);
+
+            for(int i = 1; i <= listCloud.size(); i++) {
+                pay.addParameter("cloud" + i, listCloud.get(i-1));
+            }
         }
+
     }
 
     //
@@ -524,6 +647,8 @@ public class Game extends Observable {
                 }
             }
         }
+        //todo scrivere giusto
+        sendBoard("CheckProfessor");
     }
 
 
@@ -536,6 +661,7 @@ public class Game extends Observable {
 
     //
     public void checkTowers(int numIsland) throws MissingIslandException, MissingTowerException {
+
         Island island = null;
 
         //cerco l'isola su cui effettuare il controllo
@@ -626,6 +752,7 @@ public class Game extends Observable {
             }
 
         }
+        sendBoard("CheckTowers");
     }
 
     //
@@ -746,6 +873,8 @@ public class Game extends Observable {
             } catch (MissingTowerException e) {
             }
         }
+
+        sendBoard("Fusion");
     }
 
     public Player getPlayer(String io) throws MissingPlayerException {
@@ -868,6 +997,7 @@ public class Game extends Observable {
             }
 
         }
+        sendBoard("PlayCharacterCard");
     }
 
     //per testing

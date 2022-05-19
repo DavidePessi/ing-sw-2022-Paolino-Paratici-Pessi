@@ -31,64 +31,6 @@ public class ClientModelCLI {
         listTeam = new ArrayList<>();
         professors = new ArrayList<>();
 
-        listTeam.add(new Team(ColourTower.WHITE, 8));
-        listTeam.add(new Team(ColourTower.BLACK, 8));
-
-        listPlayer.add(new Player("io", listTeam.get(0)));
-        listPlayer.add(new Player("tu", listTeam.get(1)));
-
-        listPlayer.get(0).addProfessor(new Professor(Colour.BLUE));
-
-        listCloud.add(new Cloud());
-        listCloud.add(new Cloud());
-
-        StudentGroup s = new StudentGroup();
-        s.addStudent(Colour.YELLOW);
-        s.addStudent(Colour.YELLOW);
-        s.addStudent(Colour.GREEN);
-        listCloud.get(0).addStudents(s);
-
-        listIsland.add(new Island(0));
-        listIsland.add(new Island(1));
-        listIsland.add(new Island(2));
-        listIsland.add(new Island(3));
-        listIsland.add(new Island(4));
-        listIsland.add(new Island(5));
-        listIsland.add(new Island(6));
-        listIsland.add(new Island(7));
-        listIsland.add(new Island(8));
-        listIsland.add(new Island(9));
-        listIsland.add(new Island(10));
-        listIsland.add(new Island(11));
-
-        motherNature = new MotherNature(listIsland.get(0));
-        listIsland.get(0).setMotherNature(true);
-
-        professors.add(new Professor(Colour.BLUE));
-        professors.add(new Professor(Colour.GREEN));
-        professors.add(new Professor(Colour.PINK));
-        professors.add(new Professor(Colour.RED));
-        professors.add(new Professor(Colour.YELLOW));
-
-        characterCards = new ArrayList<>();
-        characterCards.add(0, new Jester(new Game("io", "tu")));
-        characterCards.add(1, new Knight(new Game("io", "tu")));
-        characterCards.add(2, new Minstrell(new Game("io", "tu")));
-        characterCardThrown = "Jester";
-
-        StudentGroup s1 = new StudentGroup();
-        s1.addStudent(Colour.PINK);
-        s1.addStudent(Colour.PINK);
-        s1.addStudent(Colour.BLUE);
-        s1.addStudent(Colour.BLUE);
-        s1.addStudent(Colour.RED);
-
-        listPlayer.get(0).addStudentsToEntrance(s1);
-
-        listIsland.get(3).addStudent(Colour.YELLOW);
-        listIsland.get(2).addStudent(Colour.BLUE);
-        listIsland.get(7).addStudent(Colour.RED);
-        //todo se la stringa è vuota mettere nessuna carta lanciata
     }
 
     public void showBoard(){
@@ -381,15 +323,8 @@ public class ClientModelCLI {
     public void update(ServerMessage message){
 
         //sposto uno studente da entrance a dining room
-        // --> professors e players(entrance e diningroom e professori)
-        if(message.getPayload().containsParameter("MoveStudentInDiningRoom")){
-
-            professors.set(0, (Professor) message.getPayload().getParameter("professor1"));
-            professors.set(1, (Professor) message.getPayload().getParameter("professor2"));
-            professors.set(2, (Professor) message.getPayload().getParameter("professor3"));
-            professors.set(3, (Professor) message.getPayload().getParameter("professor4"));
-            professors.set(4, (Professor) message.getPayload().getParameter("professor5"));
-
+        // --> players(entrance e diningroom e professori)
+        if(message.getServerHeader().getDescription().equals("MoveStudentInDiningRoom")){
 
             listPlayer.set(0, (Player) message.getPayload().getParameter("player1"));
             listPlayer.set(1, (Player) message.getPayload().getParameter("player2"));
@@ -400,9 +335,10 @@ public class ClientModelCLI {
                 }
             }
         }
+
         //sposto uno studente da entrance a island
         // --> players(entrance) e islands
-        else if(message.getPayload().containsParameter("MoveStudentInIsland")){
+        else if(message.getServerHeader().getDescription().equals("MoveStudentInIsland")){
             //todo problema con liste che cambiano il numero di oggetti perchè le stringhe non sono ciclabili
 
             listPlayer.set(0, (Player) message.getPayload().getParameter("player1"));
@@ -414,9 +350,10 @@ public class ClientModelCLI {
                 }
             }
         }
+
         //prendo una nuvola
         // --> players(entrance) e nuvole
-        else if(message.getPayload().containsParameter("TakeCloud")){
+        else if(message.getServerHeader().getDescription().equals("TakeCloud")){
             listCloud.set(0, (Cloud) message.getPayload().getParameter("cloud1"));
             listCloud.set(1, (Cloud) message.getPayload().getParameter("cloud2"));
             if(message.getPayload().containsParameter("cloud3")){
@@ -436,22 +373,20 @@ public class ClientModelCLI {
                 }
             }
         }
-        //sposto madre natura
-        // --> teams, madre natura e isole
-        else if(message.getPayload().containsParameter("MoveMotherNature")){
-            //todo stesso problema delle isole di prima
-            listTeam.set(0, (Team) message.getPayload().getParameter("team1"));
-            listTeam.set(1, (Team) message.getPayload().getParameter("team2"));
 
-            if(message.getPayload().containsParameter("team3")){
-                listTeam.set(2, (Team) message.getPayload().getParameter("team3"));
+        //sposto madre natura
+        // --> madre natura e isole
+        else if(message.getServerHeader().getDescription().equals("MoveMotherNature")){
+            for(int i = 0; i < listIsland.size(); i++){
+                listIsland.set(i, (Island)message.getPayload().getParameter("island"+i));
             }
 
             motherNature = (MotherNature) message.getPayload().getParameter("mothernature");
         }
+
         //gioco una carta
         // --> players(deck)
-        else if(message.getPayload().containsParameter("UseCard")){
+        else if(message.getServerHeader().getDescription().equals("PlayCard")){
 
             listPlayer.set(0, (Player) message.getPayload().getParameter("player1"));
             listPlayer.set(1, (Player) message.getPayload().getParameter("player2"));
@@ -462,18 +397,26 @@ public class ClientModelCLI {
                 }
             }
         }
+
         //fusione isole
         // --> isole
-        else if(message.getPayload().containsParameter("Fusion")){
-            //todo stesso problema delle isole di prima
+        else if(message.getServerHeader().getDescription().equals("Fusion")){
+            for(int i = 0; i < listIsland.size(); i++){
+                if(message.getPayload().containsParameter("island"+i)) {
+                    listIsland.set(i, (Island) message.getPayload().getParameter("island" + i));
+                } else {
+                    listIsland.remove(i);
+                }
+            }
         }
+
         //gioco una carta personaggio
         // --> carta players(monete), carta lanciata
-        else if(message.getPayload().containsParameter("PlayCard")){
+        else if(message.getServerHeader().getDescription().equals("PlayCharacterCard")){
 
-            characterCards.set(0, (ConcreteCharacterCard) message.getPayload().getParameter("card1"));
-            characterCards.set(1, (ConcreteCharacterCard) message.getPayload().getParameter("card2"));
-            characterCards.set(2, (ConcreteCharacterCard) message.getPayload().getParameter("card3"));
+            characterCards.set(0, (ConcreteCharacterCard) message.getPayload().getParameter("charactercard1"));
+            characterCards.set(1, (ConcreteCharacterCard) message.getPayload().getParameter("charactercard2"));
+            characterCards.set(2, (ConcreteCharacterCard) message.getPayload().getParameter("charactercard3"));
 
             characterCardThrown = (String) message.getPayload().getParameter("cardthrown");
 
@@ -485,6 +428,96 @@ public class ClientModelCLI {
                     listPlayer.set(3, (Player) message.getPayload().getParameter("player4"));
                 }
             }
+        }
+
+        //controllo l'appartenenza dei professori
+        // -->professori e player
+        else if(message.getServerHeader().getDescription().equals("CheckProfessor")){
+
+            professors.set(0, (Professor) message.getPayload().getParameter("professor1"));
+            professors.set(1, (Professor) message.getPayload().getParameter("professor2"));
+            professors.set(2, (Professor) message.getPayload().getParameter("professor3"));
+            professors.set(3, (Professor) message.getPayload().getParameter("professor4"));
+            professors.set(4, (Professor) message.getPayload().getParameter("professor5"));
+
+            listPlayer.set(0, (Player) message.getPayload().getParameter("player1"));
+            listPlayer.set(1, (Player) message.getPayload().getParameter("player2"));
+            if(message.getPayload().containsParameter("player3")){
+                listPlayer.set(2, (Player) message.getPayload().getParameter("player3"));
+                if(message.getPayload().containsParameter("player4")){
+                    listPlayer.set(3, (Player) message.getPayload().getParameter("player4"));
+                }
+            }
+        }
+
+        //--> team e isole
+        else if(message.getServerHeader().getDescription().equals("CheckTowers")){
+
+            for(int i = 0; i < listIsland.size(); i++){
+                listIsland.set(i, (Island)message.getPayload().getParameter("island"+i));
+            }
+
+            listTeam.set(0, (Team) message.getPayload().getParameter("team1"));
+            listTeam.set(1, (Team) message.getPayload().getParameter("team2"));
+
+            if(message.getPayload().containsParameter("team3")){
+                listTeam.set(2, (Team) message.getPayload().getParameter("team3"));
+            }
+        }
+        else if(message.getServerHeader().getDescription().equals("STARTGAME")){
+
+            //setto le isole
+            for(int i = 0; i < 12; i++){
+                listIsland.add((Island) message.getPayload().getParameter("island"+i));
+            }
+
+            //setto i player
+            listPlayer.add( (Player) message.getPayload().getParameter("player1"));
+            listPlayer.add( (Player) message.getPayload().getParameter("player2"));
+            if(message.getPayload().containsParameter("player3")){
+                listPlayer.add( (Player) message.getPayload().getParameter("player3"));
+                if(message.getPayload().containsParameter("player4")){
+                    listPlayer.add( (Player) message.getPayload().getParameter("player4"));
+                }
+            }
+
+            //setto le nuvole
+            listCloud.add( (Cloud) message.getPayload().getParameter("cloud1"));
+            listCloud.add( (Cloud) message.getPayload().getParameter("cloud2"));
+            if(message.getPayload().containsParameter("cloud3")){
+                listCloud.add( (Cloud) message.getPayload().getParameter("cloud3"));
+                if(message.getPayload().containsParameter("cloud4")){
+                    listCloud.add( (Cloud) message.getPayload().getParameter("cloud4"));
+                }
+            }
+
+            //setto i professori
+            professors.add( (Professor) message.getPayload().getParameter("professor1"));
+            professors.add( (Professor) message.getPayload().getParameter("professor2"));
+            professors.add( (Professor) message.getPayload().getParameter("professor3"));
+            professors.add( (Professor) message.getPayload().getParameter("professor4"));
+            professors.add( (Professor) message.getPayload().getParameter("professor5"));
+
+            //setto i team
+            listTeam.add( (Team) message.getPayload().getParameter("team1"));
+            listTeam.add( (Team) message.getPayload().getParameter("team2"));
+
+            if(message.getPayload().containsParameter("team3")){
+                listTeam.add( (Team) message.getPayload().getParameter("team3"));
+            }
+
+            //setto carta lanciata
+            //todo da tenere sott'occhio
+            characterCardThrown = (String)message.getPayload().getParameter("charactercardthrown");
+
+            //setto le carte personaggio
+            characterCards.add( (ConcreteCharacterCard) message.getPayload().getParameter("charactercard1"));
+            characterCards.add( (ConcreteCharacterCard) message.getPayload().getParameter("charactercard2"));
+            characterCards.add( (ConcreteCharacterCard) message.getPayload().getParameter("charactercard3"));
+
+            //setto mothernature
+            motherNature = (MotherNature) message.getPayload().getParameter("mothernature");
+
         }
 
     }
