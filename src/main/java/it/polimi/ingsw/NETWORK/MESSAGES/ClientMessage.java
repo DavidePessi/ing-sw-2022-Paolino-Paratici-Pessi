@@ -16,6 +16,9 @@ public class ClientMessage  implements Serializable{
         return this.payload;
     }
 
+    public ClientHeader getClientHeader(){
+        return  this.clientHeader;
+    }
 
     @Override
     public String toString() {

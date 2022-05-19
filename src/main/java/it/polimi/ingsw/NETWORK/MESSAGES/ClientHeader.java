@@ -10,6 +10,10 @@ public class ClientHeader implements Serializable {
         this.nickname = nickname;
     }
 
+    public ClientAction getClientAction(){
+        return this.clientAction;
+    }
+
 
     public String toString() {
         return new StringBuffer(clientAction.toString()).append(nickname).toString();

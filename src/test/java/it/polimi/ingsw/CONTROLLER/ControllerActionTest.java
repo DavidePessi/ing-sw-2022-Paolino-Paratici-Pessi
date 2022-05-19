@@ -204,6 +204,10 @@ public class ControllerActionTest extends TestCase {
         l.add("io");
         l.add("tu");
         ControllerAction ca = new ControllerAction(g, l);
+        g.getPlayer("io").receiveCoin();
+        g.getPlayer("io").receiveCoin();
+        g.getPlayer("io").receiveCoin();
+
 
         if (g.getCharacterCard(0).getNameCard() == "Knight") {
 

@@ -9,6 +9,8 @@ import java.io.*;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Client {
 
@@ -17,6 +19,7 @@ public class Client {
     private int port;
     private ClientAction clientAction;
     private ClientModelCLI model;
+    private String nick = null;
 
     public Client(String ip, int port){
         this.ip = ip;
@@ -35,13 +38,11 @@ public class Client {
     }
 
 
-    public Thread asyncReadFromSocket(final ObjectInputStream socketIn){
+    public Thread asyncReadFromSocket(final ObjectInputStream socketIn, final ObjectOutputStream socketOut){
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-
-
                     while (isActive()) {
 
                         //leggo da inputStream
@@ -50,29 +51,31 @@ public class Client {
                         ServerMessage in2 = (ServerMessage) inputObject;
                         //verifico che è un messaggio di servizio e non un update quindi che il suo
                         //header contenga SET_UP
-                            //sposto l'azione che può effettuare il client alla successiva
-                            if (ServerAction.SET_UP_NICKNAME.equals(in2.getServerHeader().getServerAction())) {
-                                System.out.println(in2.getPayload().getParameter("SET_UP_NICKNAME"));
-                                clientAction = ClientAction.SEND_NICKNAME;
-                            } else if (ServerAction.SET_UP_NUM_PLAYERS.equals(in2.getServerHeader().getServerAction())) {
-                                System.out.println(in2.getPayload().getParameter("SET_UP_NUM_PLAYERS"));
-                                clientAction = ClientAction.SEND_NUM_PLAYERS;
-                            } else if (ServerAction.SET_UP_GAMEMODE.equals(in2.getServerHeader().getServerAction())) {
-                                System.out.println(in2.getPayload().getParameter("SET_UP_GAMEMODE"));
-                                clientAction = ClientAction.SEND_GAMEMODE;
-                            } else if (ServerAction.ERROR_GAMEMODE.equals(in2.getServerHeader().getServerAction())){
-                                System.out.println(in2.getPayload().getParameter("ERROR_GAMEMODE"));
-                                clientAction = ClientAction.SEND_GAMEMODE;
-                            } else if (ServerAction.ERROR_NUMPLAYERS.equals(in2.getServerHeader().getServerAction())){
-                                System.out.println(in2.getPayload().getParameter("ERROR_NUMPLAYERS"));
-                                clientAction = ClientAction.SEND_NUM_PLAYERS;
-                            } else if (ServerAction.OK_START.equals(in2.getServerHeader().getServerAction())){
-                                System.out.println(in2.getPayload().getParameter("OK_START"));
-                                //azione che deve fare il client
-                            } else if(ServerAction.UPDATE_BOARD.equals(in2.getServerHeader().getServerAction())){
-                                model.update(in2);
-                            }
-
+                        //sposto l'azione che può effettuare il client alla successiva
+                        if (ServerAction.SET_UP_NICKNAME.equals(in2.getServerHeader().getServerAction())) {
+                            System.out.println(in2.getPayload().getParameter("SET_UP_NICKNAME"));
+                            clientAction = ClientAction.SEND_NICKNAME;
+                        } else if (ServerAction.SET_UP_NUM_PLAYERS.equals(in2.getServerHeader().getServerAction())) {
+                            System.out.println(in2.getPayload().getParameter("SET_UP_NUM_PLAYERS"));
+                            clientAction = ClientAction.SEND_NUM_PLAYERS;
+                        } else if (ServerAction.SET_UP_GAMEMODE.equals(in2.getServerHeader().getServerAction())) {
+                            System.out.println(in2.getPayload().getParameter("SET_UP_GAMEMODE"));
+                            clientAction = ClientAction.SEND_GAMEMODE;
+                        } else if (ServerAction.ERROR_SETUP.equals(in2.getServerHeader().getServerAction())){
+                            System.out.println(in2.getPayload().getParameter("ERROR_SETUP"));
+                            //clientAction = ClientAction.SEND_GAMEMODE;
+                            //todo non necessaria questa istruzione commentata sopra
+                        } else if (ServerAction.OK_START.equals(in2.getServerHeader().getServerAction())){
+                            System.out.println(in2.getPayload().getParameter("OK_START"));
+                            //azione che deve fare il client
+                        } else if(ServerAction.UPDATE_BOARD.equals(in2.getServerHeader().getServerAction())){
+                            model.update(in2);
+                        } else if(ServerAction.PING.equals(in2.getServerHeader().getServerAction())){
+                            System.out.println(in2.getServerHeader().getDescription());
+                            setActive(false);
+                        } else if(ServerAction.END_GAME.equals(in2.getServerHeader().getServerAction())){
+                            model.endGame(in2, nick);
+                        }
                     }
 
                 } catch (Exception e) {
@@ -88,7 +91,6 @@ public class Client {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                String nick = null;
                 try {
                     while (isActive()) {
 
@@ -140,15 +142,17 @@ public class Client {
         Socket socket = new Socket(ip, port);
         System.out.println("Connection estabilished");
 
-        model.showBoard();//todo da togliere quando finito il testing
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
-        //Scanner socketIn = new Scanner(socket.getInputStream());
-        //PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
         ObjectOutputStream socketOut = new ObjectOutputStream(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
+
+        Thread t = asyncPing(socketOut);
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        executor.submit(t);
+
         //String socketLine;
         try{
-            Thread t0 = asyncReadFromSocket(socketIn);
+            Thread t0 = asyncReadFromSocket(socketIn, socketOut);
             Thread t1 = asyncWriteToSocket(stdin, socketOut);
             t0.join();
             t1.join();
@@ -165,6 +169,28 @@ public class Client {
     //crea la connessione
     //invio il nickname alla connessione
     //inviamo la modalità di gioco da fare alla connessione
+    }
+
+    private Thread asyncPing(ObjectOutputStream socketOut) {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while(true) {
+                        ClientHeader ch = new ClientHeader(nick, ClientAction.PING);
+                        Payload pay = new Payload();
+                        ClientMessage cm = new ClientMessage(ch, pay);
+
+                        socketOut.writeObject(cm); //Write byte stream to file system.
+                        socketOut.flush();
+                        Thread.sleep(1000);
+                    }
+                }catch( IOException | InterruptedException e ){}
+
+
+            }
+        });
+        return t;
     }
 
     //public void asyncRead(){}

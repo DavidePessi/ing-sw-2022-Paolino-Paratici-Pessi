@@ -40,6 +40,10 @@ public class ControllerTurnTest extends TestCase {
         l.add("io");
         l.add("tu");
 
+        g.getPlayer("io").receiveCoin();
+        g.getPlayer("io").receiveCoin();
+        g.getPlayer("io").receiveCoin();
+
         ControllerAction ca = new ControllerAction(g, l);
         ControllerTurn ct = new ControllerTurn(ca, g, l);
 

@@ -370,7 +370,7 @@ public class GameTest extends TestCase {
     @Test
     public void TestdoPlayCharacterCard() throws MissingCardException, Exception{
         Game game = new Game("gio", "ila");
-        CharacterParameters cp = new CharacterParameters("tu", "Pirate", 3);
+        CharacterParameters cp = new CharacterParameters("ila", "Pirate", 3);
         //TODO dobbiamo verificare che esiste poi qualcosa che ci controlla: che "tu" sia nel game, che "tu" stia giocando in quel momento
         ConcreteCharacterCard cc = new Pirate(game);
         game.addCharacterCard(cc);
@@ -415,6 +415,10 @@ public class GameTest extends TestCase {
         game.getPlayer("ila").moveStudentInIsland(Colour.RED, game.getIsland(3));
         game.checkProfessor(Colour.RED);
 
+        game.getPlayer("ila").receiveCoin();
+        game.getPlayer("ila").receiveCoin();
+        game.getPlayer("ila").receiveCoin();
+
         game.doPlayCharacterCard(cp);
 
         /*System.out.println(game.getIsland(3).getColourTower());
@@ -423,6 +427,7 @@ public class GameTest extends TestCase {
         System.out.println(game.getIsland(3).countStudentsOfColour(Colour.GREEN));
         System.out.println(game.getProfessor(Colour.GREEN).getOwner().getNicknameClient());
         System.out.println(game.getProfessor(Colour.RED).getOwner().getNicknameClient());*/
+
 
         assertEquals(game.getPlayer("ila").getTeam().getColourTower(), game.getIsland(3).getColourTower());
     }
