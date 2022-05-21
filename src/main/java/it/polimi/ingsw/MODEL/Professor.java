@@ -1,6 +1,8 @@
 package it.polimi.ingsw.MODEL;
 
-public class Professor {
+import java.io.Serializable;
+
+public class Professor implements Serializable {
     private Colour typeColour;
     private Player owner;
 

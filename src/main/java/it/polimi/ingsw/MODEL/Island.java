@@ -2,10 +2,11 @@ package it.polimi.ingsw.MODEL;
 
 import it.polimi.ingsw.MODEL.Exception.MissingTowerException;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 // equals modificata senza: Objects.equals(students, island.students), se da problemi controlliamo questo
-public class Island {
+public class Island implements Serializable {
 
     private ColourTower colourTower;
     private boolean hasMotherNature;

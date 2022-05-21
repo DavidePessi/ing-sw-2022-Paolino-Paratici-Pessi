@@ -5,7 +5,9 @@ import it.polimi.ingsw.MODEL.CharacterCards.Decorator;
 import it.polimi.ingsw.MODEL.Colour;
 import it.polimi.ingsw.MODEL.Game;
 
-public class Knight extends ConcreteCharacterCard implements Decorator {
+import java.io.Serializable;
+
+public class Knight extends ConcreteCharacterCard implements Decorator, Serializable {
 
     private Game game;
 

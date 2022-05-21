@@ -1,8 +1,9 @@
 package it.polimi.ingsw.MODEL;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class MotherNature {
+public class MotherNature implements Serializable {
     private Island position;
     //private int currentPositionOfMotherNature;
 

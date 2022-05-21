@@ -1,8 +1,9 @@
 package it.polimi.ingsw.MODEL;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Card {
+public class Card implements Serializable {
 
     private int value;
     private int movements;

@@ -5,7 +5,9 @@ import it.polimi.ingsw.MODEL.Game;
 import it.polimi.ingsw.MODEL.Exception.MissingStudentException;
 import it.polimi.ingsw.MODEL.StudentGroup;
 
-public class Priest extends ConcreteCharacterCard implements Decorator {
+import java.io.Serializable;
+
+public class Priest extends ConcreteCharacterCard implements Decorator, Serializable {
     private Game game;
     private StudentGroup pool;
 

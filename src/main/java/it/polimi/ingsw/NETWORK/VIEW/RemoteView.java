@@ -24,14 +24,9 @@ public class RemoteView extends View {
             notify(message);
         } else if(message instanceof ServerMessage){
             connection.asyncSend(message);
+            //System.out.println("update remote view corretta");
         }
     }
 
-    /*private class MessageReceiver implements Observer {
 
-        @Override
-        public void update(Object message) {
-
-        }
-    }*/
 }

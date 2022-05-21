@@ -1,6 +1,8 @@
 package it.polimi.ingsw.MODEL;
 
-public class Entrance{
+import java.io.Serializable;
+
+public class Entrance implements Serializable {
 
     private StudentGroup studentGroup;
 

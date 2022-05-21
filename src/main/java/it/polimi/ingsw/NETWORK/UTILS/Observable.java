@@ -23,6 +23,7 @@ public class Observable<T> {
         synchronized (observers) {
             for (Observer<T> observer : observers) {
                 observer.update(message);
+
             }
         }
     }

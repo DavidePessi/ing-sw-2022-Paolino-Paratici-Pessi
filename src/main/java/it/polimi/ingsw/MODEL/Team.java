@@ -2,7 +2,9 @@ package it.polimi.ingsw.MODEL;
 
 import it.polimi.ingsw.MODEL.Exception.MissingTowerException;
 
-public class Team {
+import java.io.Serializable;
+
+public class Team implements Serializable {
     private ColourTower colourTower;
     private int numberOfTower;
 

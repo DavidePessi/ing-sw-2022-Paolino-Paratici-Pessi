@@ -328,6 +328,7 @@ public class Game extends Observable {
                 player.addStudentsToEntrance(studentGroup);
             }
         }
+        sendBoard("STARTGAME");
     }
 
     /*
@@ -485,7 +486,9 @@ public class Game extends Observable {
             }
             sm = new ServerMessage(sh, pay);
             notify(sm);
-        } else if(s.equals("MoveStudentInDiningRoom")){
+        }
+
+        else if(s.equals("MoveStudentInDiningRoom")){
 
             for(int i = 1; i <= professors.size(); i++) {
                 pay.addParameter("professor" + i, professors.get(i-1));
@@ -497,7 +500,9 @@ public class Game extends Observable {
             sm = new ServerMessage(sh, pay);
             notify(sm);
 
-        } else if(s.equals("MoveStudentInIsland")){
+        }
+
+        else if(s.equals("MoveStudentInIsland")){
 
             for(int i = 1; i <= listPlayer.size(); i++) {
                 pay.addParameter("player" + i, listPlayer.get(i-1));
@@ -510,7 +515,9 @@ public class Game extends Observable {
             notify(sm);
 
 
-        } else if(s.equals("TakeCloud")){
+        }
+
+        else if(s.equals("TakeCloud")){
 
             for(int i = 1; i <= listPlayer.size(); i++) {
                 pay.addParameter("player" + i, listPlayer.get(i-1));
@@ -523,7 +530,9 @@ public class Game extends Observable {
             notify(sm);
 
 
-        } else if(s.equals("MoveMotherNature")){
+        }
+
+        else if(s.equals("MoveMotherNature")){
 
             for(int i = 1; i <= listIsland.size(); i++) {
                 pay.addParameter("island" + i, listIsland.get(i-1));
@@ -538,7 +547,9 @@ public class Game extends Observable {
             sm = new ServerMessage(sh, pay);
             notify(sm);
 
-        } else if(s.equals("Fusion")){
+        }
+
+        else if(s.equals("Fusion")){
 
             for(int i = 1; i <= listIsland.size(); i++) {
                 pay.addParameter("island" + i, listIsland.get(i-1));
@@ -547,7 +558,9 @@ public class Game extends Observable {
             sm = new ServerMessage(sh, pay);
             notify(sm);
 
-        } else if(s.equals("PlayCharacterCard")){
+        }
+
+        else if(s.equals("PlayCharacterCard")){
 
             for(int i = 1; i <= characterCards.size(); i++) {
                 pay.addParameter("charactercard" + i, characterCards.get(i-1));
@@ -558,7 +571,9 @@ public class Game extends Observable {
             for(int i = 1; i <= listPlayer.size(); i++) {
                 pay.addParameter("player" + i, listPlayer.get(i-1));
             }
-        } else if(s.equals("CheckProfessor")){
+        }
+
+        else if(s.equals("CheckProfessor")){
 
             for(int i = 1; i <= professors.size(); i++) {
                 pay.addParameter("professor" + i, professors.get(i-1));
@@ -567,7 +582,9 @@ public class Game extends Observable {
             for(int i = 1; i <= listPlayer.size(); i++) {
                 pay.addParameter("player" + i, listPlayer.get(i-1));
             }
-        } else if(s.equals("CheckTowers")){
+        }
+
+        else if(s.equals("CheckTowers")){
 
             for(int i = 1; i <= listIsland.size(); i++) {
                 pay.addParameter("island" + i, listIsland.get(i-1));
@@ -578,7 +595,13 @@ public class Game extends Observable {
             }
 
 
-        }else if(s.equals("STRATGAME")){
+        }
+
+        else if(s.equals("STARTGAME")){
+
+            for(int i = 1; i <= characterCards.size(); i++) {
+                pay.addParameter("charactercard" + i, new ConcreteCharacterCard(characterCards.get(i-1).getNameCard(), characterCards.get(i-1).getPrice()));
+            }
 
             for(int i = 1; i <= listIsland.size(); i++) {
                 pay.addParameter("island" + i, listIsland.get(i-1));
@@ -598,15 +621,15 @@ public class Game extends Observable {
 
             pay.addParameter("mothernature", motherNature);
 
-            for(int i = 1; i <= characterCards.size(); i++) {
-                pay.addParameter("charactercard" + i, characterCards.get(i-1));
-            }
-
             pay.addParameter("cardthrown", characterCardThrown);
 
             for(int i = 1; i <= listCloud.size(); i++) {
                 pay.addParameter("cloud" + i, listCloud.get(i-1));
             }
+
+            sm = new ServerMessage(sh, pay);
+            //System.out.println("sto inviando il messaggio: " + sm);
+            notify(sm);
         }
 
     }

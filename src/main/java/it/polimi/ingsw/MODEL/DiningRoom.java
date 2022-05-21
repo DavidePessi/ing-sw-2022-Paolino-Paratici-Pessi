@@ -1,8 +1,9 @@
 package it.polimi.ingsw.MODEL;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class DiningRoom {
+public class DiningRoom implements Serializable {
 
     private StudentGroup studentGroup;
 

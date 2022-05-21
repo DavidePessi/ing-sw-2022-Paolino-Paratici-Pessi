@@ -6,7 +6,9 @@ import it.polimi.ingsw.MODEL.Colour;
 import it.polimi.ingsw.MODEL.Game;
 import it.polimi.ingsw.MODEL.StudentGroup;
 
-public class Minstrell extends ConcreteCharacterCard implements Decorator {
+import java.io.Serializable;
+
+public class Minstrell extends ConcreteCharacterCard implements Decorator, Serializable {
 
     private Game game;
 

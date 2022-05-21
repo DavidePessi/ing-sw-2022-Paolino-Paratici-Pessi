@@ -2,7 +2,9 @@ package it.polimi.ingsw.MODEL.CharacterCards;
 
 import it.polimi.ingsw.MODEL.CharacterCards.CharacterCard;
 
-public class ConcreteCharacterCard extends CharacterCard {
+import java.io.Serializable;
+
+public class ConcreteCharacterCard extends CharacterCard implements Serializable {
 
 
     String nameCard = "";
@@ -11,9 +13,10 @@ public class ConcreteCharacterCard extends CharacterCard {
 
     public ConcreteCharacterCard(){};
 
-    /*public ConcreteCharacterCard(String name){
+    public ConcreteCharacterCard(String name, int price){
         nameCard = name;
-    }*/
+        this.price = price;
+    }
     @Override
     public String getNameCard(){
         return nameCard;

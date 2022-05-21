@@ -2,16 +2,13 @@ package it.polimi.ingsw.NETWORK.CLIENT;
 
 import it.polimi.ingsw.MODEL.*;
 import it.polimi.ingsw.MODEL.CharacterCards.ConcreteCharacterCard;
-import it.polimi.ingsw.MODEL.CharacterCards.Jester;
-import it.polimi.ingsw.MODEL.CharacterCards.Knight;
-import it.polimi.ingsw.MODEL.CharacterCards.Minstrell;
 import it.polimi.ingsw.MODEL.Exception.MissingTowerException;
 import it.polimi.ingsw.NETWORK.MESSAGES.ServerMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientModelCLI {
+public class ClientModelCLI implements UserInterface{
     private String characterCardThrown;
     private List<Cloud> listCloud;
     private List<Player> listPlayer;
@@ -34,89 +31,135 @@ public class ClientModelCLI {
     }
 
     public void showBoard(){
-        String Board = "";
+        String board = "";
 
         //-------------------------------STAMPA PLAYER------------------------------
-        for(Player player : listPlayer){
-            Board = Board +("player: " + player.getNicknameClient());
-            Board = Board +("\nteam: " + player.getTeam().getColourTower() + "{" + player.getTeam().getNumberOfTower() + "}\n");
-
-            //metto i professori
-            Board = Board + "professors: ";
-
-            if(player.professorPresent(Colour.RED))Board = Board + (char) 27 + "[31m" + "◊" + "\u001B[0m";
-            if(player.professorPresent(Colour.YELLOW))Board = Board + (char) 27 + "[33m" + "◊" + "\u001B[0m";
-            if(player.professorPresent(Colour.GREEN))Board = Board + (char) 27 + "[32m" + "◊" + "\u001B[0m";
-            if(player.professorPresent(Colour.BLUE))Board = Board + (char) 27 + "[34m" + "◊" + "\u001B[0m";
-            if(player.professorPresent(Colour.PINK))Board = Board + (char) 27 + "[35m" + "◊" + "\u001B[0m";
-
-            Board = Board +( "\nentrance : \n[");
-
-            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.RED); i++) {
-                Board = Board +((char) 27 + "[31m" + "▪" + "\u001B[0m");
-            }
-
-            Board = Board +( "]\n[");
-            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.YELLOW); i++) {
-                Board = Board +((char) 27 + "[33m" + "▪" + "\u001B[0m");
-            }
-
-            Board = Board +( "]\n[");
-            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.GREEN); i++) {
-                Board = Board +((char) 27 + "[32m" + "▪" + "\u001B[0m");
-            }
-
-            Board = Board +( "]\n[");
-            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.BLUE); i++) {
-                Board = Board +((char) 27 + "[34m" + "▪" + "\u001B[0m");
-            }
-
-            Board = Board +( "]\n[");
-            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.PINK); i++) {
-                Board = Board +((char) 27 + "[35m" + "▪" + "\u001B[0m");
-            }
-
-            Board = Board +( "]\n");
-
-
-            Board = Board +( "DiningRoom : \n[");
-            for (int i = 0; i < player.numStudentsDiningRoom(Colour.RED); i++) {
-                Board = Board +((char) 27 + "[31m" + "▪" + "\u001B[0m");
-            }
-            Board = Board +( "]\n[");
-            for (int i = 0; i < player.numStudentsDiningRoom(Colour.YELLOW); i++) {
-                Board = Board +((char) 27 + "[33m" + "▪" + "\u001B[0m");
-            }
-            Board = Board +( "]\n[");
-            for (int i = 0; i < player.numStudentsDiningRoom(Colour.GREEN); i++) {
-                Board = Board +((char) 27 + "[32m" + "▪" + "\u001B[0m");
-            }
-            Board = Board +( "]\n[");
-            for (int i = 0; i < player.numStudentsDiningRoom(Colour.BLUE); i++) {
-                Board = Board +((char) 27 + "[34m" + "▪" + "\u001B[0m");
-            }
-            Board = Board +( "]\n[");
-            for (int i = 0; i < player.numStudentsDiningRoom(Colour.PINK); i++) {
-                Board = Board +((char) 27 + "[35m" + "▪" + "\u001B[0m");
-            }
-            Board = Board +( "]\n");
-
-        }
+        board = board + showPlayer();
 
 
         //-------------------------STAMPA CARTE PERSONAGGIO-------------------------
-        Board = Board +( "Character Cards :\n");
+        board = board +( "Character Cards :\n");
         for(ConcreteCharacterCard card : characterCards){
-            Board = Board +("\t" + card.getNameCard() + " cost: " + card.getPrice() +"\n");
+            board = board +("\t" + card.getNameCard() + " cost: " + card.getPrice() +"\n");
         }
 
 
         //-------------------------------STAMPA ISOLE-------------------------------
-        //setto una variabile colore
+        board = board + showIsland();
+
+
+        //------------------------------STAMPA NUVOLE-------------------------------
+        board = board + showCloud();
+
+        System.out.println(board);
+    }
+
+    public String showCloud(){
+        String cloud = "";
+        String colore = "";
+
+        for(int j = 0; j < listCloud.size(); j++){
+            cloud = cloud + "cloud " + j + ": {";
+
+            if(!listCloud.get(j).empty()){
+
+                for(int i = 0; i < 3; i++) {
+                    if(listCloud.get(j).getStudent(i).getColour().equals(Colour.BLUE)){
+                        colore = "[34m";
+                    } else if(listCloud.get(j).getStudent(i).getColour().equals(Colour.RED)){
+                        colore = "[31m";
+                    } else if(listCloud.get(j).getStudent(i).getColour().equals(Colour.PINK)){
+                        colore = "[35m";
+                    } else if(listCloud.get(j).getStudent(i).getColour().equals(Colour.GREEN)){
+                        colore = "[32m";
+                    } else if(listCloud.get(j).getStudent(i).getColour().equals(Colour.YELLOW)){
+                        colore = "[33m";
+                    }
+                    cloud = cloud + (char) 27 + colore + "▪" + "\u001B[0m";
+                }
+            }
+            cloud = cloud + "}\n";
+        }
+        return cloud;
+    }
+
+    public String showPlayer(){
+        String players = "";
+
+        for(Player player : listPlayer){
+            players = players +("player: " + player.getNicknameClient());
+            players = players +("\nteam: " + player.getTeam().getColourTower() + "{" + player.getTeam().getNumberOfTower() + "}\n");
+
+            //metto i professori
+            players = players + "professors: ";
+
+            if(player.professorPresent(Colour.RED))players = players + (char) 27 + "[31m" + "◊" + "\u001B[0m";
+            if(player.professorPresent(Colour.YELLOW))players = players + (char) 27 + "[33m" + "◊" + "\u001B[0m";
+            if(player.professorPresent(Colour.GREEN))players = players + (char) 27 + "[32m" + "◊" + "\u001B[0m";
+            if(player.professorPresent(Colour.BLUE))players = players + (char) 27 + "[34m" + "◊" + "\u001B[0m";
+            if(player.professorPresent(Colour.PINK))players = players + (char) 27 + "[35m" + "◊" + "\u001B[0m";
+
+            players = players +( "\nentrance : \n[");
+
+            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.RED); i++) {
+                players = players +((char) 27 + "[31m" + "▪" + "\u001B[0m");
+            }
+
+            players = players +( "]\n[");
+            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.YELLOW); i++) {
+                players = players +((char) 27 + "[33m" + "▪" + "\u001B[0m");
+            }
+
+            players = players +( "]\n[");
+            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.GREEN); i++) {
+                players = players +((char) 27 + "[32m" + "▪" + "\u001B[0m");
+            }
+
+            players = players +( "]\n[");
+            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.BLUE); i++) {
+                players = players +((char) 27 + "[34m" + "▪" + "\u001B[0m");
+            }
+
+            players = players +( "]\n[");
+            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.PINK); i++) {
+                players = players +((char) 27 + "[35m" + "▪" + "\u001B[0m");
+            }
+
+            players = players +( "]\n");
+
+
+            players = players +( "DiningRoom : \n[");
+            for (int i = 0; i < player.numStudentsDiningRoom(Colour.RED); i++) {
+                players = players +((char) 27 + "[31m" + "▪" + "\u001B[0m");
+            }
+            players = players +( "]\n[");
+            for (int i = 0; i < player.numStudentsDiningRoom(Colour.YELLOW); i++) {
+                players = players +((char) 27 + "[33m" + "▪" + "\u001B[0m");
+            }
+            players = players +( "]\n[");
+            for (int i = 0; i < player.numStudentsDiningRoom(Colour.GREEN); i++) {
+                players = players +((char) 27 + "[32m" + "▪" + "\u001B[0m");
+            }
+            players = players +( "]\n[");
+            for (int i = 0; i < player.numStudentsDiningRoom(Colour.BLUE); i++) {
+                players = players +((char) 27 + "[34m" + "▪" + "\u001B[0m");
+            }
+            players = players +( "]\n[");
+            for (int i = 0; i < player.numStudentsDiningRoom(Colour.PINK); i++) {
+                players = players +((char) 27 + "[35m" + "▪" + "\u001B[0m");
+            }
+            players = players +( "]\n");
+
+        }
+        return players;
+    }
+
+    public String showIsland(){
+        String island = "";
         String colore = "";
         int max = 6;
 
-        Board = Board +( "Islands :\n\t");
+        island = island +( "Islands :\n\t");
 
         //voglio tornare a capo se ci sono più di 6 isole quindi metto due casi
         //setto quanto è lunga la prima fila
@@ -127,15 +170,15 @@ public class ClientModelCLI {
         /////////////////////////////////////////////////////////////////////////PRIMA FILA DI ISOLE
         //scrivo i numeri sopra
         for(int i = 0; i < max; i++){
-            Board = Board + listIsland.get(i).getNumIsland() + "\t\t\t\t\t\t";
+            island = island + listIsland.get(i).getNumIsland() + "\t\t\t\t\t\t";
         }
 
         //scrivo il confine delle isole
-        Board = Board +("\n");
+        island = island +("\n");
         for(int i = 0; i < max; i++) {
-            Board = Board +("\t|-------------------|");
+            island = island +("\t|-------------------|");
         }
-        Board = Board +("\n");
+        island = island +("\n");
 
         //stampo gli studenti per colore sulle isole
         for(Colour colour : Colour.values()){
@@ -154,73 +197,73 @@ public class ClientModelCLI {
             }
 
             for (int i = 0; i < max; i++) {
-                Board = Board + ("\t|");
+                island = island + ("\t|");
                 for (int j = 0; j < listIsland.get(i).countStudentsOfColour(colour); j++) {
 
-                    Board = Board + ((char) 27 + colore + "▪" + "\u001B[0m");
+                    island = island + ((char) 27 + colore + "▪" + "\u001B[0m");
                 }
                 if (listIsland.get(i).countStudentsOfColour(colour) > 7) {
-                    Board = Board + ("\t\t|");
+                    island = island + ("\t\t|");
                 } else {
-                    Board = Board + ("\t\t\t\t\t|");
+                    island = island + ("\t\t\t\t\t|");
                 }
             }
 
-            Board = Board +("\n");
+            island = island +("\n");
         }
 
         //metto le torri
         for(int i = 0; i < max; i++){
-            Board = Board + "\t|";
+            island = island + "\t|";
             try{
                 if(listIsland.get(i).getColourTower().equals(ColourTower.BLACK)){
                     for(int j = 0; j < listIsland.get(i).getNumSubIsland(); j++){
-                        Board = Board + ((char) 27 + "[30m" + "○" + "\u001B[0m");
+                        island = island + ((char) 27 + "[30m" + "○" + "\u001B[0m");
                     }
                 } else if(listIsland.get(i).getColourTower().equals(ColourTower.WHITE)){
                     for(int j = 0; j < listIsland.get(i).getNumSubIsland(); j++){
-                        Board = Board + ((char) 27 + "[38m" + "○" + "\u001B[0m");
+                        island = island + ((char) 27 + "[38m" + "○" + "\u001B[0m");
                     }
                 }
             }catch(MissingTowerException e){}
-            Board = Board + ("\t\t\t\t\t|");
+            island = island + ("\t\t\t\t\t|");
         }
 
-        Board = Board + "\n";
+        island = island + "\n";
 
         //metto madre natura dove serve
         for(int i = 0; i < max; i++){
-            Board = Board + "\t|";
+            island = island + "\t|";
 
             if(listIsland.get(i).getHasMotherNature()) {
-                Board = Board + "\t" + ((char) 27 + "[36m" + "֍mothernature֍" + "\u001B[0m") + "\t|";
+                island = island + "\t" + ((char) 27 + "[36m" + "֍mothernature֍" + "\u001B[0m") + "\t|";
             }
             else{
-                Board = Board + ("\t\t\t\t\t|");
+                island = island + ("\t\t\t\t\t|");
             }
         }
 
-        Board = Board + "\n";
+        island = island + "\n";
 
         //stampo il confine in fondo dell'isola
         for(int i = 0; i < max; i++) {
-            Board = Board +("\t|-------------------|");
+            island = island +("\t|-------------------|");
         }
-        Board = Board +("\n\n");
+        island = island +("\n\n");
 
         /////////////////////////////////////////////////////////////////////////SECONDA FILA DI ISOLE
-        Board = Board +( "\t");
+        island = island +( "\t");
         //scrivo i numeri sopra
         for(int i = 6; i < listIsland.size(); i++){
-            Board = Board + listIsland.get(i).getNumIsland() + "\t\t\t\t\t\t";
+            island = island + listIsland.get(i).getNumIsland() + "\t\t\t\t\t\t";
         }
 
         //scrivo il confine delle isole
-        Board = Board +("\n");
+        island = island +("\n");
         for(int i = 6; i < listIsland.size(); i++) {
-            Board = Board +("\t|-------------------|");
+            island = island +("\t|-------------------|");
         }
-        Board = Board +("\n");
+        island = island +("\n");
 
         //stampo gli studenti per colore sulle isole
         for(Colour colour : Colour.values()){
@@ -239,85 +282,61 @@ public class ClientModelCLI {
             }
 
             for (int i = 6; i < listIsland.size(); i++) {
-                Board = Board + ("\t|");
+                island = island + ("\t|");
                 for (int j = 0; j < listIsland.get(i).countStudentsOfColour(colour); j++) {
 
-                    Board = Board + ((char) 27 + colore + "▪" + "\u001B[0m");
+                    island = island + ((char) 27 + colore + "▪" + "\u001B[0m");
                 }
                 if (listIsland.get(i).countStudentsOfColour(colour) > 7) {
-                    Board = Board + ("\t\t|");
+                    island = island + ("\t\t|");
                 } else {
-                    Board = Board + ("\t\t\t\t\t|");
+                    island = island + ("\t\t\t\t\t|");
                 }
             }
 
-            Board = Board +("\n");
+            island = island +("\n");
         }
 
         //metto le torri
         for(int i = 6; i < listIsland.size(); i++){
-            Board = Board + "\t|";
+            island = island + "\t|";
             try{
                 if(listIsland.get(i).getColourTower().equals(ColourTower.BLACK)){
                     for(int j = 0; j < listIsland.get(i).getNumSubIsland(); j++){
-                        Board = Board + ((char) 27 + "[30m" + "○" + "\u001B[0m");
+                        island = island + ((char) 27 + "[30m" + "○" + "\u001B[0m");
                     }
                 } else if(listIsland.get(i).getColourTower().equals(ColourTower.WHITE)){
                     for(int j = 0; j < listIsland.get(i).getNumSubIsland(); j++){
-                        Board = Board + ((char) 27 + "[38m" + "○" + "\u001B[0m");
+                        island = island + ((char) 27 + "[38m" + "○" + "\u001B[0m");
                     }
                 }
             }catch(MissingTowerException e){}
-            Board = Board + ("\t\t\t\t\t|");
+            island = island + ("\t\t\t\t\t|");
         }
 
-        Board = Board + "\n";
+        island = island + "\n";
 
         //metto madre natura dove serve
         for(int i = 6; i < listIsland.size(); i++){
-            Board = Board + "\t|";
+            island = island + "\t|";
 
             if(listIsland.get(i).getHasMotherNature()) {
-                Board = Board + "\t" + ((char) 27 + "[36m" + "֍mothernature֍" + "\u001B[0m") + "\t|";
+                island = island + "\t" + ((char) 27 + "[36m" + "֍mothernature֍" + "\u001B[0m") + "\t|";
             }
             else{
-                Board = Board + ("\t\t\t\t\t|");
+                island = island + ("\t\t\t\t\t|");
             }
         }
 
-        Board = Board + "\n";
+        island = island + "\n";
 
         //stampo il confine in fondo dell'isola
         for(int i = 6; i < listIsland.size(); i++) {
-            Board = Board +("\t|-------------------|");
+            island = island +("\t|-------------------|");
         }
-        Board = Board +("\n");
+        island = island +("\n");
 
-        //------------------------------STAMPA NUVOLE-------------------------------
-        for(int j = 0; j < listCloud.size(); j++){
-            Board = Board + "cloud " + j + ": {";
-
-            if(!listCloud.get(j).empty()){
-
-                for(int i = 0; i < 3; i++) {
-                    if(listCloud.get(j).getStudent(i).getColour().equals(Colour.BLUE)){
-                        colore = "[34m";
-                    } else if(listCloud.get(j).getStudent(i).getColour().equals(Colour.RED)){
-                        colore = "[31m";
-                    } else if(listCloud.get(j).getStudent(i).getColour().equals(Colour.PINK)){
-                        colore = "[35m";
-                    } else if(listCloud.get(j).getStudent(i).getColour().equals(Colour.GREEN)){
-                        colore = "[32m";
-                    } else if(listCloud.get(j).getStudent(i).getColour().equals(Colour.YELLOW)){
-                        colore = "[33m";
-                    }
-                    Board = Board + (char) 27 + colore + "▪" + "\u001B[0m";
-                }
-            }
-            Board = Board + "}\n";
-        }
-
-        System.out.println(Board);
+        return island;
     }
 
     public void update(ServerMessage message){
@@ -511,9 +530,12 @@ public class ClientModelCLI {
             characterCardThrown = (String)message.getPayload().getParameter("charactercardthrown");
 
             //setto le carte personaggio
-            characterCards.add( (ConcreteCharacterCard) message.getPayload().getParameter("charactercard1"));
-            characterCards.add( (ConcreteCharacterCard) message.getPayload().getParameter("charactercard2"));
-            characterCards.add( (ConcreteCharacterCard) message.getPayload().getParameter("charactercard3"));
+
+            /*
+            characterCards.add((ConcreteCharacterCard) message.getPayload().getParameter("charactercard1"));
+            characterCards.add((ConcreteCharacterCard) message.getPayload().getParameter("charactercard2"));
+            characterCards.add((ConcreteCharacterCard) message.getPayload().getParameter("charactercard3"));
+            */
 
             //setto mothernature
             motherNature = (MotherNature) message.getPayload().getParameter("mothernature");

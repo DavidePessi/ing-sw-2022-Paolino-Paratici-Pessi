@@ -2,9 +2,10 @@ package it.polimi.ingsw.MODEL;
 
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Deck {
+public class Deck implements Serializable {
     private List<Card> listCard;
 
     public void removeCard(int value){

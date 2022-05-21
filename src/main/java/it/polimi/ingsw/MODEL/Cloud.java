@@ -2,8 +2,11 @@ package it.polimi.ingsw.MODEL;
 
 import it.polimi.ingsw.MODEL.Exception.MissingCloudException;
 
-public class Cloud {
+import java.io.Serializable;
+
+public class Cloud implements Serializable {
     private StudentGroup students;
+
     public Cloud (){
         students = new StudentGroup();
     }

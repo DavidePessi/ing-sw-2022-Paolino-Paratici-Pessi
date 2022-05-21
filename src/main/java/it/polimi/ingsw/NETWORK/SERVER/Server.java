@@ -80,7 +80,7 @@ public class Server {
     }
 
     //Wait for another player
-    public synchronized void lobby2E(SocketClientConnection c, String name, String typeGame) throws Exception{
+    public synchronized void lobby2E(SocketClientConnection c, String name) throws Exception{
         //public synchronized void lobby(Connection c, String name){
         if(!waitingRoom2E.containsKey(name)){
             waitingRoom2E.put(name, c);
@@ -96,13 +96,6 @@ public class Server {
             RemoteView player2 = new RemoteView(c2);
             Game model = new Game(keys.get(0), keys.get(1));
 
-                /*ControllerAction controllerAction = null;
-                if(typeGame.equals("difficult")){
-                    controllerAction = new ControllerActionDifficult(model, keys);
-                } else if(typeGame.equals("easy")) {
-                    controllerAction = new ControllerAction(model, keys);
-                }*/
-
             ControllerAction controllerAction = new ControllerAction(model, keys);
             ControllerTurn controllerTurn = new ControllerTurn(controllerAction, model, keys);
 
@@ -115,15 +108,16 @@ public class Server {
             player1.addObserver(controllerTurn);
             player2.addObserver(controllerTurn);
 
-            // TODO: 30/04/2022 opponent
             playingConnection.put(c1, c2);
             playingConnection.put(c2, c1);
             waitingRoom2E.clear();
+
+            model.startGame();
             System.out.println("Game created");
         }
     }
-    public synchronized void lobby2D(SocketClientConnection c, String name, String typeGame) throws Exception{
-        //public synchronized void lobby(Connection c, String name){
+
+    public synchronized void lobby2D(SocketClientConnection c, String name) throws Exception{
         if(!waitingRoom2D.containsKey(name)){
             waitingRoom2D.put(name, c);
         }else{
@@ -138,13 +132,6 @@ public class Server {
             RemoteView player2 = new RemoteView(c2);
             Game model = new Game(keys.get(0), keys.get(1));
 
-                /*ControllerAction controllerAction = null;
-                if(typeGame.equals("difficult")){
-                    controllerAction = new ControllerActionDifficult(model, keys);
-                } else if(typeGame.equals("easy")) {
-                    controllerAction = new ControllerAction(model, keys);
-                }*/
-
             ControllerAction controllerAction = new ControllerActionDifficult(model, keys);
             ControllerTurn controllerTurn = new ControllerTurn(controllerAction, model, keys);
 
@@ -157,16 +144,17 @@ public class Server {
             player1.addObserver(controllerTurn);
             player2.addObserver(controllerTurn);
 
-            // TODO: 30/04/2022 opponent
             playingConnection.put(c1, c2);
             playingConnection.put(c2, c1);
             waitingRoom2D.clear();
+
+            model.startGame();
             System.out.println("Game created");
         }
     }
 
-    public synchronized void lobby3E(SocketClientConnection c, String name, String typeGame) throws Exception{
-        //public synchronized void lobby(Connection c, String name){
+    public synchronized void lobby3E(SocketClientConnection c, String name) throws Exception{
+
         if(!waitingRoom3E.containsKey(name)){
             waitingRoom3E.put(name, c);
         }else{
@@ -182,13 +170,6 @@ public class Server {
             RemoteView player3 = new RemoteView(c3);
             Game model = new Game(keys.get(0), keys.get(1), keys.get(2));
 
-                /*ControllerAction controllerAction = null;
-                if(typeGame.equals("difficult")){
-                    controllerAction = new ControllerActionDifficult(model, keys);
-                } else if(typeGame.equals("easy")) {
-                    controllerAction = new ControllerAction(model, keys);
-                }*/
-
             ControllerAction controllerAction = new ControllerAction(model, keys);
             ControllerTurn controllerTurn = new ControllerTurn(controllerAction, model, keys);
 
@@ -204,7 +185,7 @@ public class Server {
             player2.addObserver(controllerTurn);
             player3.addObserver(controllerTurn);
 
-            // TODO: 30/04/2022 opponent
+
             playingConnection.put(c1, c2);
             playingConnection.put(c1, c3);
             playingConnection.put(c2, c1);
@@ -212,11 +193,14 @@ public class Server {
             playingConnection.put(c3, c1);
             playingConnection.put(c3, c2);
             waitingRoom3E.clear();
+
+            model.startGame();
             System.out.println("Game created");
         }
     }
-    public synchronized void lobby3D(SocketClientConnection c, String name, String typeGame) throws Exception{
-        //public synchronized void lobby(Connection c, String name){
+
+    public synchronized void lobby3D(SocketClientConnection c, String name) throws Exception{
+
         if(!waitingRoom3D.containsKey(name)){
             waitingRoom3D.put(name, c);
         }else{
@@ -232,13 +216,6 @@ public class Server {
             RemoteView player3 = new RemoteView(c3);
             Game model = new Game(keys.get(0), keys.get(1), keys.get(2));
 
-                /*ControllerAction controllerAction = null;
-                if(typeGame.equals("difficult")){
-                    controllerAction = new ControllerActionDifficult(model, keys);
-                } else if(typeGame.equals("easy")) {
-                    controllerAction = new ControllerAction(model, keys);
-                }*/
-
             ControllerAction controllerAction = new ControllerActionDifficult(model, keys);
             ControllerTurn controllerTurn = new ControllerTurn(controllerAction, model, keys);
 
@@ -253,7 +230,6 @@ public class Server {
             player2.addObserver(controllerTurn);
             player3.addObserver(controllerTurn);
 
-            // TODO: 30/04/2022 opponent
             playingConnection.put(c1, c2);
             playingConnection.put(c1, c3);
             playingConnection.put(c2, c1);
@@ -261,12 +237,14 @@ public class Server {
             playingConnection.put(c3, c1);
             playingConnection.put(c3, c2);
             waitingRoom3D.clear();
+
+            model.startGame();
             System.out.println("Game created");
         }
     }
 
-    public synchronized void lobby4E(SocketClientConnection c, String name, String typeGame) throws Exception{
-        //public synchronized void lobby(Connection c, String name){
+    public synchronized void lobby4E(SocketClientConnection c, String name) throws Exception{
+
         if(!waitingRoom4E.containsKey(name)){
             waitingRoom4E.put(name, c);
         }else{
@@ -284,12 +262,6 @@ public class Server {
             RemoteView player4 = new RemoteView(c4);
             Game model = new Game(keys.get(0), keys.get(1), keys.get(2), keys.get(3));
 
-                /*ControllerAction controllerAction = null;
-                if(typeGame.equals("difficult")){
-                    controllerAction = new ControllerActionDifficult(model, keys);
-                } else if(typeGame.equals("easy")) {
-                    controllerAction = new ControllerAction(model, keys);
-                }*/
 
             ControllerAction controllerAction = new ControllerAction(model, keys);
             ControllerTurn controllerTurn = new ControllerTurn(controllerAction, model, keys);
@@ -307,7 +279,6 @@ public class Server {
             player3.addObserver(controllerTurn);
             player4.addObserver(controllerTurn);
 
-            // TODO: 30/04/2022 opponent
             playingConnection.put(c1, c2);
             playingConnection.put(c1, c3);
             playingConnection.put(c1, c4);
@@ -320,13 +291,15 @@ public class Server {
             playingConnection.put(c4, c1);
             playingConnection.put(c4, c2);
             playingConnection.put(c4, c3);
-
             waitingRoom4E.clear();
+
+            model.startGame();
             System.out.println("Game created");
         }
     }
-    public synchronized void lobby4D(SocketClientConnection c, String name, String typeGame) throws Exception{
-        //public synchronized void lobby(Connection c, String name){
+
+    public synchronized void lobby4D(SocketClientConnection c, String name) throws Exception{
+
         if(!waitingRoom4D.containsKey(name)){
             waitingRoom4D.put(name, c);
         }else{
@@ -344,13 +317,6 @@ public class Server {
             RemoteView player4 = new RemoteView(c4);
             Game model = new Game(keys.get(0), keys.get(1), keys.get(2), keys.get(3));
 
-                /*ControllerAction controllerAction = null;
-                if(typeGame.equals("difficult")){
-                    controllerAction = new ControllerActionDifficult(model, keys);
-                } else if(typeGame.equals("easy")) {
-                    controllerAction = new ControllerAction(model, keys);
-                }*/
-
             ControllerAction controllerAction = new ControllerActionDifficult(model, keys);
             ControllerTurn controllerTurn = new ControllerTurn(controllerAction, model, keys);
 
@@ -367,7 +333,6 @@ public class Server {
             player3.addObserver(controllerTurn);
             player4.addObserver(controllerTurn);
 
-            // TODO: 30/04/2022 opponent
             playingConnection.put(c1, c2);
             playingConnection.put(c1, c3);
             playingConnection.put(c1, c4);
@@ -381,6 +346,8 @@ public class Server {
             playingConnection.put(c4, c2);
             playingConnection.put(c4, c3);
             waitingRoom4D.clear();
+
+            model.startGame();
             System.out.println("Game created");
         }
     }

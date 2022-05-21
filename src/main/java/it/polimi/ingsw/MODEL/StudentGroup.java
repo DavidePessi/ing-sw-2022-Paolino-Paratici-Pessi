@@ -1,9 +1,10 @@
 package it.polimi.ingsw.MODEL;
 import it.polimi.ingsw.MODEL.Exception.MissingStudentException;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class StudentGroup {
+public class StudentGroup implements Serializable {
 
     private List<Student> listStudent;
 
