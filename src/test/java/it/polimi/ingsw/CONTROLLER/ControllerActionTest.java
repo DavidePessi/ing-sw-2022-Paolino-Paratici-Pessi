@@ -196,8 +196,8 @@ public class ControllerActionTest extends TestCase {
         Assertions.assertEquals(numStudInEntranceDopo_Green, numStudInEntrancePrima_Green+2);
     }
 
-    @RepeatedTest(100)
-    public void testUseCharacter() throws Exception{
+    @RepeatedTest(20)
+    public void testUseCharacter() throws Exception {
         Game g = new Game("io", "tu");
         boolean easy = true;
         g.startGame(easy);
@@ -209,20 +209,6 @@ public class ControllerActionTest extends TestCase {
         g.getPlayer("io").receiveCoin();
         g.getPlayer("io").receiveCoin();
 
-
-        if (g.getCharacterCard(0).getNameCard() == "Knight") {
-
-            ca.useCharacter(new CharacterParameters("io", "Knight"));
-
-            assertEquals("Knight", g.getCharacterCardThrown());
-        } else if(g.getCharacterCard(0).getNameCard() == "PostMan"){
-
-            ca.useCharacter(new CharacterParameters("io", "PostMan"));
-
-            assertEquals("PostMan", g.getCharacterCardThrown());
-        } else if(g.getCharacterCard(0).getNameCard() == "Satyr"){
-
-            ca.useCharacter(new CharacterParameters("io", "Satyr"));
-        }
+        ca.useCharacter(new CharacterParameters("io", "Knight"));
     }
 }

@@ -19,12 +19,12 @@ public class GameTest extends TestCase {
         assertTrue(new Game("tu","io","egli","noi") instanceof Game);
     }
 
-    @Test
+
     @RepeatedTest(100)
     public void testStartGame() throws MissingStudentException, MissingCloudException, MissingPlayerException, Exception {
         Game g = new Game("io", "tu");
 
-        boolean easy = true;
+        boolean easy = false;
         g.startGame(easy);
 
         //verifico che tutte le nuvole hanno studenti sopra

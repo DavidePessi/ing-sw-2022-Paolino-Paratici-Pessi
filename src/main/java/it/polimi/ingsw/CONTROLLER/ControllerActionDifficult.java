@@ -14,6 +14,7 @@ public class ControllerActionDifficult extends ControllerAction{
     //TODO: guardare questo: per poter chiamare game.doPlayCharacterCard(charPar) ho dovuto mettere game protected invece che private in ControllerAction... ho messo tutti gli attributi di ControllerAction protected
     @Override
     public void useCharacter(CharacterParameters charPar) throws Exception {
+        System.out.println("hello");
         game.doPlayCharacterCard(charPar);
 
     }

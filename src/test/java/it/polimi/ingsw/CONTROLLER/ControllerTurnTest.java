@@ -33,9 +33,9 @@ public class ControllerTurnTest extends TestCase {
     @RepeatedTest(30)
     public void testCallCharacter() throws Exception {
         //caso in cui voglio lanciare una carta personaggio
-        //todo si potrebbe fare per tutti i personaggi il problema sarebbe la ripetizione dei test
+
         Game g = new Game("io", "tu");
-        boolean easy = true;
+        boolean easy = false;
         g.startGame(easy);
         List<String> l = new ArrayList<>();
         l.add("io");
@@ -44,11 +44,12 @@ public class ControllerTurnTest extends TestCase {
         g.getPlayer("io").receiveCoin();
         g.getPlayer("io").receiveCoin();
         g.getPlayer("io").receiveCoin();
+        g.getPlayer("io").receiveCoin();
 
-        ControllerAction ca = new ControllerAction(g, l);
+        ControllerAction ca = new ControllerActionDifficult(g, l);
         ControllerTurn ct = new ControllerTurn(ca, g, l);
 
-        if (g.getCharacterCard(0).getNameCard() == "Knight" || g.getCharacterCard(1).getNameCard() == "Knight" || g.getCharacterCard(2).getNameCard() == "Knight") {
+        if (g.getCharacterCard(0).getNameCard() == "Knight") {
             ct.setMulligan(false);
             ct.setCurrentClient("io");
 

@@ -175,7 +175,7 @@ public class Game extends Observable {
 
     public void startGame(boolean easy) throws MissingStudentException {
 
-        if(easy==false){
+        if(easy == false){
 
             //da un coin ad ogni player
             for(Player player: listPlayer){
@@ -293,18 +293,7 @@ public class Game extends Observable {
                 }
             }
         }
-    /*
-        characterCards.add(0, new Jester(this));
-        characterCards.add(1, new Knight(this));
-        characterCards.add(2, new Minstrell(this));
-        characterCards.add(3, new Pirate(this));
-        characterCards.add(4, new PostMan(this));
-        characterCards.add(5, new Priest(this));
-        characterCards.add(6, new Satyr(this));
-        characterCards.add(7, new Woman(this));
-    */
-        //characterCards.add(1, new ConcreteCharacterCard());
-        //characterCards.add(2, new ConcreteCharacterCard());
+
 
         for (Cloud cloud : listCloud) { //per ogni nuvola aggiungo 3 studenti estratti casualmente dalla bag
             if (cloud != null) {
