@@ -18,6 +18,7 @@ public class ClientModelCLI implements UserInterface{
     private MotherNature motherNature;
     private List<Professor> professors;
     private List<ConcreteCharacterCard> characterCards;
+    private boolean showCoins;
 
 
     public ClientModelCLI(){
@@ -40,9 +41,11 @@ public class ClientModelCLI implements UserInterface{
         board = board + showPlayer();
 
         //-------------------------STAMPA CARTE PERSONAGGIO-------------------------
-        board = board +( "Character Cards :\n");
-        for(ConcreteCharacterCard card : characterCards){
-            board = board +("\t" + card.getNameCard() + " cost: " + card.getPrice() +"\n");
+        if(characterCards.get(0)!=null) {
+            board = board + ("Character Cards :\n");
+            for (ConcreteCharacterCard card : characterCards) {
+                board = board + ("\t" + card.getNameCard() + " cost: " + card.getPrice() + "\n");
+            }
         }
 
 
@@ -90,10 +93,15 @@ public class ClientModelCLI implements UserInterface{
 
         for(Player player : listPlayer){
             players = players +("player: " + player.getNicknameClient());
-            players = players +("\nteam: " + player.getTeam().getColourTower() + "{" + player.getTeam().getNumberOfTower() + "}\n");
+            players = players +("\nteam: " + player.getTeam().getColourTower() + "{" + player.getTeam().getNumberOfTower() + "}");
+
+            //numero di coins
+            if(showCoins) {
+                players = players + ("\nnum coins: " + player.getNumCoins());
+            }
 
             //metto i professori
-            players = players + "professors: ";
+            players = players + "\nprofessors: ";
 
             if(player.professorPresent(Colour.RED))players = players + (char) 27 + "[31m" + "◊" + "\u001B[0m";
             if(player.professorPresent(Colour.YELLOW))players = players + (char) 27 + "[33m" + "◊" + "\u001B[0m";
@@ -552,6 +560,8 @@ public class ClientModelCLI implements UserInterface{
 
             //setto mothernature
             motherNature = (MotherNature) message.getPayload().getParameter("mothernature");
+
+            showCoins = (boolean) message.getPayload().getParameter("showCoins");
 
         }
 

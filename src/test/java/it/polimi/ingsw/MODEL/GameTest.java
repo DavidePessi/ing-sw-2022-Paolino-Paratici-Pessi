@@ -23,7 +23,8 @@ public class GameTest extends TestCase {
     @RepeatedTest(100)
     public void testStartGame() throws MissingStudentException, MissingCloudException, MissingPlayerException, Exception {
         Game g = new Game("io", "tu");
-        g.startGame();
+        boolean easy=true;
+        g.startGame(easy);
 
         //verifico che tutte le nuvole hanno studenti sopra
         assertTrue(g.getCloud(0).getStudents() instanceof StudentGroup);

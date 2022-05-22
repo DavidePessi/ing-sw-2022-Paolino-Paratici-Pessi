@@ -199,7 +199,8 @@ public class ControllerActionTest extends TestCase {
     @RepeatedTest(100)
     public void testUseCharacter() throws Exception{
         Game g = new Game("io", "tu");
-        g.startGame();
+        boolean easy=true;
+        g.startGame(easy);
         List<String> l = new ArrayList<>();
         l.add("io");
         l.add("tu");

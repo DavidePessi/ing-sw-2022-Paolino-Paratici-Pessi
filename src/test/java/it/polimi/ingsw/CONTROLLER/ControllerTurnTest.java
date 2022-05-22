@@ -35,7 +35,8 @@ public class ControllerTurnTest extends TestCase {
         //caso in cui voglio lanciare una carta personaggio
         //todo si potrebbe fare per tutti i personaggi il problema sarebbe la ripetizione dei test
         Game g = new Game("io", "tu");
-        g.startGame();
+        boolean easy = true;
+        g.startGame(easy);
         List<String> l = new ArrayList<>();
         l.add("io");
         l.add("tu");

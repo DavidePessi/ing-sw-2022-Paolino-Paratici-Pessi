@@ -170,115 +170,123 @@ public class Game extends Observable {
         currentPlayer = listPlayer.get(0).getNicknameClient();
     }
 
-    public void startGame() throws MissingStudentException {
+    public void startGame(boolean easy) throws MissingStudentException {
 
-        //estrarre casualmente 3 carte
-        Random random = new Random();
-        for (int i = 0; i < 3; i++) {
-            boolean isPresent = false;
-            int num = random.nextInt(8);
+        if(easy==false){
 
-            if (num == 0) {
-                for (CharacterCard c : characterCards) {
-                    if (c.getNameCard().equals("Jester")) {
-                        isPresent = true;
-                    }
-                }
-                if (!isPresent) {
-                    characterCards.add(new Jester(this));
-                } else {
-                    i--;
-                }
+            //da un coin ad ogni player
+            for(Player player: listPlayer){
+                player.receiveCoin();
             }
 
-            if (num == 1) {
-                for (CharacterCard c : characterCards) {
-                    if (c.getNameCard().equals("Knight")) {
-                        isPresent = true;
-                    }
-                }
-                if (!isPresent) {
-                    characterCards.add(new Knight(this));
-                } else {
-                    i--;
-                }
-            }
+            //estrarre casualmente 3 carte
+            Random random = new Random();
+            for (int i = 0; i < 3; i++) {
+                boolean isPresent = false;
+                int num = random.nextInt(8);
 
-            if (num == 2) {
-                for (CharacterCard c : characterCards) {
-                    if (c.getNameCard().equals("Minstrell")) {
-                        isPresent = true;
+                if (num == 0) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("Jester")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new Jester(this));
+                    } else {
+                        i--;
                     }
                 }
-                if (!isPresent) {
-                    characterCards.add(new Minstrell(this));
-                } else {
-                    i--;
-                }
-            }
 
-            if (num == 3) {
-                for (CharacterCard c : characterCards) {
-                    if (c.getNameCard().equals("Pirate")) {
-                        isPresent = true;
+                if (num == 1) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("Knight")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new Knight(this));
+                    } else {
+                        i--;
                     }
                 }
-                if (!isPresent) {
-                    characterCards.add(new Pirate(this));
-                } else {
-                    i--;
-                }
-            }
 
-            if (num == 4) {
-                for (CharacterCard c : characterCards) {
-                    if (c.getNameCard().equals("PostMan")) {
-                        isPresent = true;
+                if (num == 2) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("Minstrell")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new Minstrell(this));
+                    } else {
+                        i--;
                     }
                 }
-                if (!isPresent) {
-                    characterCards.add(new PostMan(this));
-                } else {
-                    i--;
-                }
-            }
 
-            if (num == 5) {
-                for (CharacterCard c : characterCards) {
-                    if (c.getNameCard().equals("Priest")) {
-                        isPresent = true;
+                if (num == 3) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("Pirate")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new Pirate(this));
+                    } else {
+                        i--;
                     }
                 }
-                if (!isPresent) {
-                    characterCards.add(new Priest(this));
-                } else {
-                    i--;
-                }
-            }
 
-            if (num == 6) {
-                for (CharacterCard c : characterCards) {
-                    if (c.getNameCard().equals("Satyr")) {
-                        isPresent = true;
+                if (num == 4) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("PostMan")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new PostMan(this));
+                    } else {
+                        i--;
                     }
                 }
-                if (!isPresent) {
-                    characterCards.add(new Satyr(this));
-                } else {
-                    i--;
-                }
-            }
 
-            if (num == 7) {
-                for (CharacterCard c : characterCards) {
-                    if (c.getNameCard().equals("Woman")) {
-                        isPresent = true;
+                if (num == 5) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("Priest")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new Priest(this));
+                    } else {
+                        i--;
                     }
                 }
-                if (!isPresent) {
-                    characterCards.add(new Woman(this));
-                } else {
-                    i--;
+
+                if (num == 6) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("Satyr")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new Satyr(this));
+                    } else {
+                        i--;
+                    }
+                }
+
+                if (num == 7) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("Woman")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new Woman(this));
+                    } else {
+                        i--;
+                    }
                 }
             }
         }
@@ -599,8 +607,16 @@ public class Game extends Observable {
 
         else if(s.equals("STARTGAME")){
 
-            for(int i = 1; i <= characterCards.size(); i++) {
-                pay.addParameter("charactercard"+i, new ConcreteCharacterCard(characterCards.get(i-1).getNameCard(), characterCards.get(i-1).getPrice()));
+            //se sei nel difficult fai:
+            if(!characterCards.isEmpty()) {
+                for (int i = 1; i <= characterCards.size(); i++) {
+                    pay.addParameter("charactercard" + i, new ConcreteCharacterCard(characterCards.get(i - 1).getNameCard(), characterCards.get(i - 1).getPrice()));
+                }
+
+                pay.addParameter("showCoins", true);
+            }
+            else{
+                pay.addParameter("showCoins", false);
             }
 
             for(int i = 0; i < listIsland.size(); i++) {

@@ -13,7 +13,7 @@ public class Player implements Serializable {
     private Card currentCard;
     private DiningRoom diningRoom;
     private Entrance entrance;
-    private int numCoins;
+    private int numCoins ;
 
     public Player (String nickname, Team team){
         this.nickname = nickname;
@@ -22,7 +22,11 @@ public class Player implements Serializable {
         entrance = new Entrance();
         deck = new Deck();
         professors = new ArrayList<>();
-        numCoins = 1;
+        numCoins = 0;
+    }
+
+    public int getNumCoins(){
+        return numCoins;
     }
 
     public Team getTeam(){

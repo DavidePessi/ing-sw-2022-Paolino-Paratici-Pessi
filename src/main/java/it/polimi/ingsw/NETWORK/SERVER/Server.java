@@ -81,6 +81,7 @@ public class Server {
 
     //Wait for another player
     public synchronized void lobby2E(SocketClientConnection c, String name) throws Exception{
+        boolean easy=true;
         //public synchronized void lobby(Connection c, String name){
         if(!waitingRoom2E.containsKey(name)){
             waitingRoom2E.put(name, c);
@@ -112,7 +113,7 @@ public class Server {
             playingConnection.put(c2, c1);
             waitingRoom2E.clear();
 
-            model.startGame();
+            model.startGame(easy);
             System.out.println("Game created");
         }
     }
@@ -148,7 +149,8 @@ public class Server {
             playingConnection.put(c2, c1);
             waitingRoom2D.clear();
 
-            model.startGame();
+            boolean easy = false;
+            model.startGame(easy);
             System.out.println("Game created");
         }
     }
@@ -194,7 +196,8 @@ public class Server {
             playingConnection.put(c3, c2);
             waitingRoom3E.clear();
 
-            model.startGame();
+            boolean easy=true;
+            model.startGame(easy);
             System.out.println("Game created");
         }
     }
@@ -238,7 +241,8 @@ public class Server {
             playingConnection.put(c3, c2);
             waitingRoom3D.clear();
 
-            model.startGame();
+            boolean easy=false;
+            model.startGame(easy);
             System.out.println("Game created");
         }
     }
@@ -293,7 +297,8 @@ public class Server {
             playingConnection.put(c4, c3);
             waitingRoom4E.clear();
 
-            model.startGame();
+            boolean easy=true;
+            model.startGame(easy);
             System.out.println("Game created");
         }
     }
@@ -347,7 +352,8 @@ public class Server {
             playingConnection.put(c4, c3);
             waitingRoom4D.clear();
 
-            model.startGame();
+            boolean easy=false;
+            model.startGame(easy);
             System.out.println("Game created");
         }
     }
