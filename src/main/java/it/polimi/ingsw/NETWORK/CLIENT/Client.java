@@ -61,7 +61,7 @@ public class Client {
                         else if (ServerAction.ERROR_SETUP.equals(in2.getServerHeader().getServerAction())){
                             System.out.println(in2.getPayload().getParameter("ERROR_SETUP"));
                         }
-                            //HEADER DI INVIO BOARD INIZIALE
+                            //HEADER DI LOBBY CREATA
                         else if (ServerAction.OK_START.equals(in2.getServerHeader().getServerAction())){
                             System.out.println(in2.getPayload().getParameter("OK_START"));
                             clientAction = ClientAction.SEND_GAMEMODE;
@@ -69,6 +69,7 @@ public class Client {
                             //HEADER DI UPDATE BOARD
                         else if(ServerAction.UPDATE_BOARD.equals(in2.getServerHeader().getServerAction())){
                             model.update(in2);
+                            model.showBoard();
                             //System.out.println("messaggio letto dal client");
                         }
                             //HEADER PER CHIUSURA CONNESSIONE
@@ -79,6 +80,16 @@ public class Client {
                             //HEADER DI FINE PARTITA
                         else if(ServerAction.END_GAME.equals(in2.getServerHeader().getServerAction())){
                             //model.endGame(in2, nick);
+                        }
+                            //HEADER DI ERRORE DI INSERIMENTO
+                        else if(ServerAction.CLIENT_ERROR.equals(in2.getServerHeader().getServerAction())){
+                            if(in2.getPayload().getParameter("nickname").equals(nick)) {
+                                model.clientError(in2);
+                            }
+                        }
+                        else if(ServerAction.PING.equals(in2.getServerHeader().getServerAction())){
+                            System.out.println(in2.getServerHeader().getDescription());
+                            setActive(false);
                         }
                     }
 

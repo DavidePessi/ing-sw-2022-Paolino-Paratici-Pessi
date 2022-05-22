@@ -49,7 +49,7 @@ public class PlayerTest extends TestCase {
         assertEquals(num,p.numProfessor());
     }
 
-    public void testPlayCard() throws MissingPlayerException{
+    public void testPlayCard() throws MissingPlayerException, MissingCardException{
         Game g = new Game("io", "tu");
         int num = 3;
         int numCardInDeck_Prima, numCardInDeck_Dopo;
@@ -61,7 +61,7 @@ public class PlayerTest extends TestCase {
         assertEquals(numCardInDeck_Dopo, numCardInDeck_Prima-1);
     }
 
-    public void testMoveStudentInDiningRoom() {
+    public void testMoveStudentInDiningRoom() throws Exception{
 
         Team t = new Team(ColourTower.BLACK,8);
         Player pl = new Player("io", t);
@@ -76,7 +76,7 @@ public class PlayerTest extends TestCase {
         assertEquals(numDopoStudentiInDiningRoom, numPrimaStudentiInDiningRoom+1);
     }
 
-    public void testMoveStudentInIsland() {
+    public void testMoveStudentInIsland() throws Exception{
         Team t = new Team(ColourTower.BLACK, 8);
         Player p = new Player("io",t);
         Island i = new Island(1);
@@ -130,7 +130,7 @@ public class PlayerTest extends TestCase {
         assertEquals(1, p.numProfessor());
     }
 
-    public void testNumStudentsDiningRoom() {
+    public void testNumStudentsDiningRoom() throws Exception{
         Team t = new Team(ColourTower.BLACK, 8);
         Player p = new Player("io",t);
         StudentGroup s = new StudentGroup();

@@ -4,4 +4,5 @@ public class MissingStudentException extends Exception{
     public MissingStudentException(String message) {
         super(message);
     }
+    public MissingStudentException(){}
 }

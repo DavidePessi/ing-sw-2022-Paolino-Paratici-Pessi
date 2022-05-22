@@ -34,58 +34,7 @@ public class StudentGroup implements Serializable {
         return numC;
     }
 
-    /*public int countBlueStudent(){
-        int numBlue=0;
-        for (Student student : listStudent) {
-            if (student.getColour().equals(Colour.BLUE)) {
-                numBlue++;
-            }
-        }
-        return numBlue;
-    }
-    public int countGreenStudent(){
-        int numGreen=0;
-        for (Student student : listStudent) {
-            if (student.getColour().equals(Colour.GREEN)) {
-                numGreen += 1;
-            }
-        }
-        return numGreen;
-    }
-    public int countPinkStudent(){
-        int numPink=0;
-        for (Student student : listStudent) {
-            if (student.getColour().equals(Colour.PINK)) {
-                numPink++;
-            }
-        }
-        return numPink;
-    }
-    public int countRedStudent(){
-        int numRed=0;
-        for (Student student : listStudent) {
-            if (student.getColour().equals(Colour.RED)) {
-                numRed++;
-            }
-        }
-        return numRed;
-    }
-    public int countYellowStudent(){
-        int numYellow=0;
-        for (Student student : listStudent) {
-            if (student.getColour().equals(Colour.YELLOW)) {
-                numYellow++;
-            }
-        }
-        return numYellow;
-    }*/
-
-    /*public void removeStudent(Student student){
-        listStudent.remove(listStudent.indexOf(student));
-        // it may writeen like this: listStudent.remove(student);
-    }*/
-
-    public void removeStudent(Colour colour) throws IllegalArgumentException {
+    public void removeStudent(Colour colour) throws MissingStudentException{
         boolean removed = false;
         for (int i = 0; i < listStudent.size() && !removed; i++) {
             if (listStudent.get(i).getColour().equals(colour)) {
@@ -93,7 +42,7 @@ public class StudentGroup implements Serializable {
                 removed = true;
             }
         }
-        if (!removed) throw new IllegalArgumentException();
+        if (!removed) throw new MissingStudentException();
     }
 
     //delete every students from the list listStudent

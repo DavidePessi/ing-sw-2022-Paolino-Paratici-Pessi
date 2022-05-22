@@ -1,5 +1,7 @@
 package it.polimi.ingsw.MODEL;
 
+import it.polimi.ingsw.MODEL.Exception.MissingStudentException;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,7 +17,7 @@ public class DiningRoom implements Serializable {
         studentGroup.addStudent(colour);
     }
 
-    public void remove(Colour colour){studentGroup.removeStudent(colour);}
+    public void remove(Colour colour) throws MissingStudentException {studentGroup.removeStudent(colour);}
 
     public int numStudents(Colour colour) {
         return studentGroup.countStudentsOfColour(colour);

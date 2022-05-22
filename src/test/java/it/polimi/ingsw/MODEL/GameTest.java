@@ -23,7 +23,8 @@ public class GameTest extends TestCase {
     @RepeatedTest(100)
     public void testStartGame() throws MissingStudentException, MissingCloudException, MissingPlayerException, Exception {
         Game g = new Game("io", "tu");
-        boolean easy=true;
+
+        boolean easy = true;
         g.startGame(easy);
 
         //verifico che tutte le nuvole hanno studenti sopra
@@ -59,7 +60,7 @@ public class GameTest extends TestCase {
 
     /*Ci sono 3 casi in cui deve restituire true, vanno poi testati gli altri 2*/
     @Test
-    public void testCheckWin() {
+    public void testCheckWin() throws MissingCardException{
         Game g = new Game("io", "tu");
         Assertions.assertEquals(false, g.checkWin());
         for(int i=1; i<=10; i++){
@@ -69,7 +70,7 @@ public class GameTest extends TestCase {
     }
 
     @Test
-    public void testTheWinnerIs() throws MissingPlayerException, MissingTowerException {
+    public void testTheWinnerIs() throws MissingPlayerException, MissingTowerException, Exception {
         Game g = new Game("io", "tu");
         StudentGroup s = new StudentGroup();
         Colour c = Colour.GREEN;
@@ -100,7 +101,7 @@ public class GameTest extends TestCase {
 
 
     @Test
-    public void testDoMoveMotherNature() throws MissingPlayerException {
+    public void testDoMoveMotherNature() throws MissingPlayerException, Exception {
         Game g = new Game ("io", "tu");
 
         Island oldIsland = g.getIsland(0);
@@ -114,7 +115,7 @@ public class GameTest extends TestCase {
     }
 
     @Test
-    public void testDoMoveStudentInDiningRoom()throws MissingPlayerException {
+    public void testDoMoveStudentInDiningRoom()throws MissingPlayerException, Exception {
         Game g = new Game("io",  "tu");
         StudentGroup studentGroup = new StudentGroup();
         studentGroup.addStudent(Colour.GREEN); //aggiungiamo uno studente di quel colore per testare
@@ -157,7 +158,7 @@ public class GameTest extends TestCase {
 
     //dobbiamo anche controllare gli studenti in entrance
     @Test
-    public void testDoMoveStudentInIsland() throws MissingPlayerException{
+    public void testDoMoveStudentInIsland() throws MissingPlayerException, Exception{
         Game g = new Game("io", "tu");
         int num = 3;
         int green_prima, green_dopo;
@@ -199,7 +200,7 @@ public class GameTest extends TestCase {
     }
 
     @Test
-    public void testCheckProfessor() throws MissingStudentException, MissingPlayerException, MissingProfessorException {
+    public void testCheckProfessor() throws MissingPlayerException, MissingProfessorException, Exception {
         Game g = new Game("io", "tu");
 
         Colour col = Colour.BLUE;
@@ -237,7 +238,7 @@ public class GameTest extends TestCase {
     }
 
     @Test
-    public void testCheckTowers() throws MissingIslandException, MissingPlayerException, MissingTowerException {
+    public void testCheckTowers() throws MissingIslandException, MissingPlayerException, MissingTowerException, Exception {
         Game g = new Game("io", "tu");
 
         //caso non esiste l'isola

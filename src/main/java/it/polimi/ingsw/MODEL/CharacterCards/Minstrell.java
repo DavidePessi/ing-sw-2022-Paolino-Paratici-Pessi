@@ -41,6 +41,7 @@ public class Minstrell extends ConcreteCharacterCard implements Decorator, Seria
             price = price+1;
         }
         //tolgo gli studenti
+
         this.game.getPlayer(nickname).removeStudentFromDiningRoom(colour);
         this.game.getPlayer(nickname).removeStudentFromEntrance(colour2);
 

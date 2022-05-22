@@ -1,6 +1,7 @@
 package it.polimi.ingsw.MODEL.CharacterCards;
 
 import it.polimi.ingsw.MODEL.Colour;
+import it.polimi.ingsw.MODEL.Exception.PossibleWinException;
 import it.polimi.ingsw.MODEL.Game;
 import it.polimi.ingsw.MODEL.Exception.MissingStudentException;
 import it.polimi.ingsw.MODEL.StudentGroup;
@@ -60,15 +61,19 @@ public class Priest extends ConcreteCharacterCard implements Decorator, Serializ
     }
 
     @Override
-    public void effect(String nickname, int num, Colour colour)  {
-        if(price==initialPrice){
-            price = price+1;
-        }
+    public void effect(String nickname, int num, Colour colour) throws MissingStudentException, PossibleWinException {
+
         pool.removeStudent(colour);
         game.getIsland(num).addStudent(colour);
 
         try {
             pool.addStudent(game.getBag().pullOut());
-        }catch(MissingStudentException e){}
+        }catch(MissingStudentException e){
+            throw new PossibleWinException();
+        }
+
+        if(price==initialPrice){
+            price = price+1;
+        }
     }
 }

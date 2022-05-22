@@ -22,7 +22,6 @@ public class ControllerAction {
         this.currentAction = Action.MoveStudent1;
     }
 
-
     /*
     * il metodo ha la funzione di verificare se la carta giocata dall'utente nickname
     * è valida ovvero, se nessuno ha ancora giocato quella carta o (nel caso sia già stata giocata)
@@ -37,7 +36,6 @@ public class ControllerAction {
                 if(client != nickname) {
                     try {
                         if (game.getPlayer(client).getLastPlayedCard().getValue() == numCard) {
-
                             toReturn = false;
                             break;
                         }
@@ -81,16 +79,24 @@ public class ControllerAction {
     public void playCard(String nickname, int numCard) throws MissingCardException {
         if(checkCardToPlay(numCard,nickname)){
             this.game.doPlayCard(nickname, numCard);
-        }
-        else{
-            throw new MissingCardException("You can't");
+        } else{
+            throw new MissingCardException("carta selezionata non giocabile");
         }
     }
 
-    public void moveMotherNature(int numMovement)throws WrongActionException {
+
+    public void moveMotherNature(int numMovement)throws Exception {
         if(currentAction == Action.MoveMotherNature) {
-            this.game.doMoveMotherNature(numMovement);
-            setCurrentAction(Action.TakeCloud);
+
+            try{
+                this.game.doMoveMotherNature(numMovement);
+                setCurrentAction(Action.TakeCloud);
+            } catch (MissingTowerException e) {
+                if (game.checkWin()) {
+                    game.theWinnerIs();
+                    //todo per fine game
+                }
+            } catch (MissingIslandException e){}
         }
         else{
             throw new WrongActionException();
@@ -103,23 +109,26 @@ public class ControllerAction {
     //3. cambio azione corrente
     public void moveStudentInDiningRoom(String nickname, Colour colour)throws WrongActionException{
         if(currentAction == Action.MoveStudent1 || currentAction == Action.MoveStudent2 || currentAction == Action.MoveStudent3) {
+            try {
+                game.doMoveStudentInDiningRoom(nickname, colour);
 
-            game.doMoveStudentInDiningRoom(nickname, colour);
+                if (this.currentAction == Action.MoveStudent1) {
+                    setCurrentAction(Action.MoveStudent2);
 
-            if(this.currentAction == Action.MoveStudent1){
-                setCurrentAction(Action.MoveStudent2);
+                    this.game.checkProfessor(colour);
+                } else if (this.currentAction == Action.MoveStudent2) {
+                    setCurrentAction(Action.MoveStudent3);
 
-                this.game.checkProfessor(colour);
-            }
-            else if(this.currentAction == Action.MoveStudent2){
-                setCurrentAction(Action.MoveStudent3);
+                    this.game.checkProfessor(colour);
+                } else if (this.currentAction == Action.MoveStudent3) {
+                    setCurrentAction(Action.MoveMotherNature);
 
-                this.game.checkProfessor(colour);
-            }
-            else if(this.currentAction == Action.MoveStudent3){
-                setCurrentAction(Action.MoveMotherNature);
-
-                this.game.checkProfessor(colour);
+                    this.game.checkProfessor(colour);
+                }
+            }catch(MissingStudentException e){
+                game.notifyError("studente non presente nella Entrance", nickname);
+            }catch(Exception e){
+                game.notifyError(e.getMessage(), nickname);
             }
 
         }
@@ -128,58 +137,54 @@ public class ControllerAction {
         }
     }
 
-    //il client chiama lo spostamento di uno studente su un'isola
-    //1. richiamo la funzione se è il momento di spostare gli studenti (altrimenti lancio un'eccezione)
-    //2. se è l'ultimo studente devo verifico le influenze sulll'isola e sostituisco eventuali torri
-    //3. cambio azione corrente
+    /*
+    * il client chiama lo spostamento di uno studente su un'isola
+    * 1. richiamo la funzione se è il momento di spostare gli studenti (altrimenti lancio un'eccezione)
+    * 2. se è l'ultimo studente devo verifico le influenze sulll'isola e sostituisco eventuali torri
+    * 3. cambio azione corrente
+    */
     public void moveStudentInIsland(String nickname, Colour colour, int numIsland)throws WrongActionException{
         if(currentAction == Action.MoveStudent1 || currentAction == Action.MoveStudent2 || currentAction == Action.MoveStudent3) {
-            this.game.doMoveStudentInIsland(nickname, colour, numIsland);
+            try {
+                this.game.doMoveStudentInIsland(nickname, colour, numIsland);
 
-            if(this.currentAction == Action.MoveStudent1){
-                setCurrentAction(Action.MoveStudent2);
+                if (this.currentAction == Action.MoveStudent1) {
+                    setCurrentAction(Action.MoveStudent2);
 
-            }
-            else if(this.currentAction == Action.MoveStudent2){
-                setCurrentAction(Action.MoveStudent3);
+                } else if (this.currentAction == Action.MoveStudent2) {
+                    setCurrentAction(Action.MoveStudent3);
 
-            }
-            else if(this.currentAction == Action.MoveStudent3){
-                setCurrentAction(Action.MoveMotherNature);
+                } else if (this.currentAction == Action.MoveStudent3) {
+                    setCurrentAction(Action.MoveMotherNature);
+                }
 
-                try {
-                    this.game.checkTowers(4);
-                }catch(MissingTowerException e){
-                    if(game.checkWin()){
-                        game.theWinnerIs();
-                    }
-                }catch(MissingIslandException e){}
+            } catch(MissingStudentException e){
+                game.notifyError("studente non presente nella Entrance", nickname);
             }
         }
         else{
             throw new WrongActionException();
         }
     }
-
 
 
     public void takeCloud(String nickname, int numCloud)throws WrongActionException{
-        try {
-            if(currentAction.equals(Action.TakeCloud)){
-                    game.doTakeCloud(nickname, numCloud);
-                    setCurrentAction(Action.MoveStudent1);
-                }
-            else {
-                throw new WrongActionException();
+
+        if(currentAction.equals(Action.TakeCloud)){
+            try {
+                game.doTakeCloud(nickname, numCloud);
+                setCurrentAction(Action.MoveStudent1);
+            } catch(MissingCloudException e){
+                game.notifyError("nuvola selezionata vuota seleziona un'altra nuvola", nickname);
             }
-        }catch (MissingCloudException e) {
+
+        } else {
             throw new WrongActionException();
         }
     }
 
-    //todo da togliere o cambiare siccome esiste già in controller action difficult
     public void useCharacter(CharacterParameters charPar) throws Exception {
-        game.doPlayCharacterCard(charPar);
+        game.notifyError("mossa non valida in gamemode: easy", charPar.getPlayerName());
 
     }
 

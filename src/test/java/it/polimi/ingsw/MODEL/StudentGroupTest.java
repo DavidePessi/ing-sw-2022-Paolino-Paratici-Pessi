@@ -19,7 +19,7 @@ public class StudentGroupTest extends TestCase {
         }
     }
 
-    public void testRemoveStudent() {
+    public void testRemoveStudent() throws Exception{
         StudentGroup s = new StudentGroup();
         Colour c = Colour.GREEN;
 

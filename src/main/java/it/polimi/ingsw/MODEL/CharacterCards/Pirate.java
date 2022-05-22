@@ -50,10 +50,11 @@ public class Pirate extends ConcreteCharacterCard implements Decorator, Serializ
 
     @Override
     public void effect(String nickname, int num) throws Exception{
-        if(price==initialPrice){
+        game.checkTowers(num);
+
+        if(price == initialPrice){
             price = price+1;
         }
-        game.checkTowers(num);
     }
 
     @Override

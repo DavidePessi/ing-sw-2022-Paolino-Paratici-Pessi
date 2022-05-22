@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 
 public class PirateTest extends TestCase {
 
-    public void testEffect() {
+    public void testEffect() throws Exception{
         Game game = new Game("gio", "ila");
         CharacterParameters cp = new CharacterParameters("tu", "Pirate", 3);
         //TODO dobbiamo verificare che esiste poi qualcosa che ci controlla: che "tu" sia nel game, che "tu" stia giocando in quel momento
@@ -65,10 +65,14 @@ public class PirateTest extends TestCase {
             game.getPlayer("gio").moveStudentInIsland(Colour.GREEN, game.getIsland(3));
         } catch (MissingPlayerException e) {
             e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
         }
         try {
             game.getPlayer("gio").moveStudentInIsland(Colour.GREEN, game.getIsland(3));
         } catch (MissingPlayerException e) {
+            e.printStackTrace();
+        } catch (Exception e){
             e.printStackTrace();
         }
 
@@ -93,25 +97,35 @@ public class PirateTest extends TestCase {
             game.getPlayer("ila").moveStudentInIsland(Colour.RED, game.getIsland(3));
         } catch (MissingPlayerException e) {
             e.printStackTrace();
-        }
-        try {
-            game.getPlayer("ila").moveStudentInIsland(Colour.RED, game.getIsland(3));
-        } catch (MissingPlayerException e) {
+        } catch (Exception e){
             e.printStackTrace();
         }
         try {
             game.getPlayer("ila").moveStudentInIsland(Colour.RED, game.getIsland(3));
         } catch (MissingPlayerException e) {
             e.printStackTrace();
-        }
-        try {
-            game.getPlayer("ila").moveStudentInIsland(Colour.RED, game.getIsland(3));
-        } catch (MissingPlayerException e) {
+        } catch (Exception e){
             e.printStackTrace();
         }
         try {
             game.getPlayer("ila").moveStudentInIsland(Colour.RED, game.getIsland(3));
         } catch (MissingPlayerException e) {
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            game.getPlayer("ila").moveStudentInIsland(Colour.RED, game.getIsland(3));
+        } catch (MissingPlayerException e) {
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            game.getPlayer("ila").moveStudentInIsland(Colour.RED, game.getIsland(3));
+        } catch (MissingPlayerException e) {
+            e.printStackTrace();
+        } catch (Exception e){
             e.printStackTrace();
         }
         game.checkProfessor(Colour.RED);

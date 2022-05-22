@@ -8,6 +8,8 @@ import it.polimi.ingsw.NETWORK.MESSAGES.ServerHeader;
 import it.polimi.ingsw.NETWORK.MESSAGES.ServerMessage;
 import it.polimi.ingsw.NETWORK.VIEW.RemoteView;
 import it.polimi.ingsw.NETWORK.UTILS.Observable;
+
+
 import java.util.*;
 
 
@@ -170,6 +172,7 @@ public class Game extends Observable {
         currentPlayer = listPlayer.get(0).getNicknameClient();
     }
 
+
     public void startGame(boolean easy) throws MissingStudentException {
 
         if(easy==false){
@@ -290,16 +293,16 @@ public class Game extends Observable {
                 }
             }
         }
-        /*
-            characterCards.add(0, new Jester(this));
-            characterCards.add(1, new Knight(this));
-            characterCards.add(2, new Minstrell(this));
-            characterCards.add(3, new Pirate(this));
-            characterCards.add(4, new PostMan(this));
-            characterCards.add(5, new Priest(this));
-            characterCards.add(6, new Satyr(this));
-            characterCards.add(7, new Woman(this));
-        */
+    /*
+        characterCards.add(0, new Jester(this));
+        characterCards.add(1, new Knight(this));
+        characterCards.add(2, new Minstrell(this));
+        characterCards.add(3, new Pirate(this));
+        characterCards.add(4, new PostMan(this));
+        characterCards.add(5, new Priest(this));
+        characterCards.add(6, new Satyr(this));
+        characterCards.add(7, new Woman(this));
+    */
         //characterCards.add(1, new ConcreteCharacterCard());
         //characterCards.add(2, new ConcreteCharacterCard());
 
@@ -338,6 +341,7 @@ public class Game extends Observable {
         }
         sendBoard("STARTGAME");
     }
+
 
     /*
     * if the game is finished and there's a winner return True, else return False
@@ -388,7 +392,7 @@ public class Game extends Observable {
     }
 
 
-    public void doMoveMotherNature(int numMovement) { //metti eccezione
+    public void doMoveMotherNature(int numMovement) throws Exception{ //metti eccezione
         /*
         1. viene sommato il numero dell'isola su cui si trova madre natura con il numero di spostamenti che deve fare
         2. si fa modulo num isole che ci sono, si trova il numero dell'isola su cui madre natura si deve spostare
@@ -403,6 +407,9 @@ public class Game extends Observable {
                 if (numMovement <= this.getPlayer(currentPlayer).getLastPlayedCard().getMovement() + 2) {
                     motherNature.move(getIsland((numMovement + motherNature.getNumIsland()) % listIsland.size()));
                 }
+                else {
+                    throw new Exception("madre natura non si può spostare di cosi tante isole");
+                }
             } catch (MissingPlayerException | MissingCardException e) {
                 e.printStackTrace();
             }
@@ -411,15 +418,19 @@ public class Game extends Observable {
                 if (numMovement <= this.getPlayer(currentPlayer).getLastPlayedCard().getMovement()) {
                     motherNature.move(getIsland((numMovement + motherNature.getNumIsland()) % listIsland.size()));
                 }
+                else {
+                    throw new Exception("madre natura non si può spostare di cosi tante isole");
+                }
             } catch (MissingPlayerException | MissingCardException e) {
                 e.printStackTrace();
             }
         }
+        checkTowers(motherNature.getNumIsland());
         sendBoard("MoveMotherNature");
     }
 
 
-    public void doMoveStudentInDiningRoom(String nickname, Colour colour) {
+    public void doMoveStudentInDiningRoom(String nickname, Colour colour) throws Exception {
         try {
             this.getPlayer(nickname).moveStudentInDiningRoom(colour);
         } catch (MissingPlayerException e) {
@@ -447,7 +458,7 @@ public class Game extends Observable {
     }
 
 
-    public void doMoveStudentInIsland(String nickname, Colour colour, int numIsland) {
+    public void doMoveStudentInIsland(String nickname, Colour colour, int numIsland)throws MissingStudentException {
         for (Player player : listPlayer) {
             if (player.getNicknameClient().equals(nickname)) {
                 player.moveStudentInIsland(colour, this.getIsland(numIsland));
@@ -459,7 +470,7 @@ public class Game extends Observable {
     public Island getIsland(int numIsland) throws IllegalArgumentException {
         Island island = null;
         if (numIsland < 0 || numIsland > (listIsland.size() - 1)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("isola selezionata non esistente");
         } else {
             for (Island value : listIsland) {
                 if (value.getNumIsland() == numIsland) {
@@ -471,7 +482,7 @@ public class Game extends Observable {
     }
 
 
-    public void doPlayCard(String nickname, int numCard) {
+    public void doPlayCard(String nickname, int numCard) throws MissingCardException{
         for (Player player : listPlayer) {
             if (player != null) {
                 if (player.getNicknameClient().equals(nickname)) {
@@ -650,7 +661,10 @@ public class Game extends Observable {
 
     }
 
-
+    /*
+    * il metodo ha la funzione di verificare dopo lo spostamento di uno studente che i professori
+    * assegnati al player corretto, se così non è riassegna al player corretto i professori
+     */
     public void checkProfessor(Colour colour) {
 
         Player MaxPlayer = listPlayer.get(0);
@@ -691,7 +705,6 @@ public class Game extends Observable {
     }
 
 
-
     /*
     * il metodo ha la funzione di calcolare l'influenza degli studenti
     * sull'isola ed in base a chi ha più influenza sostituire le torri o meno
@@ -712,7 +725,7 @@ public class Game extends Observable {
         //se non esiste lancio un eccezione
         if (island == null) {
             characterCardThrown = "";
-            throw new MissingIslandException();
+            throw new MissingIslandException("Isola selezionata non esistente");
         }
 
         //altrimenti effettuo il conto degli studenti per le torri
@@ -970,51 +983,60 @@ public class Game extends Observable {
     }
 
 
-    public void doPlayCharacterCard(CharacterParameters charPar) throws MissingCardException, Exception {
+    public void doPlayCharacterCard(CharacterParameters charPar) throws Exception {
+        //per capire sia stata giocata o meno metto un booleano
+        boolean cardplayed = false;
 
         //verifio che esiste tra le carte in gioco
+        //e se esiste richiamo l'effetto
         for (ConcreteCharacterCard cha : characterCards) {
             if (cha.getNameCard().equals(charPar.getCharacterName())) {
-
                 if (cha.getNameCard().equals("Pirate")) {
                     getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     Pirate p = (Pirate) cha;
                     p.effect(charPar.getPlayerName(),charPar.getNum());
+                    cardplayed = true;
 
                 } else if (cha.getNameCard().equals("Satyr")) {
                     getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     Satyr s = (Satyr) cha;
                     s.effect(charPar.getPlayerName());
+                    cardplayed = true;
 
                 } else if (cha.getNameCard().equals("Woman")) {
                     getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     Woman w = (Woman) cha;
                     w.effect(charPar.getPlayerName(), charPar.getColour1());
+                    cardplayed = true;
 
                 } else if (cha.getNameCard().equals("Priest")) {
                     getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     Priest p = (Priest) cha;
                     p.effect(charPar.getPlayerName(), charPar.getNum(), charPar.getColour1());
-
+                    cardplayed = true;
 
                 } else if (cha.getNameCard().equals("PostMan")) {
                     getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     PostMan p = (PostMan) cha;
                     p.effect(charPar.getPlayerName());
+                    cardplayed = true;
 
                 } else if (cha.getNameCard().equals("Minstrell")) {
                     getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     Minstrell m = (Minstrell) cha;
                     try {
                         m.effect(charPar.getPlayerName(), charPar.getColour1(), charPar.getColour2(), charPar.getColour3(), charPar.getColour4());
+                        cardplayed = true;
                     } catch (Exception e1) {
                         m.effect(charPar.getPlayerName(), charPar.getColour1(), charPar.getColour2());
+                        cardplayed = true;
                     }
 
                 } else if (cha.getNameCard().equals("Knight")) {
                     getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     Knight k = (Knight) cha;
                     k.effect(charPar.getPlayerName());
+                    cardplayed = true;
 
                 } else if (cha.getNameCard().equals("Jester")) {
                     getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
@@ -1022,12 +1044,15 @@ public class Game extends Observable {
 
                     try {
                         j.effect(charPar.getPlayerName(), charPar.getColour1(), charPar.getColour2(), charPar.getColour3(), charPar.getColour4(), charPar.getColour5(), charPar.getColour6());
+                        cardplayed = true;
                     } catch (Exception e1) {
                         try {
                             j.effect(charPar.getPlayerName(), charPar.getColour1(), charPar.getColour2(), charPar.getColour3(), charPar.getColour4());
+                            cardplayed = true;
 
                         } catch (Exception e2) {
                             j.effect(charPar.getPlayerName(), charPar.getColour1(), charPar.getColour2());
+                            cardplayed = true;
                         }
 
                     }
@@ -1035,7 +1060,26 @@ public class Game extends Observable {
             }
 
         }
-        sendBoard("PlayCharacterCard");
+        if(cardplayed) {
+            sendBoard("PlayCharacterCard");
+        } else{
+            throw new Exception("carta personaggio selezionata no presente");
+        }
+    }
+
+    public void notifyError(String description, String nickname){
+        ServerMessage sm;
+        ServerHeader sh;
+        Payload pay;
+
+        //creo il messaggio dove specifico il player che ha sbagliato
+        sh = new ServerHeader(ServerAction.CLIENT_ERROR, description);
+        pay = new Payload();
+        pay.addParameter("nickname", nickname);
+        sm = new ServerMessage(sh, pay);
+
+        //notifico tutti
+        notify(sm);
     }
 
     //per testing

@@ -5,13 +5,16 @@ import it.polimi.ingsw.CONTROLLER.Exception.WrongClientException;
 import it.polimi.ingsw.MODEL.CharacterParameters;
 import it.polimi.ingsw.MODEL.Colour;
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
+import it.polimi.ingsw.MODEL.Exception.MissingCloudException;
 import it.polimi.ingsw.MODEL.Exception.MissingPlayerException;
+import it.polimi.ingsw.MODEL.Exception.PossibleWinException;
 import it.polimi.ingsw.MODEL.Game;
 import it.polimi.ingsw.NETWORK.MESSAGES.ClientMessage;
 import it.polimi.ingsw.NETWORK.UTILS.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class ControllerTurn implements Observer{
     private Game game;
@@ -42,11 +45,9 @@ public class ControllerTurn implements Observer{
         }
     }
 
-    //richiama verifyClient e dopodiche richiama la funzione corretta in ControllerAction
-
     /*
     * la funzione richiama il metodo richiesto dal client sse il player che sta chiamando è lo stesso che deve
-    * effettuare la mossa
+    * effettuare la mossa altrimenti notifica con un errore
     */
     public void callAction(Action action, String nickname, Colour colourParameter, int numberParameter, CharacterParameters charPar)throws WrongClientException {
         if(verifyClient(nickname)){
@@ -55,40 +56,61 @@ public class ControllerTurn implements Observer{
                 if(action.equals(Action.PlayCard)) {
                     try {
                         this.controllerAction.playCard(nickname, numberParameter);
-                    } catch (MissingCardException e) {}
+                    } catch (MissingCardException e) {
+                        game.notifyError(e.getMessage(), nickname);
+                    }
                     this.endTurn();
+                } else{
+                    game.notifyError("mossa selezionata non valida, prova a lanciare una carta assistente", nickname);
                 }
             }
             else{
                 if(action.equals(Action.MoveMotherNature)){
                     try{
                         this.controllerAction.moveMotherNature(numberParameter);
-                    }catch(WrongActionException e){}
+                    }catch(WrongActionException e){
+                        game.notifyError("mossa selezionata non valida", nickname);
+                    }catch(Exception e){
+                        game.notifyError(e.getMessage(), nickname);
+                    }
                 }
                 else if(action.equals(Action.MoveStudentInDiningRoom)){
                     try {
                         this.controllerAction.moveStudentInDiningRoom(nickname, colourParameter);
-                    }catch(WrongActionException e){}
+                    }catch(WrongActionException e){
+                        game.notifyError("mossa selezionata non valida", nickname);
+                    }
                 }
                 else if(action.equals(Action.MoveStudentInIsland)){
                     try {
                         this.controllerAction.moveStudentInIsland(nickname, colourParameter, numberParameter);
-                    }catch(WrongActionException e){}
+                    }catch(WrongActionException e){
+                        game.notifyError("mossa selezionata non valida", nickname);
+                    }
                 }
                 else if(action.equals(Action.TakeCloud)){
                     try {
                         this.controllerAction.takeCloud(nickname, numberParameter);
                         this.endTurn();
 
-                    }catch(WrongActionException e){}
+                    }catch(WrongActionException e) {
+                        game.notifyError("mossa selezionata non valida", nickname);
+                    }
                 }
                 else if(action.equals(Action.UseCharacter)){
                     if(this.youCanPlayCharacterCard == true) {
                         try {
                             this.controllerAction.useCharacter(charPar);
                             this.youCanPlayCharacterCard = false;
-                        }catch(Exception e){}
-                    }//TODO NON LO SO UN ELSE
+                        }catch(PossibleWinException e){
+                            //todo da gestire con fine game
+                        }
+                        catch(Exception e){
+                            game.notifyError(e.getMessage(), nickname);
+                        }
+                    } else{
+                        game.notifyError("la carta personaggio è già stata giocata questo turno", nickname);
+                    }
                 }
             }
         }
@@ -169,9 +191,9 @@ public class ControllerTurn implements Observer{
         try {
             callAction((Action) cm.getPayload().getParameter("Action"), (String) cm.getPayload().getParameter("nickname"), (Colour) cm.getPayload().getParameter("Colour"), (int)cm.getPayload().getParameter("num"), (CharacterParameters) cm.getPayload().getParameter("CharacterParameters"));
         } catch (WrongClientException e) {
-
+            game.notifyError("non e' il tuo turno", (String)cm.getPayload().getParameter("nickname"));
         }
-        //this.callAction(message......, message.......);
+
     }
 
     public void setMulligan(boolean mulligan) {

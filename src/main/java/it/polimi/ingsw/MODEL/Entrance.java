@@ -1,5 +1,7 @@
 package it.polimi.ingsw.MODEL;
 
+import it.polimi.ingsw.MODEL.Exception.MissingStudentException;
+
 import java.io.Serializable;
 
 public class Entrance implements Serializable {
@@ -10,8 +12,12 @@ public class Entrance implements Serializable {
         this.studentGroup = new StudentGroup();
     }
 
-    public void removeStudent(Colour colour){
-        this.studentGroup.removeStudent(colour);
+    public void removeStudent(Colour colour) throws MissingStudentException{
+        if(this.studentGroup.countStudentsOfColour(colour) > 0) {
+            this.studentGroup.removeStudent(colour);
+        } else {
+            throw new MissingStudentException();
+        }
     }
 
     public void addGroup(StudentGroup students) {

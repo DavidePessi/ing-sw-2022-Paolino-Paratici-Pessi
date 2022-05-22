@@ -81,8 +81,8 @@ public class Server {
 
     //Wait for another player
     public synchronized void lobby2E(SocketClientConnection c, String name) throws Exception{
-        boolean easy=true;
         //public synchronized void lobby(Connection c, String name){
+        boolean easy = true;
         if(!waitingRoom2E.containsKey(name)){
             waitingRoom2E.put(name, c);
         }
@@ -119,6 +119,7 @@ public class Server {
     }
 
     public synchronized void lobby2D(SocketClientConnection c, String name) throws Exception{
+        boolean easy = false;
         if(!waitingRoom2D.containsKey(name)){
             waitingRoom2D.put(name, c);
         }else{
@@ -149,14 +150,13 @@ public class Server {
             playingConnection.put(c2, c1);
             waitingRoom2D.clear();
 
-            boolean easy = false;
             model.startGame(easy);
             System.out.println("Game created");
         }
     }
 
     public synchronized void lobby3E(SocketClientConnection c, String name) throws Exception{
-
+        boolean easy = true;
         if(!waitingRoom3E.containsKey(name)){
             waitingRoom3E.put(name, c);
         }else{
@@ -196,14 +196,13 @@ public class Server {
             playingConnection.put(c3, c2);
             waitingRoom3E.clear();
 
-            boolean easy=true;
             model.startGame(easy);
             System.out.println("Game created");
         }
     }
 
     public synchronized void lobby3D(SocketClientConnection c, String name) throws Exception{
-
+        boolean easy = false;
         if(!waitingRoom3D.containsKey(name)){
             waitingRoom3D.put(name, c);
         }else{
@@ -241,14 +240,13 @@ public class Server {
             playingConnection.put(c3, c2);
             waitingRoom3D.clear();
 
-            boolean easy=false;
             model.startGame(easy);
             System.out.println("Game created");
         }
     }
 
     public synchronized void lobby4E(SocketClientConnection c, String name) throws Exception{
-
+        boolean easy = true;
         if(!waitingRoom4E.containsKey(name)){
             waitingRoom4E.put(name, c);
         }else{
@@ -297,14 +295,13 @@ public class Server {
             playingConnection.put(c4, c3);
             waitingRoom4E.clear();
 
-            boolean easy=true;
             model.startGame(easy);
             System.out.println("Game created");
         }
     }
 
     public synchronized void lobby4D(SocketClientConnection c, String name) throws Exception{
-
+        boolean easy = false;
         if(!waitingRoom4D.containsKey(name)){
             waitingRoom4D.put(name, c);
         }else{
@@ -352,7 +349,6 @@ public class Server {
             playingConnection.put(c4, c3);
             waitingRoom4D.clear();
 
-            boolean easy=false;
             model.startGame(easy);
             System.out.println("Game created");
         }

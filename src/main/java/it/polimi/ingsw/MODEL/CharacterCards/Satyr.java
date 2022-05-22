@@ -25,7 +25,7 @@ public class Satyr extends ConcreteCharacterCard implements Decorator, Serializa
     }
     @Override
     public void effect(String nickname){
-        if(price==initialPrice){
+        if(price == initialPrice){
             price = price+1;
         }
         //torri non valgono niente

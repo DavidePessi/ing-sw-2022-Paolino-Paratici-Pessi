@@ -1,6 +1,7 @@
 package it.polimi.ingsw.MODEL;
 
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
+import it.polimi.ingsw.MODEL.Exception.MissingStudentException;
 
 import java.io.Serializable;
 import java.util.*;
@@ -13,7 +14,7 @@ public class Player implements Serializable {
     private Card currentCard;
     private DiningRoom diningRoom;
     private Entrance entrance;
-    private int numCoins ;
+    private int numCoins;
 
     public Player (String nickname, Team team){
         this.nickname = nickname;
@@ -25,12 +26,12 @@ public class Player implements Serializable {
         numCoins = 0;
     }
 
-    public int getNumCoins(){
-        return numCoins;
-    }
-
     public Team getTeam(){
         return team;
+    }
+
+    public int getNumCoins(){
+        return numCoins;
     }
 
     public Card getLastPlayedCard() throws MissingCardException{
@@ -66,27 +67,22 @@ public class Player implements Serializable {
         return professors.size();
     }
 
-    public void playCard(int numCard){
-        try{
-            currentCard = deck.getCard(numCard);
-            deck.removeCard(numCard);
-        } catch (MissingCardException e){
-            System.out.println("This card number is not valid, this card is not in the deck!");
-        }
+    public void playCard(int numCard)throws MissingCardException{
+
+        currentCard = deck.getCard(numCard);
+        deck.removeCard(numCard);
+
     }
 
-    public void moveStudentInDiningRoom(Colour colour){
+    public void moveStudentInDiningRoom(Colour colour) throws Exception{
         this.removeStudentFromEntrance(colour);
         this.addStudentToDiningRoom(colour);
     }
 
-    public void moveStudentInIsland(Colour colour, Island island){
-        try {
-            entrance.removeStudent(colour);
-            island.addStudent(colour);
-        } catch (IllegalArgumentException e) {
-            System.out.println("You can't move the student with this color in the Island");
-        }  //Do we want to use the MissingStudentException?
+    public void moveStudentInIsland(Colour colour, Island island) throws MissingStudentException{
+
+        entrance.removeStudent(colour);
+        island.addStudent(colour);
     }
 
     //add students of the group given at the entrance
@@ -95,14 +91,21 @@ public class Player implements Serializable {
     }
 
     //remove students from the entrance
-    public void removeStudentFromEntrance(Colour colour){entrance.removeStudent(colour);}
+    public void removeStudentFromEntrance(Colour colour) throws MissingStudentException {
+        entrance.removeStudent(colour);
+    }
 
-    public void removeStudentFromDiningRoom(Colour colour){this.diningRoom.remove(colour);}
+    public void removeStudentFromDiningRoom(Colour colour)throws MissingStudentException{this.diningRoom.remove(colour);}
     //remove students from the entrance
-    public void addStudentToDiningRoom(Colour colour){
-        diningRoom.add(colour);
-        if(diningRoom.numStudents(colour)==3 || diningRoom.numStudents(colour)==6 || diningRoom.numStudents(colour)==9){
-            this.receiveCoin();
+    public void addStudentToDiningRoom(Colour colour) throws Exception{
+        if(diningRoom.numStudents(colour) == 10){
+            throw new Exception("numero massimo di studenti per entrance raggiunto");
+        }
+        else {
+            diningRoom.add(colour);
+            if (diningRoom.numStudents(colour) == 3 || diningRoom.numStudents(colour) == 6 || diningRoom.numStudents(colour) == 9) {
+                this.receiveCoin();
+            }
         }
     }
 

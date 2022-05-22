@@ -59,7 +59,7 @@ public class ClientModelCLI implements UserInterface{
         System.out.println(board);
     }
 
-    public String showCloud(){
+    private String showCloud(){
         String cloud = "";
         String colore = "";
 
@@ -88,7 +88,7 @@ public class ClientModelCLI implements UserInterface{
         return cloud;
     }
 
-    public String showPlayer(){
+    private String showPlayer(){
         String players = "";
 
         for(Player player : listPlayer){
@@ -164,7 +164,7 @@ public class ClientModelCLI implements UserInterface{
         return players;
     }
 
-    public String showIsland(){
+    private String showIsland(){
         String island = "";
         String colore = "";
         int max = 6;
@@ -567,6 +567,10 @@ public class ClientModelCLI implements UserInterface{
 
         showBoard();
 
+    }
+
+    public void clientError(ServerMessage message){
+        System.out.println(message.getServerHeader().getDescription());
     }
 
 }

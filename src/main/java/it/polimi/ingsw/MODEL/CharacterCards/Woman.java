@@ -3,6 +3,7 @@ package it.polimi.ingsw.MODEL.CharacterCards;
 import it.polimi.ingsw.MODEL.*;
 import it.polimi.ingsw.MODEL.Exception.MissingPlayerException;
 import it.polimi.ingsw.MODEL.Exception.MissingStudentException;
+import it.polimi.ingsw.MODEL.Exception.PossibleWinException;
 
 import java.io.Serializable;
 
@@ -34,17 +35,25 @@ public class Woman extends ConcreteCharacterCard implements Decorator, Serializa
 
     @Override
     public void effect(String nickname, Colour colour) throws Exception{
-        if(price==initialPrice){
-            price = price+1;
-        }
         if(pool.size() == 0){throw new Exception("mancanza di studenti");}
 
         else{
-            pool.removeStudent(colour);
+            try {
+                pool.removeStudent(colour);
+            }catch(IllegalArgumentException e){
+                throw new Exception("studente non presente sulla carta personaggio");
+            }
             try {
                 game.getPlayer(nickname).addStudentToDiningRoom(colour);
                 pool.addStudent(game.getBag().pullOut());
-            }catch(MissingPlayerException e){}
+            }catch(MissingPlayerException e){
+            } catch(MissingStudentException e){
+                throw new PossibleWinException();
+            }
+        }
+
+        if(price==initialPrice){
+            price = price+1;
         }
 
     }

@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 public class EntranceTest extends TestCase {
 
-    public void testRemoveStudent() {
+    public void testRemoveStudent() throws Exception{
         Entrance e = new Entrance();
         StudentGroup s = new StudentGroup();
         Colour c = Colour.GREEN;
