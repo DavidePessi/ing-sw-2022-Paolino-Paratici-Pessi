@@ -5,6 +5,7 @@ import it.polimi.ingsw.MODEL.CharacterCards.ConcreteCharacterCard;
 import it.polimi.ingsw.MODEL.Exception.MissingTowerException;
 import it.polimi.ingsw.NETWORK.MESSAGES.ServerMessage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,15 +28,16 @@ public class ClientModelCLI implements UserInterface{
         listPlayer = new ArrayList<>();
         listTeam = new ArrayList<>();
         professors = new ArrayList<>();
+        characterCards = new ArrayList<>();
 
     }
 
     public void showBoard(){
+
         String board = "";
 
         //-------------------------------STAMPA PLAYER------------------------------
         board = board + showPlayer();
-
 
         //-------------------------STAMPA CARTE PERSONAGGIO-------------------------
         board = board +( "Character Cards :\n");
@@ -170,7 +172,7 @@ public class ClientModelCLI implements UserInterface{
         /////////////////////////////////////////////////////////////////////////PRIMA FILA DI ISOLE
         //scrivo i numeri sopra
         for(int i = 0; i < max; i++){
-            island = island + listIsland.get(i).getNumIsland() + "\t\t\t\t\t\t";
+            island = island + ( listIsland.get(i).getNumIsland()+1) + "\t\t\t\t\t\t";
         }
 
         //scrivo il confine delle isole
@@ -255,7 +257,7 @@ public class ClientModelCLI implements UserInterface{
         island = island +( "\t");
         //scrivo i numeri sopra
         for(int i = 6; i < listIsland.size(); i++){
-            island = island + listIsland.get(i).getNumIsland() + "\t\t\t\t\t\t";
+            island = island + (listIsland.get(i).getNumIsland()+1) + "\t\t\t\t\t\t";
         }
 
         //scrivo il confine delle isole
@@ -486,9 +488,20 @@ public class ClientModelCLI implements UserInterface{
         else if(message.getServerHeader().getDescription().equals("STARTGAME")){
 
             //setto le isole
-            for(int i = 0; i < 12; i++){
-                listIsland.add((Island) message.getPayload().getParameter("island"+i));
-            }
+            //for(int i = 0; i < 12; i++){
+                listIsland.add((Island) message.getPayload().getParameter("island0"));
+                listIsland.add((Island) message.getPayload().getParameter("island1"));
+                listIsland.add((Island) message.getPayload().getParameter("island2"));
+                listIsland.add((Island) message.getPayload().getParameter("island3"));
+                listIsland.add((Island) message.getPayload().getParameter("island4"));
+                listIsland.add((Island) message.getPayload().getParameter("island5"));
+                listIsland.add((Island) message.getPayload().getParameter("island6"));
+                listIsland.add((Island) message.getPayload().getParameter("island7"));
+                listIsland.add((Island) message.getPayload().getParameter("island8"));
+                listIsland.add((Island) message.getPayload().getParameter("island9"));
+                listIsland.add((Island) message.getPayload().getParameter("island10"));
+                listIsland.add((Island) message.getPayload().getParameter("island11"));
+            //}
 
             //setto i player
             listPlayer.add( (Player) message.getPayload().getParameter("player1"));
@@ -531,16 +544,18 @@ public class ClientModelCLI implements UserInterface{
 
             //setto le carte personaggio
 
-            /*
+
             characterCards.add((ConcreteCharacterCard) message.getPayload().getParameter("charactercard1"));
             characterCards.add((ConcreteCharacterCard) message.getPayload().getParameter("charactercard2"));
             characterCards.add((ConcreteCharacterCard) message.getPayload().getParameter("charactercard3"));
-            */
+
 
             //setto mothernature
             motherNature = (MotherNature) message.getPayload().getParameter("mothernature");
 
         }
+
+        showBoard();
 
     }
 

@@ -600,11 +600,11 @@ public class Game extends Observable {
         else if(s.equals("STARTGAME")){
 
             for(int i = 1; i <= characterCards.size(); i++) {
-                pay.addParameter("charactercard" + i, new ConcreteCharacterCard(characterCards.get(i-1).getNameCard(), characterCards.get(i-1).getPrice()));
+                pay.addParameter("charactercard"+i, new ConcreteCharacterCard(characterCards.get(i-1).getNameCard(), characterCards.get(i-1).getPrice()));
             }
 
-            for(int i = 1; i <= listIsland.size(); i++) {
-                pay.addParameter("island" + i, listIsland.get(i-1));
+            for(int i = 0; i < listIsland.size(); i++) {
+                pay.addParameter("island"+i, listIsland.get(i));
             }
 
             for(int i = 1; i <= listTeam.size(); i++) {

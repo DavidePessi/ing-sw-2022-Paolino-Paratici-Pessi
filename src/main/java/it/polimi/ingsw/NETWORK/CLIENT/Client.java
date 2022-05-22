@@ -69,7 +69,7 @@ public class Client {
                             //HEADER DI UPDATE BOARD
                         else if(ServerAction.UPDATE_BOARD.equals(in2.getServerHeader().getServerAction())){
                             model.update(in2);
-                            System.out.println("messaggio letto dal client");
+                            //System.out.println("messaggio letto dal client");
                         }
                             //HEADER PER CHIUSURA CONNESSIONE
                         else if(ServerAction.PING.equals(in2.getServerHeader().getServerAction())){
