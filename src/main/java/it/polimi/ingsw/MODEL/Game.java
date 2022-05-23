@@ -6,7 +6,6 @@ import it.polimi.ingsw.NETWORK.MESSAGES.Payload;
 import it.polimi.ingsw.NETWORK.MESSAGES.ServerAction;
 import it.polimi.ingsw.NETWORK.MESSAGES.ServerHeader;
 import it.polimi.ingsw.NETWORK.MESSAGES.ServerMessage;
-import it.polimi.ingsw.NETWORK.VIEW.RemoteView;
 import it.polimi.ingsw.NETWORK.UTILS.Observable;
 
 
@@ -14,9 +13,7 @@ import java.util.*;
 
 
 public class Game extends Observable {
-    private int numPlayer;
     private String characterCardThrown;
-    private Player lastFirstPlayer;
     private List<Cloud> listCloud;
     private List<Player> listPlayer;
     private List<Team> listTeam;
@@ -395,6 +392,7 @@ public class Game extends Observable {
                 //faccio il controllo del movimento di madre natura con +2
                 if (numMovement <= this.getPlayer(currentPlayer).getLastPlayedCard().getMovement() + 2) {
                     motherNature.move(getIsland((numMovement + motherNature.getNumIsland()) % listIsland.size()));
+
                 }
                 else {
                     throw new Exception("madre natura non si può spostare di cosi tante isole");
@@ -447,7 +445,7 @@ public class Game extends Observable {
     }
 
 
-    public void doMoveStudentInIsland(String nickname, Colour colour, int numIsland)throws MissingStudentException {
+    public void doMoveStudentInIsland(String nickname, Colour colour, int numIsland)throws MissingStudentException, IllegalArgumentException {
         for (Player player : listPlayer) {
             if (player.getNicknameClient().equals(nickname)) {
                 player.moveStudentInIsland(colour, this.getIsland(numIsland));
@@ -479,6 +477,7 @@ public class Game extends Observable {
                 }
             }
         }
+
         sendBoard("PlayCard");
     }
 
@@ -492,8 +491,6 @@ public class Game extends Observable {
             for(int i = 1; i <= listPlayer.size(); i++) {
                 pay.addParameter("player" + i, listPlayer.get(i-1));
             }
-            sm = new ServerMessage(sh, pay);
-            notify(sm);
         }
 
         else if(s.equals("MoveStudentInDiningRoom")){
@@ -504,10 +501,6 @@ public class Game extends Observable {
             for(int i = 1; i <= listPlayer.size(); i++) {
                 pay.addParameter("player" + i, listPlayer.get(i-1));
             }
-
-            sm = new ServerMessage(sh, pay);
-            notify(sm);
-
         }
 
         else if(s.equals("MoveStudentInIsland")){
@@ -515,14 +508,9 @@ public class Game extends Observable {
             for(int i = 1; i <= listPlayer.size(); i++) {
                 pay.addParameter("player" + i, listPlayer.get(i-1));
             }
-            for(int i = 1; i <= listIsland.size(); i++) {
-                pay.addParameter("island" + i, listIsland.get(i-1));
+            for(int i = 0; i < listIsland.size(); i++) {
+                pay.addParameter("island" + i, listIsland.get(i));
             }
-
-            sm = new ServerMessage(sh, pay);
-            notify(sm);
-
-
         }
 
         else if(s.equals("TakeCloud")){
@@ -533,34 +521,24 @@ public class Game extends Observable {
             for(int i = 1; i <= listCloud.size(); i++) {
                 pay.addParameter("cloud" + i, listCloud.get(i-1));
             }
-
-            sm = new ServerMessage(sh, pay);
-            notify(sm);
-
-
         }
 
         else if(s.equals("MoveMotherNature")){
 
-            for(int i = 1; i <= listIsland.size(); i++) {
-                pay.addParameter("island" + i, listIsland.get(i-1));
+            for(int i = 0; i < listIsland.size(); i++) {
+                pay.addParameter("island" + i, listIsland.get(i));
             }
 
             for(int i = 1; i <= listTeam.size(); i++) {
                 pay.addParameter("team" + i, listTeam.get(i-1));
             }
-
             pay.addParameter("mothernature", motherNature);
-
-            sm = new ServerMessage(sh, pay);
-            notify(sm);
-
         }
 
         else if(s.equals("Fusion")){
 
-            for(int i = 1; i <= listIsland.size(); i++) {
-                pay.addParameter("island" + i, listIsland.get(i-1));
+            for(int i = 0; i < listIsland.size(); i++) {
+                pay.addParameter("island" + i, listIsland.get(i));
             }
 
             sm = new ServerMessage(sh, pay);
@@ -594,19 +572,16 @@ public class Game extends Observable {
 
         else if(s.equals("CheckTowers")){
 
-            for(int i = 1; i <= listIsland.size(); i++) {
-                pay.addParameter("island" + i, listIsland.get(i-1));
+            for(int i = 0; i < listIsland.size(); i++) {
+                pay.addParameter("island" + i, listIsland.get(i));
             }
 
             for(int i = 1; i <= listTeam.size(); i++) {
                 pay.addParameter("team" + i, listTeam.get(i-1));
             }
-
-
         }
 
         else if(s.equals("STARTGAME")){
-
             //se sei nel difficult fai:
             if(!characterCards.isEmpty()) {
                 for (int i = 1; i <= characterCards.size(); i++) {
@@ -643,11 +618,17 @@ public class Game extends Observable {
                 pay.addParameter("cloud" + i, listCloud.get(i-1));
             }
 
-            sm = new ServerMessage(sh, pay);
             //System.out.println("sto inviando il messaggio: " + sm);
-            notify(sm);
         }
 
+        else if(s.equals("refillcloud")){
+            for(int i = 1; i <= listCloud.size(); i++) {
+                pay.addParameter("cloud" + i, listCloud.get(i-1));
+            }
+        }
+
+        sm = new ServerMessage(sh, pay);
+        notify(sm);
     }
 
     /*
@@ -1074,5 +1055,25 @@ public class Game extends Observable {
     //per testing
     public void addCharacterCard(ConcreteCharacterCard cc){
         characterCards.add(cc);
+    }
+
+    public void refillCloud(){
+        for (Cloud cloud : listCloud) { //per ogni nuvola aggiungo 3 studenti estratti casualmente dalla bag
+            if (cloud != null) {
+                StudentGroup studentGroup = new StudentGroup();
+                for (int i = 0; i < 3; i++) {
+                    try {
+                        studentGroup.addStudent(bag.pullOut());
+                    } catch (MissingStudentException e) {
+                        if(checkWin()){
+                            Team winnerTeam = theWinnerIs();
+                            // TODO: 23/05/2022
+                        }
+                    }
+                }
+                cloud.addStudents(studentGroup);
+            }
+        }
+        sendBoard("refillcloud");
     }
 }

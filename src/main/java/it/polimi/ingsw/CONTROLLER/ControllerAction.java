@@ -160,6 +160,8 @@ public class ControllerAction {
 
             } catch(MissingStudentException e){
                 game.notifyError("studente non presente nella Entrance", nickname);
+            } catch(IllegalArgumentException e){
+                game.notifyError(e.getMessage(), nickname);
             }
         }
         else{

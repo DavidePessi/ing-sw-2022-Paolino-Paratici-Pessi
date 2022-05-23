@@ -76,12 +76,10 @@ public class SocketClientConnection extends Observable<String> implements Client
                     //System.out.println("canale di uscita: " + out);
 
                     send((ServerMessage) message);
-
                 }catch(Exception e){
                     System.out.println("eccezione: " + e.getClass());
                     e.printStackTrace();
                 }
-
             }
         }).start();
     }
@@ -109,8 +107,6 @@ public class SocketClientConnection extends Observable<String> implements Client
             Thread t = asyncPingDecrease();
             ExecutorService executor = Executors.newFixedThreadPool(1);
             executor.submit(t);
-
-
 
             //--------------------------------------------------------------
             //CHIEDO IL TIPO DI PARTITA
@@ -274,7 +270,6 @@ public class SocketClientConnection extends Observable<String> implements Client
         try {
             do {
                 cm = (ClientMessage) in.readObject();
-
                 if (cm.getClientHeader().getClientAction().equals(ClientAction.PING)) {
                     ping();
                 }

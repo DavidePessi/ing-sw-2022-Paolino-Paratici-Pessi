@@ -368,7 +368,10 @@ public class ClientModelCLI implements UserInterface{
         //sposto uno studente da entrance a island
         // --> players(entrance) e islands
         else if(message.getServerHeader().getDescription().equals("MoveStudentInIsland")){
-            //todo problema con liste che cambiano il numero di oggetti perchè le stringhe non sono ciclabili
+
+            for(int i = 0; i < listIsland.size(); i++){
+                listIsland.set(i, (Island)message.getPayload().getParameter("island"+i));
+            }
 
             listPlayer.set(0, (Player) message.getPayload().getParameter("player1"));
             listPlayer.set(1, (Player) message.getPayload().getParameter("player2"));
@@ -564,7 +567,17 @@ public class ClientModelCLI implements UserInterface{
             showCoins = (boolean) message.getPayload().getParameter("showCoins");
 
         }
+        else if(message.getServerHeader().getDescription().equals("refillcloud")){
 
+            listCloud.set(0, (Cloud) message.getPayload().getParameter("cloud1"));
+            listCloud.set(1, (Cloud) message.getPayload().getParameter("cloud2"));
+            if(message.getPayload().containsParameter("cloud3")){
+                listCloud.set(2, (Cloud) message.getPayload().getParameter("cloud3"));
+                if(message.getPayload().containsParameter("cloud4")){
+                    listCloud.set(3, (Cloud) message.getPayload().getParameter("cloud4"));
+                }
+            }
+        }
         showBoard();
 
     }

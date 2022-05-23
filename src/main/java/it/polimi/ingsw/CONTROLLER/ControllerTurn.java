@@ -145,7 +145,6 @@ public class ControllerTurn implements Observer{
             //caso in cui ordino i player in base alle carte
             if(mulligan == true){
                 this.setMulligan(false);
-
                 for(int i=0; i<clientList.size()-1; i++){
                     for(int j=i+1; j< clientList.size(); j++){
                         try {
@@ -163,6 +162,7 @@ public class ControllerTurn implements Observer{
 
             //caso in cui devo ancora far lanciare la carta a qualcuno
             else{
+                game.refillCloud();
                 this.setMulligan(true);
                 currentClient = this.clientList.get(0);
                 //tutti i client hanno la carta giocata 0,0 così si può scegliere qualsiasi tipo di carta senza avere problemi
@@ -171,7 +171,6 @@ public class ControllerTurn implements Observer{
                         game.getPlayer(client).setLastPlayedCardZero();
                     } catch (MissingPlayerException e) {}
                 }
-
             }
         }
 
