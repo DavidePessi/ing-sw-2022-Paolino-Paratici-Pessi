@@ -21,9 +21,8 @@ public class Client {
     private String nick = null;
     private boolean active = true;
 
-    public Client(String ip, int port){
-        this.ip = ip;
-        this.port = port;
+    public Client(){
+        this.ip = null;
         this.clientAction = ClientAction.SEND_NICKNAME;
         this.model = new ClientModelCLI();
     }
@@ -291,12 +290,18 @@ public class Client {
     }
 
     public void run() throws IOException{
+        Scanner stdin = new Scanner(System.in);
+        System.out.println("inserisci indirizzo ip: ");
+        ip = stdin.nextLine();//"127.0.0.1"
+        System.out.println("inserisci porta");
+        port = Integer.parseInt(stdin.nextLine());//12345
+
         Socket socket = new Socket(ip, port);
         System.out.println("Connection estabilished");
 
         ObjectInputStream socketIn = new ObjectInputStream(socket.getInputStream());
         ObjectOutputStream socketOut = new ObjectOutputStream(socket.getOutputStream());
-        Scanner stdin = new Scanner(System.in);
+
 
         //PING
         Thread t = asyncPing(socketOut);

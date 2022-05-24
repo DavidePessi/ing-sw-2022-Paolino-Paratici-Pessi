@@ -533,6 +533,10 @@ public class Game extends Observable {
                 pay.addParameter("team" + i, listTeam.get(i-1));
             }
             pay.addParameter("mothernature", motherNature);
+
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
         }
 
         else if(s.equals("Fusion")){
@@ -568,6 +572,8 @@ public class Game extends Observable {
             for(int i = 1; i <= listPlayer.size(); i++) {
                 pay.addParameter("player" + i, listPlayer.get(i-1));
             }
+
+
         }
 
         else if(s.equals("CheckTowers")){
@@ -579,6 +585,7 @@ public class Game extends Observable {
             for(int i = 1; i <= listTeam.size(); i++) {
                 pay.addParameter("team" + i, listTeam.get(i-1));
             }
+
         }
 
         else if(s.equals("STARTGAME")){
@@ -725,7 +732,7 @@ public class Game extends Observable {
                     ColourTower colourTower = island.getColourTower();
                     if (colourTower.equals(listTeam.get(0).getColourTower())) {
                         team1 = team1 + island.getNumSubIsland();
-                    } else {
+                    } else if(colourTower.equals(listTeam.get(1).getColourTower())){
                         team2 = team2 + island.getNumSubIsland();
                     }
                 }
@@ -747,6 +754,7 @@ public class Game extends Observable {
 
                 //caso di parità
                 if (team1 == team2) {
+                    System.out.println("0");
                     return;
                 }
 
@@ -754,26 +762,38 @@ public class Game extends Observable {
                 //se il team1 ha finito le torri significa che ha vinto e lancio un'eccezione per
                 //richiamare il metodo checkwin
                 else if (team1 > team2) {
-                    listTeam.get(0).useTowers(island.getNumSubIsland());
-                    listTeam.get(1).takeTowers(island.getNumSubIsland());
+                    System.out.println("1");
+                    if(island.getColourTower().equals(listTeam.get(1).getColourTower())){
+
+                        listTeam.get(0).useTowers(island.getNumSubIsland());
+                        listTeam.get(1).takeTowers(island.getNumSubIsland());
+                    }else if(island.getColourTower().equals(ColourTower.NO_ONE)){
+                        listTeam.get(0).useTowers(island.getNumSubIsland());
+                    }
+
                     island.setColourTower(listTeam.get(0).getColourTower());
                     fusion(numIsland);
                 }
-                // IL METODO PER UNIRE LE ISOLE CHE DEVE ESSERE RICHIAMATO NEI DUE RAMI --> fatto
+
                 //caso di maggioranza team2
                 //se il team2 ha finito le torri significa che ha vinto e lancio un'eccezione per
                 //richiamare il metodo checkwin
                 else {
+                    System.out.println("2");
+                    if(island.getColourTower().equals(listTeam.get(0).getColourTower())){
+                        listTeam.get(1).useTowers(island.getNumSubIsland());
+                        listTeam.get(0).takeTowers(island.getNumSubIsland());
+                    }else if(island.getColourTower().equals(ColourTower.NO_ONE)){
+                        listTeam.get(1).useTowers(island.getNumSubIsland());
+                    }
 
-                    listTeam.get(1).useTowers(island.getNumSubIsland());
-                    listTeam.get(0).takeTowers(island.getNumSubIsland());
                     island.setColourTower(listTeam.get(1).getColourTower());
                     fusion(numIsland);
                 }
             }
 
         }
-        sendBoard("CheckTowers");
+        //sendBoard("CheckTowers");
     }
 
 

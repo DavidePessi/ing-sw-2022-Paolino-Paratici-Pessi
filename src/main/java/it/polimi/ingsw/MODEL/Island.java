@@ -18,7 +18,7 @@ public class Island implements Serializable {
     public Island(int numIsland) {
         this.numIsland = numIsland;
         this.numSubIsland = 1;
-        this.colourTower = null;
+        this.colourTower = ColourTower.NO_ONE;
         this.hasMotherNature = false;
         this.students = new StudentGroup();
     }
@@ -128,7 +128,7 @@ public class Island implements Serializable {
     }
 
     public ColourTower getColourTower() throws MissingTowerException {
-        if(this.colourTower == null){
+        if(this.colourTower.equals(null)){
             throw new MissingTowerException();
         }
         else{

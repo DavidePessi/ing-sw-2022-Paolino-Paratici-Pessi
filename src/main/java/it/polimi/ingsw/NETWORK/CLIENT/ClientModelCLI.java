@@ -228,6 +228,7 @@ public class ClientModelCLI implements UserInterface{
             try{
                 if(listIsland.get(i).getColourTower().equals(ColourTower.BLACK)){
                     for(int j = 0; j < listIsland.get(i).getNumSubIsland(); j++){
+
                         island = island + ((char) 27 + "[30m" + "○" + "\u001B[0m");
                     }
                 } else if(listIsland.get(i).getColourTower().equals(ColourTower.WHITE)){
@@ -236,7 +237,11 @@ public class ClientModelCLI implements UserInterface{
                     }
                 }
             }catch(MissingTowerException e){}
-            island = island + ("\t\t\t\t\t|");
+            if(listIsland.get(i).getNumSubIsland() < 2) {
+                island = island + ("\t\t\t\t\t|");
+            } else{
+                island = island + ("\t\t\t\t|");
+            }
         }
 
         island = island + "\n";
@@ -321,7 +326,12 @@ public class ClientModelCLI implements UserInterface{
                     }
                 }
             }catch(MissingTowerException e){}
-            island = island + ("\t\t\t\t\t|");
+
+            if(listIsland.get(i).getNumSubIsland() < 2) {
+                island = island + ("\t\t\t\t\t|");
+            } else{
+                island = island + ("\t\t\t\t|");
+            }
         }
 
         island = island + "\n";
@@ -413,6 +423,22 @@ public class ClientModelCLI implements UserInterface{
                 listIsland.set(i, (Island)message.getPayload().getParameter("island"+i));
             }
 
+            listPlayer.set(0, (Player) message.getPayload().getParameter("player1"));
+            listPlayer.set(1, (Player) message.getPayload().getParameter("player2"));
+            if(message.getPayload().containsParameter("player3")){
+                listPlayer.set(2, (Player) message.getPayload().getParameter("player3"));
+                if(message.getPayload().containsParameter("player4")){
+                    listPlayer.set(3, (Player) message.getPayload().getParameter("player4"));
+                }
+            }
+
+            listTeam.set(0, (Team) message.getPayload().getParameter("team1"));
+            listTeam.set(1, (Team) message.getPayload().getParameter("team2"));
+
+            if(message.getPayload().containsParameter("team3")){
+                listTeam.set(2, (Team) message.getPayload().getParameter("team3"));
+            }
+
             motherNature = (MotherNature) message.getPayload().getParameter("mothernature");
         }
 
@@ -494,6 +520,15 @@ public class ClientModelCLI implements UserInterface{
 
             if(message.getPayload().containsParameter("team3")){
                 listTeam.set(2, (Team) message.getPayload().getParameter("team3"));
+            }
+
+            listPlayer.set(0, (Player) message.getPayload().getParameter("player1"));
+            listPlayer.set(1, (Player) message.getPayload().getParameter("player2"));
+            if(message.getPayload().containsParameter("player3")){
+                listPlayer.set(2, (Player) message.getPayload().getParameter("player3"));
+                if(message.getPayload().containsParameter("player4")){
+                    listPlayer.set(3, (Player) message.getPayload().getParameter("player4"));
+                }
             }
         }
         else if(message.getServerHeader().getDescription().equals("STARTGAME")){
