@@ -2,6 +2,7 @@ package it.polimi.ingsw.NETWORK.CLIENT;
 
 import it.polimi.ingsw.MODEL.*;
 import it.polimi.ingsw.MODEL.CharacterCards.ConcreteCharacterCard;
+import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 import it.polimi.ingsw.MODEL.Exception.MissingTowerException;
 import it.polimi.ingsw.NETWORK.MESSAGES.ServerMessage;
 
@@ -18,6 +19,7 @@ public class ClientModelCLI implements UserInterface{
     private MotherNature motherNature;
     private List<Professor> professors;
     private List<ConcreteCharacterCard> characterCards;
+    private String currentPlayer;
     private boolean showCoins;
 
 
@@ -92,8 +94,22 @@ public class ClientModelCLI implements UserInterface{
         String players = "";
 
         for(Player player : listPlayer){
+            //stampa nickname
             players = players +("player: " + player.getNicknameClient());
+
+            //stampa torri e team di appartenenza
             players = players +("\nteam: " + player.getTeam().getColourTower() + "{" + player.getTeam().getNumberOfTower() + "}");
+
+            //stampa carte assistente
+            players = players + "\nAssistant Cards: ";
+            for(int i = 0; i < player.getDeck().size(); i++){
+                try {
+                    players = players + "(" + player.getDeck().getCardOfIndex(i).getValue() + ",";
+                    players = players + player.getDeck().getCardOfIndex(i).getMovement() + ") ";
+                }catch(MissingCardException e){
+                    System.out.println(e.getMessage());
+                }
+            }
 
             //numero di coins
             if(showCoins) {
@@ -359,10 +375,25 @@ public class ClientModelCLI implements UserInterface{
         return island;
     }
 
+    public void showMoves(String nickname){
+        if(this.currentPlayer.equals(nickname)){
+            System.out.println("it's your turn!");
+            System.out.println("Select the number of the move you want to make: ");
+            System.out.println("1) Play Card");
+            System.out.println("2) Move Student in Dining Room");
+            System.out.println("3) Move Student in Island");
+            System.out.println("4) Move Mother Nature");
+            System.out.println("5) Take Cloud");
+
+            if(showCoins){
+                System.out.println("6) Play Character Card");
+            }
+        }
+    }
+
     public void update(ServerMessage message){
 
-        //sposto uno studente da entrance a dining room
-        // --> players(entrance e diningroom e professori)
+        // --> players
         if(message.getServerHeader().getDescription().equals("MoveStudentInDiningRoom")){
 
             listPlayer.set(0, (Player) message.getPayload().getParameter("player1"));
@@ -375,8 +406,7 @@ public class ClientModelCLI implements UserInterface{
             }
         }
 
-        //sposto uno studente da entrance a island
-        // --> players(entrance) e islands
+        // --> players, islands
         else if(message.getServerHeader().getDescription().equals("MoveStudentInIsland")){
 
             for(int i = 0; i < listIsland.size(); i++){
@@ -393,8 +423,7 @@ public class ClientModelCLI implements UserInterface{
             }
         }
 
-        //prendo una nuvola
-        // --> players(entrance) e nuvole
+        // --> players, clouds
         else if(message.getServerHeader().getDescription().equals("TakeCloud")){
             listCloud.set(0, (Cloud) message.getPayload().getParameter("cloud1"));
             listCloud.set(1, (Cloud) message.getPayload().getParameter("cloud2"));
@@ -416,8 +445,7 @@ public class ClientModelCLI implements UserInterface{
             }
         }
 
-        //sposto madre natura
-        // --> madre natura e isole
+        // --> mother nature, islands, players, teams
         else if(message.getServerHeader().getDescription().equals("MoveMotherNature")){
             for(int i = 0; i < listIsland.size(); i++){
                 listIsland.set(i, (Island)message.getPayload().getParameter("island"+i));
@@ -442,8 +470,7 @@ public class ClientModelCLI implements UserInterface{
             motherNature = (MotherNature) message.getPayload().getParameter("mothernature");
         }
 
-        //gioco una carta
-        // --> players(deck)
+        // --> players
         else if(message.getServerHeader().getDescription().equals("PlayCard")){
 
             listPlayer.set(0, (Player) message.getPayload().getParameter("player1"));
@@ -456,8 +483,7 @@ public class ClientModelCLI implements UserInterface{
             }
         }
 
-        //fusione isole
-        // --> isole
+        // --> islands
         else if(message.getServerHeader().getDescription().equals("Fusion")){
             for(int i = 0; i < listIsland.size(); i++){
                 if(message.getPayload().containsParameter("island"+i)) {
@@ -468,8 +494,7 @@ public class ClientModelCLI implements UserInterface{
             }
         }
 
-        //gioco una carta personaggio
-        // --> carta players(monete), carta lanciata
+        // --> characterCardThrown, charactercards, players,
         else if(message.getServerHeader().getDescription().equals("PlayCharacterCard")){
 
             characterCards.set(0, (ConcreteCharacterCard) message.getPayload().getParameter("charactercard1"));
@@ -486,10 +511,13 @@ public class ClientModelCLI implements UserInterface{
                     listPlayer.set(3, (Player) message.getPayload().getParameter("player4"));
                 }
             }
+
+            for(int i = 0; i < listIsland.size(); i++){
+                listIsland.set(i, (Island)message.getPayload().getParameter("island"+i));
+            }
         }
 
-        //controllo l'appartenenza dei professori
-        // -->professori e player
+        // -->professors, players
         else if(message.getServerHeader().getDescription().equals("CheckProfessor")){
 
             professors.set(0, (Professor) message.getPayload().getParameter("professor1"));
@@ -508,7 +536,7 @@ public class ClientModelCLI implements UserInterface{
             }
         }
 
-        //--> team e isole
+        //--> teams, islands, players
         else if(message.getServerHeader().getDescription().equals("CheckTowers")){
 
             for(int i = 0; i < listIsland.size(); i++){
@@ -531,6 +559,8 @@ public class ClientModelCLI implements UserInterface{
                 }
             }
         }
+
+        //--> teams, players, clouds, current player, mother nature, islands, professors, cahractercards, ccharacterCardThrown
         else if(message.getServerHeader().getDescription().equals("STARTGAME")){
 
             //setto le isole
@@ -595,6 +625,8 @@ public class ClientModelCLI implements UserInterface{
             characterCards.add((ConcreteCharacterCard) message.getPayload().getParameter("charactercard2"));
             characterCards.add((ConcreteCharacterCard) message.getPayload().getParameter("charactercard3"));
 
+            //setto il player corrente
+            this.currentPlayer = (String)message.getPayload().getParameter("currentClient");
 
             //setto mothernature
             motherNature = (MotherNature) message.getPayload().getParameter("mothernature");
@@ -602,6 +634,8 @@ public class ClientModelCLI implements UserInterface{
             showCoins = (boolean) message.getPayload().getParameter("showCoins");
 
         }
+
+        //-->clouds
         else if(message.getServerHeader().getDescription().equals("refillcloud")){
 
             listCloud.set(0, (Cloud) message.getPayload().getParameter("cloud1"));
@@ -613,8 +647,24 @@ public class ClientModelCLI implements UserInterface{
                 }
             }
         }
-        showBoard();
 
+        //--> current player
+        else if(message.getServerHeader().getDescription().equals("EndTurn")){
+            this.currentPlayer = (String)message.getPayload().getParameter("currentClient");
+        }
+
+        showBoard();
+    }
+
+    public boolean verifyClient(String nickname){
+        if(nickname.equals(currentPlayer)) return true;
+        else return false;
+    }
+
+    public void endGame(ServerMessage message){
+        Team t = (Team) message.getPayload().getParameter("team");
+        System.out.println("il team vincitore è il: " + t.getColourTower());
+        System.out.println("vuoi giocare un'altra partita? ");
     }
 
     public void clientError(ServerMessage message){

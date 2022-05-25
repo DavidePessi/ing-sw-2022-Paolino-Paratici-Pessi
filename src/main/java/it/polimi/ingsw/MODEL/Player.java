@@ -2,6 +2,7 @@ package it.polimi.ingsw.MODEL;
 
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 import it.polimi.ingsw.MODEL.Exception.MissingStudentException;
+import it.polimi.ingsw.MODEL.Exception.PossibleWinException;
 
 import java.io.Serializable;
 import java.util.*;
@@ -67,8 +68,7 @@ public class Player implements Serializable {
         return professors.size();
     }
 
-    public void playCard(int numCard)throws MissingCardException{
-
+    public void playCard(int numCard)throws MissingCardException, PossibleWinException {
         currentCard = deck.getCard(numCard);
         deck.removeCard(numCard);
 

@@ -6,6 +6,8 @@ import it.polimi.ingsw.NETWORK.MESSAGES.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
@@ -69,9 +71,8 @@ public class Client {
                         }
                             //HEADER DI UPDATE BOARD
                         else if(ServerAction.UPDATE_BOARD.equals(in2.getServerHeader().getServerAction())){
-                            System.out.println("prima di fare l'update");
                             model.update(in2);
-                            //System.out.println("messaggio letto dal client");
+                            model.showMoves(nick);
                         }
                             //HEADER PER CHIUSURA CONNESSIONE
                         else if(ServerAction.PING.equals(in2.getServerHeader().getServerAction())){
@@ -80,7 +81,8 @@ public class Client {
                         }
                             //HEADER DI FINE PARTITA
                         else if(ServerAction.END_GAME.equals(in2.getServerHeader().getServerAction())){
-                            //model.endGame(in2, nick);
+                            setClientAction(ClientAction.END_GAME);
+                            model.endGame(in2);
                         }
                             //HEADER DI ERRORE DI INSERIMENTO
                         else if(ServerAction.CLIENT_ERROR.equals(in2.getServerHeader().getServerAction())){
@@ -88,10 +90,6 @@ public class Client {
                                 model.clientError(in2);
                                 setClientAction(ClientAction.PLAY_ACTION);
                             }
-                        }
-                        else if(ServerAction.PING.equals(in2.getServerHeader().getServerAction())){
-                            System.out.println(in2.getServerHeader().getDescription());
-                            setActive(false);
                         }
                     }
 
@@ -118,7 +116,7 @@ public class Client {
 
                         inputLine = stdin.nextLine();
 
-
+                        //SET UP MOVES
                         if(clientAction.equals(ClientAction.SEND_NICKNAME)) {
                             ch = new ClientHeader(inputLine, ClientAction.SEND_NICKNAME);
                             pay = new Payload("nickname", inputLine);
@@ -126,49 +124,65 @@ public class Client {
                             nick = (String) pay.getParameter("nickname");
                             send(socketOut, cm);
 
-                        } else if(clientAction.equals(ClientAction.SEND_NUM_PLAYERS)){
+                        }
+                        else if(clientAction.equals(ClientAction.SEND_NUM_PLAYERS)){
                             ch = new ClientHeader(nick, ClientAction.SEND_NUM_PLAYERS);
                             int n = Integer.parseInt(inputLine);
                             pay = new Payload("numPlayer", n);
                             cm = new ClientMessage(ch, pay);
-                            //System.out.println("send_num (nickname) " + nick);
-                            //System.out.println("send_num " + n);
                             send(socketOut, cm);
 
-                        } else if(clientAction.equals(ClientAction.SEND_GAMEMODE)){
+                        }
+                        else if(clientAction.equals(ClientAction.SEND_GAMEMODE)){
                             ch = new ClientHeader(nick, ClientAction.SEND_GAMEMODE);
                             pay = new Payload("typeGame", inputLine);
                             cm = new ClientMessage(ch, pay);
 
                             send(socketOut, cm);
-                        } else if(clientAction.equals(ClientAction.PLAY_ACTION)){
-                            if(inputLine.equals("play card")){
-                                setClientAction(ClientAction.PLAY_CARD);
-                                System.out.println("hai selezionato mossa play card");
-                                System.out.println("inserisci il numero della carta da giocare");
-                            } else if(inputLine.equals("move mother nature")){
-                                setClientAction(ClientAction.PLAY_MOVE_MOTHERNATURE);
-                                System.out.println("hai selezionato mossa move mother nature");
-                                System.out.println("inserisci il numero di passi che madre natura deve fare");
-                            } else if(inputLine.equals("move student in dining room")){
-                                setClientAction(ClientAction.PLAY_MOVE_STUDENT_IN_DININGROOM);
-                                System.out.println("hai selezionato mossa move student in dining room");
-                                System.out.println("inserisci il colore dello studente da spostare");
-                            } else if(inputLine.equals("move student in island")){
-                                setClientAction(ClientAction.PLAY_MOVE_STUDENT_IN_ISLAND);
-                                System.out.println("hai selezionato mossa move student in island");
-                                System.out.println("inserisci il colore dello studente da spostare");
-                            } else if(inputLine.equals("take cloud")){
-                                setClientAction(ClientAction.PLAY_TAKE_CLOUD);
-                                System.out.println("hai selezionato mossa take cloud");
-                                System.out.println("inserisci il numero della nuvola da spostare");
-                            } else if(inputLine.equals("play character card")){
-                                setClientAction(ClientAction.PLAY_CHARACTERCARD);
-                                System.out.println("hai selezionato mossa play character card");
+                        }
+
+                        //PLAY ACTION MOVES
+                        else if(clientAction.equals(ClientAction.PLAY_ACTION)){
+                            if(model.verifyClient(nick)) {
+                                if (inputLine.equals("1")) {
+                                    setClientAction(ClientAction.PLAY_CARD);
+                                    System.out.println("you selected play card");
+                                    System.out.println("insert the number of the Assistant card to play");
+
+                                } else if (inputLine.equals("2")) {
+                                    setClientAction(ClientAction.PLAY_MOVE_STUDENT_IN_DININGROOM);
+                                    System.out.println("you selected move student in dining room");
+                                    System.out.println("insert the colour of the student to move");
+
+                                } else if (inputLine.equals("3")) {
+                                    setClientAction(ClientAction.PLAY_MOVE_STUDENT_IN_ISLAND);
+                                    System.out.println("you selected move student in island");
+                                    System.out.println("insert the colour of the student to move");
+
+                                } else if (inputLine.equals("4")) {
+                                    setClientAction(ClientAction.PLAY_MOVE_MOTHERNATURE);
+                                    System.out.println("you selected Move Mother Nature");
+                                    System.out.println("insert the number of steps mother nature have to do");
+
+                                } else if (inputLine.equals("5")) {
+                                    setClientAction(ClientAction.PLAY_TAKE_CLOUD);
+                                    System.out.println("you selected Take Cloud");
+                                    System.out.println("insert the number of the cloud you want to take");
+
+                                } else if (inputLine.equals("6")) {
+                                    setClientAction(ClientAction.PLAY_CHARACTERCARD);
+                                    System.out.println("you selected Play Character Card");
+                                    System.out.println("insert the name of the character card you want to play");
+
+                                } else {
+                                    System.out.println("Selected move doesn't exist");
+                                }
                             } else{
-                                System.out.println("mossa selezionata inesistente");
+                                System.out.println("It's not your turn! be patient");
                             }
-                        } else if(clientAction.equals(ClientAction.PLAY_CARD)){
+
+                        }
+                        else if(clientAction.equals(ClientAction.PLAY_CARD)){
                             //INSERISCO I PARAMETRI PER RICONOSCERE L'AZIONE
                             pay = new Payload();
                             pay.addParameter("nickname", nick);
@@ -189,10 +203,175 @@ public class Client {
 
                             setClientAction(ClientAction.PLAY_ACTION);
 
-                        } else if(clientAction.equals(ClientAction.PLAY_CHARACTERCARD)){
+                        }
+                        else if(clientAction.equals(ClientAction.PLAY_CHARACTERCARD)){
+
+                            //INSERISCO I PARAMETRI PER RICONOSCERE L'AZIONE
+                            pay = new Payload();
+                            pay.addParameter("nickname", nick);
+                            pay.addParameter("Action", Action.UseCharacter);
+
+                            //CHIEDO I PARAMETRI PER L'AZIONE
+                            CharacterParameters charPar;
+
+                            if(inputLine.equals("Jester")){
+                                List<Colour> list = new ArrayList<>();
+
+                                System.out.println("Select how many students you want to move: 1\n2\n3\n");
+                                do {
+                                    inputLine = stdin.nextLine();
+                                    if(!inputLine.equals("1") && !inputLine.equals("2") && !inputLine.equals("3")){
+                                        System.out.println("retry: ");
+                                    }
+                                }while(!inputLine.equals("1") && !inputLine.equals("2") && !inputLine.equals("3"));
+
+                                if(inputLine.equals("1")){
+                                    System.out.println("select the colour from the card");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+
+                                    System.out.println("select the colour from the entrance");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+                                }
+                                else if(inputLine.equals("2")){
+                                    System.out.println("select the first colour from the card");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+
+                                    System.out.println("select the first colour from the entrance");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+
+                                    System.out.println("select the second colour from the card");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+
+                                    System.out.println("select the second colour from the entrance");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+                                }
+                                else {
+                                    System.out.println("select the first colour from the card");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+
+                                    System.out.println("select the first colour from the entrance");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+
+                                    System.out.println("select the second colour from the card");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+
+                                    System.out.println("select the second colour from the entrance");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+
+                                    System.out.println("select the third colour from the card");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+
+                                    System.out.println("select the third colour from the entrance");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+                                }
+
+                                //compongo i parametri della carta
+                                charPar = new CharacterParameters(nick, "Jester", list);
+                            }
+                            else if(inputLine.equals("Knight")){
+                                charPar = new CharacterParameters(nick, "Knight");
+                            }
+                            else if(inputLine.equals("Minstrell")){
+                                List<Colour> list = new ArrayList<>();
+                                System.out.println("Select how many students you want to move: 1\n2\n");
+                                do {
+                                    inputLine = stdin.nextLine();
+                                    if(!inputLine.equals("1") && !inputLine.equals("2")){
+                                        System.out.println("retry: ");
+                                    }
+                                }while(!inputLine.equals("1") && !inputLine.equals("2"));
+
+                                if(inputLine.equals("1")){
+                                    System.out.println("select the colour from the entrance");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+
+                                    System.out.println("select the colour from the dining room");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+                                }
+                                else {
+                                    System.out.println("select the first colour from the entrance");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+
+                                    System.out.println("select the first colour from the dining room");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+
+                                    System.out.println("select the second colour from the entrance");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+
+                                    System.out.println("select the second colour from the dining room");
+                                    inputLine = stdin.nextLine();
+                                    list.add(stringToColour(inputLine, stdin));
+                                }
+
+                                //compongo i parametri della carta
+                                charPar = new CharacterParameters(nick, "Minstrell", list);
+                            }
+                            else if(inputLine.equals("Pirate")){
+                                System.out.println("Insert the number of the island: ");
+                                inputLine = stdin.nextLine();
+                                int n = Integer.parseInt(inputLine);
+
+                                charPar = new CharacterParameters(nick, "Pirate", n);
+                            }
+                            else if(inputLine.equals("PostMan")){
+                                charPar = new CharacterParameters(nick, "PostMan");
+                            }
+                            else if(inputLine.equals("Priest")){
+                                System.out.println("Insert the number of the island: ");
+                                inputLine = stdin.nextLine();
+                                int n = Integer.parseInt(inputLine);
+
+                                System.out.println("Insert the colour of the student: ");
+                                inputLine = stdin.nextLine();
+
+                                charPar = new CharacterParameters(nick, "Priest", n, stringToColour(inputLine, stdin));
+                            }
+                            else if(inputLine.equals("Satyr")){
+                                charPar = new CharacterParameters(nick, "Satyr");
+                            }
+                            else if(inputLine.equals("Woman")){
+                                System.out.println("Insert the colour of the student: ");
+                                inputLine = stdin.nextLine();
+
+                                charPar = new CharacterParameters(nick, "Woman", stringToColour(inputLine, stdin));
+                            }
+                            else {
+                                charPar = new CharacterParameters(nick, "");
+                            }//CASO ERRORE
+
+                            pay.addParameter("CharacterParameters", charPar);
+
+                            //INSERISCO I PARAMETRI NON UTILIZZATI
+                            pay.addParameter("Colour", null);
+                            pay.addParameter("num", 0);
+
+                            //COSTRUISCO E INVIO IL MESSAGGIO
+                            ch = new ClientHeader(nick, ClientAction.PLAY_CHARACTERCARD);
+                            cm = new ClientMessage(ch, pay);
+                            send(socketOut, cm);
 
                             setClientAction(ClientAction.PLAY_ACTION);
-                        } else if(clientAction.equals(ClientAction.PLAY_MOVE_MOTHERNATURE)){
+
+
+                        }
+                        else if(clientAction.equals(ClientAction.PLAY_MOVE_MOTHERNATURE)){
                             //INSERISCO I PARAMETRI PER RICONOSCERE L'AZIONE
                             pay = new Payload("nickname", nick);
                             pay.addParameter("Action", Action.MoveMotherNature);
@@ -212,7 +391,8 @@ public class Client {
 
                             setClientAction(ClientAction.PLAY_ACTION);
 
-                        } else if(clientAction.equals(ClientAction.PLAY_MOVE_STUDENT_IN_ISLAND)){
+                        }
+                        else if(clientAction.equals(ClientAction.PLAY_MOVE_STUDENT_IN_ISLAND)){
                             //INSERISCO I PARAMETRI PER RICONOSCERE L'AZIONE
                             pay = new Payload("nickname", nick);
                             pay.addParameter("Action", Action.MoveStudentInIsland);
@@ -236,7 +416,8 @@ public class Client {
 
                             setClientAction(ClientAction.PLAY_ACTION);
 
-                        } else if(clientAction.equals(ClientAction.PLAY_MOVE_STUDENT_IN_DININGROOM)){
+                        }
+                        else if(clientAction.equals(ClientAction.PLAY_MOVE_STUDENT_IN_DININGROOM)){
                             //INSERISCO I PARAMETRI PER RICONOSCERE L'AZIONE
                             pay = new Payload("nickname", nick);
                             pay.addParameter("Action", Action.MoveStudentInDiningRoom);
@@ -256,7 +437,8 @@ public class Client {
 
                             setClientAction(ClientAction.PLAY_ACTION);
 
-                        } else if(clientAction.equals(ClientAction.PLAY_TAKE_CLOUD)){
+                        }
+                        else if(clientAction.equals(ClientAction.PLAY_TAKE_CLOUD)){
                             //INSERISCO I PARAMETRI PER RICONOSCERE L'AZIONE
                             pay = new Payload("nickname", nick);
                             pay.addParameter("Action", Action.TakeCloud);
@@ -270,14 +452,37 @@ public class Client {
                             pay.addParameter("Colour", null);
 
                             //COSTRUISCO E INVIO IL MESSAGGIO
-                            ch = new ClientHeader(nick, ClientAction.PLAY_MOVE_STUDENT_IN_DININGROOM);
+                            ch = new ClientHeader(nick, ClientAction.PLAY_TAKE_CLOUD);
                             cm = new ClientMessage(ch, pay);
                             send(socketOut, cm);
 
                             setClientAction(ClientAction.PLAY_ACTION);
-
                         }
 
+                        //END GAMES MOVES
+                        else if(clientAction.equals(ClientAction.END_GAME)){
+                            if(inputLine.equals("yes")){
+                                setClientAction(ClientAction.SEND_NICKNAME);
+
+                                ch = new ClientHeader(nick, ClientAction.END_GAME);
+                                pay = new Payload();
+
+                                pay.addParameter("endgame", "1");
+
+                                cm = new ClientMessage(ch, pay);
+                                send(socketOut, cm);
+                            } else if(inputLine.equals("no")){
+                                ch = new ClientHeader(nick, ClientAction.END_GAME);
+                                pay = new Payload();
+
+                                pay.addParameter("endgame", "0");
+
+                                cm = new ClientMessage(ch, pay);
+                                send(socketOut, cm);
+                            } else {
+                                System.out.println("please choose between yes and no");
+                            }
+                        }
                     }
                 }catch(Exception e){
                     System.out.println("eccezione scrittura: " + e);
@@ -386,6 +591,4 @@ public class Client {
             return Colour.PINK;
         }
     }
-    //public void asyncRead(){}
-    //public void makeAMove(){}
 }

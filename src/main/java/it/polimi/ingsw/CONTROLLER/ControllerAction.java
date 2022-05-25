@@ -92,10 +92,7 @@ public class ControllerAction {
                 this.game.doMoveMotherNature(numMovement);
                 setCurrentAction(Action.TakeCloud);
             } catch (MissingTowerException e) {
-                if (game.checkWin()) {
-                    game.theWinnerIs();
-                    //todo per fine game
-                }
+                game.notifyWin();
             } catch (MissingIslandException e){}
         }
         else{
@@ -186,7 +183,7 @@ public class ControllerAction {
     }
 
     public void useCharacter(CharacterParameters charPar) throws Exception {
-        game.notifyError("mossa non valida in gamemode: easy", charPar.getPlayerName());
+        game.notifyError("This move is not valid in gamemode: easy", charPar.getPlayerName());
 
     }
 

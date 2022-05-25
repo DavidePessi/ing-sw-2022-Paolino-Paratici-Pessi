@@ -60,12 +60,17 @@ public class ControllerTurn implements Observer{
                         game.notifyError(e.getMessage(), nickname);
                     }
                     this.endTurn();
+
                 } else{
                     game.notifyError("mossa selezionata non valida, prova a lanciare una carta assistente", nickname);
                 }
             }
             else{
-                if(action.equals(Action.MoveMotherNature)){
+                //se ho mulligan a false devo dirgli che non può lanciare un'altra carta
+                if(action.equals(Action.PlayCard)){
+                    game.notifyError("mossa selezionata non valida", nickname);
+                }
+                else if(action.equals(Action.MoveMotherNature)){
                     try{
                         this.controllerAction.moveMotherNature(numberParameter);
                     }catch(WrongActionException e){
@@ -101,11 +106,9 @@ public class ControllerTurn implements Observer{
                     if(this.youCanPlayCharacterCard == true) {
                         try {
                             this.controllerAction.useCharacter(charPar);
-                            this.youCanPlayCharacterCard = false;
-                        }catch(PossibleWinException e){
-                            //todo da gestire con fine game
-                        }
-                        catch(Exception e){
+                            setyouCanPlayCharacterCard(false);
+
+                        }catch(Exception e){
                             game.notifyError(e.getMessage(), nickname);
                         }
                     } else{
@@ -182,15 +185,25 @@ public class ControllerTurn implements Observer{
                 }
             }
         }
+        setyouCanPlayCharacterCard(true);
+        game.setCurrentPlayer(currentClient);
+        game.sendBoard("EndTurn");
+    }
+
+    private void setyouCanPlayCharacterCard(boolean b) {
+        this.youCanPlayCharacterCard = b;
     }
 
     @Override
     public void update(Object message) {
         ClientMessage cm = (ClientMessage) message;
+
         try {
             callAction((Action) cm.getPayload().getParameter("Action"), (String) cm.getPayload().getParameter("nickname"), (Colour) cm.getPayload().getParameter("Colour"), (int)cm.getPayload().getParameter("num"), (CharacterParameters) cm.getPayload().getParameter("CharacterParameters"));
         } catch (WrongClientException e) {
             game.notifyError("non e' il tuo turno", (String)cm.getPayload().getParameter("nickname"));
+        } catch (Exception e){
+            System.out.println("Eccezione: " + e.getClass());
         }
 
     }

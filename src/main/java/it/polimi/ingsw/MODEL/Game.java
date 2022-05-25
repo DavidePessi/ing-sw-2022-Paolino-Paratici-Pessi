@@ -377,13 +377,13 @@ public class Game extends Observable {
         return WinTeam;
     }
 
+    /*
+    * 1. viene sommato il numero dell'isola su cui si trova madre natura con il numero di spostamenti che deve fare
+    * 2. si fa modulo num isole che ci sono, si trova il numero dell'isola su cui madre natura si deve spostare
+    * 3. questo numero è dato alla funzione getIsland, che ritorna l'oggetto isola avente quel numero
+    */
+    public void doMoveMotherNature(int numMovement) throws Exception{
 
-    public void doMoveMotherNature(int numMovement) throws Exception{ //metti eccezione
-        /*
-        1. viene sommato il numero dell'isola su cui si trova madre natura con il numero di spostamenti che deve fare
-        2. si fa modulo num isole che ci sono, si trova il numero dell'isola su cui madre natura si deve spostare
-        3. questo numero è dato alla funzione getIsland, che ritorna l'oggetto isola avente quel numero
-         */
         if (characterCardThrown.equals("PostMan")) {
             try {
                 //risetto la carta lanciata a nessuna
@@ -470,172 +470,19 @@ public class Game extends Observable {
 
 
     public void doPlayCard(String nickname, int numCard) throws MissingCardException{
-        for (Player player : listPlayer) {
-            if (player != null) {
-                if (player.getNicknameClient().equals(nickname)) {
-                    player.playCard(numCard);
+        try {
+            for (Player player : listPlayer) {
+                if (player != null) {
+                    if (player.getNicknameClient().equals(nickname)) {
+                        player.playCard(numCard);
+                    }
                 }
             }
+            sendBoard("PlayCard");
+
+        }catch(PossibleWinException e){
+            notifyWin();
         }
-
-        sendBoard("PlayCard");
-    }
-
-    public void sendBoard(String s){
-        ServerMessage sm;
-        ServerHeader sh = new ServerHeader(ServerAction.UPDATE_BOARD, s);
-        Payload pay = new Payload();
-
-        if(s.equals("PlayCard")){
-
-            for(int i = 1; i <= listPlayer.size(); i++) {
-                pay.addParameter("player" + i, listPlayer.get(i-1));
-            }
-        }
-
-        else if(s.equals("MoveStudentInDiningRoom")){
-
-            for(int i = 1; i <= professors.size(); i++) {
-                pay.addParameter("professor" + i, professors.get(i-1));
-            }
-            for(int i = 1; i <= listPlayer.size(); i++) {
-                pay.addParameter("player" + i, listPlayer.get(i-1));
-            }
-        }
-
-        else if(s.equals("MoveStudentInIsland")){
-
-            for(int i = 1; i <= listPlayer.size(); i++) {
-                pay.addParameter("player" + i, listPlayer.get(i-1));
-            }
-            for(int i = 0; i < listIsland.size(); i++) {
-                pay.addParameter("island" + i, listIsland.get(i));
-            }
-        }
-
-        else if(s.equals("TakeCloud")){
-
-            for(int i = 1; i <= listPlayer.size(); i++) {
-                pay.addParameter("player" + i, listPlayer.get(i-1));
-            }
-            for(int i = 1; i <= listCloud.size(); i++) {
-                pay.addParameter("cloud" + i, listCloud.get(i-1));
-            }
-        }
-
-        else if(s.equals("MoveMotherNature")){
-
-            for(int i = 0; i < listIsland.size(); i++) {
-                pay.addParameter("island" + i, listIsland.get(i));
-            }
-
-            for(int i = 1; i <= listTeam.size(); i++) {
-                pay.addParameter("team" + i, listTeam.get(i-1));
-            }
-            pay.addParameter("mothernature", motherNature);
-
-            for(int i = 1; i <= listPlayer.size(); i++) {
-                pay.addParameter("player" + i, listPlayer.get(i-1));
-            }
-        }
-
-        else if(s.equals("Fusion")){
-
-            for(int i = 0; i < listIsland.size(); i++) {
-                pay.addParameter("island" + i, listIsland.get(i));
-            }
-
-            sm = new ServerMessage(sh, pay);
-            notify(sm);
-
-        }
-
-        else if(s.equals("PlayCharacterCard")){
-
-            for(int i = 1; i <= characterCards.size(); i++) {
-                pay.addParameter("charactercard" + i, characterCards.get(i-1));
-            }
-
-            pay.addParameter("cardthrown", characterCardThrown);
-
-            for(int i = 1; i <= listPlayer.size(); i++) {
-                pay.addParameter("player" + i, listPlayer.get(i-1));
-            }
-        }
-
-        else if(s.equals("CheckProfessor")){
-
-            for(int i = 1; i <= professors.size(); i++) {
-                pay.addParameter("professor" + i, professors.get(i-1));
-            }
-
-            for(int i = 1; i <= listPlayer.size(); i++) {
-                pay.addParameter("player" + i, listPlayer.get(i-1));
-            }
-
-
-        }
-
-        else if(s.equals("CheckTowers")){
-
-            for(int i = 0; i < listIsland.size(); i++) {
-                pay.addParameter("island" + i, listIsland.get(i));
-            }
-
-            for(int i = 1; i <= listTeam.size(); i++) {
-                pay.addParameter("team" + i, listTeam.get(i-1));
-            }
-
-        }
-
-        else if(s.equals("STARTGAME")){
-            //se sei nel difficult fai:
-            if(!characterCards.isEmpty()) {
-                for (int i = 1; i <= characterCards.size(); i++) {
-                    pay.addParameter("charactercard" + i, new ConcreteCharacterCard(characterCards.get(i - 1).getNameCard(), characterCards.get(i - 1).getPrice()));
-                }
-
-                pay.addParameter("showCoins", true);
-            }
-            else{
-                pay.addParameter("showCoins", false);
-            }
-
-            for(int i = 0; i < listIsland.size(); i++) {
-                pay.addParameter("island"+i, listIsland.get(i));
-            }
-
-            for(int i = 1; i <= listTeam.size(); i++) {
-                pay.addParameter("team" + i, listTeam.get(i-1));
-            }
-
-            for(int i = 1; i <= professors.size(); i++) {
-                pay.addParameter("professor" + i, professors.get(i-1));
-            }
-
-            for(int i = 1; i <= listPlayer.size(); i++) {
-                pay.addParameter("player" + i, listPlayer.get(i-1));
-            }
-
-            pay.addParameter("mothernature", motherNature);
-
-            pay.addParameter("cardthrown", characterCardThrown);
-
-            for(int i = 1; i <= listCloud.size(); i++) {
-                pay.addParameter("cloud" + i, listCloud.get(i-1));
-            }
-
-            //System.out.println("sto inviando il messaggio: " + sm);
-        }
-
-        else if(s.equals("refillcloud")){
-            for(int i = 1; i <= listCloud.size(); i++) {
-                pay.addParameter("cloud" + i, listCloud.get(i-1));
-            }
-        }
-
-        sm = new ServerMessage(sh, pay);
-        notify(sm);
     }
 
     /*
@@ -745,7 +592,6 @@ public class Game extends Observable {
                 }
                 characterCardThrown = "";
 
-            } catch (MissingTowerException e) {
             } catch (MissingPlayerException e) {
             } finally {
                 //a questo punto confronto il valore dei team
@@ -810,14 +656,6 @@ public class Game extends Observable {
 
                     listIsland.set(numIsland, i);
                     listIsland.remove(listIsland.size() - 1);
-
-                    //non serve perché dato che numIsland è 0 allora 1 c'è ancora ma non devo farlo arretrare a 0 ecc.
-                    /*
-                    for(Island island: listIsland){
-                        if (island.getNumIsland() > i.getNumIsland()) {
-                            island.setNumIsland(island.getNumIsland() - 1);
-                        }
-                    }*/
 
                 }
             } catch (MissingTowerException e) {
@@ -915,7 +753,11 @@ public class Game extends Observable {
             }
         }
 
-        sendBoard("Fusion");
+        //verifico se ci sono almeno 3 isole altrimenti è finita la partita
+        if(listIsland.size() <= 3){
+            notifyWin();
+        }
+        //sendBoard("Fusion");
     }
 
     public Player getPlayer(String io) throws MissingPlayerException {
@@ -1053,9 +895,38 @@ public class Game extends Observable {
         if(cardplayed) {
             sendBoard("PlayCharacterCard");
         } else{
-            throw new Exception("carta personaggio selezionata no presente");
+            throw new Exception("Character Card selected doesn't exist");
         }
     }
+
+    //per testing
+    public void addCharacterCard(ConcreteCharacterCard cc){
+        characterCards.add(cc);
+    }
+
+    public void refillCloud(){
+        for (Cloud cloud : listCloud) { //per ogni nuvola aggiungo 3 studenti estratti casualmente dalla bag
+            if (cloud != null) {
+                StudentGroup studentGroup = new StudentGroup();
+                for (int i = 0; i < 3; i++) {
+                    try {
+                        studentGroup.addStudent(bag.pullOut());
+                    } catch (MissingStudentException e) {
+                        //FINE GAME
+                        notifyWin();
+                    }
+                }
+                cloud.addStudents(studentGroup);
+            }
+        }
+        sendBoard("refillcloud");
+    }
+
+    public void setCurrentPlayer(String newCurrentPlayer){
+        currentPlayer = newCurrentPlayer;
+    }
+
+    //METODI PER NETWORK
 
     public void notifyError(String description, String nickname){
         ServerMessage sm;
@@ -1072,28 +943,191 @@ public class Game extends Observable {
         notify(sm);
     }
 
-    //per testing
-    public void addCharacterCard(ConcreteCharacterCard cc){
-        characterCards.add(cc);
-    }
+    public void sendBoard(String s){
+        ServerMessage sm;
+        ServerHeader sh = new ServerHeader(ServerAction.UPDATE_BOARD, s);
+        Payload pay = new Payload();
 
-    public void refillCloud(){
-        for (Cloud cloud : listCloud) { //per ogni nuvola aggiungo 3 studenti estratti casualmente dalla bag
-            if (cloud != null) {
-                StudentGroup studentGroup = new StudentGroup();
-                for (int i = 0; i < 3; i++) {
-                    try {
-                        studentGroup.addStudent(bag.pullOut());
-                    } catch (MissingStudentException e) {
-                        if(checkWin()){
-                            Team winnerTeam = theWinnerIs();
-                            // TODO: 23/05/2022
-                        }
-                    }
-                }
-                cloud.addStudents(studentGroup);
+        if(s.equals("PlayCard")){
+
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
             }
         }
-        sendBoard("refillcloud");
+
+        else if(s.equals("MoveStudentInDiningRoom")){
+
+            for(int i = 1; i <= professors.size(); i++) {
+                pay.addParameter("professor" + i, professors.get(i-1));
+            }
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
+        }
+
+        else if(s.equals("MoveStudentInIsland")){
+
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
+            for(int i = 0; i < listIsland.size(); i++) {
+                pay.addParameter("island" + i, listIsland.get(i));
+            }
+        }
+
+        else if(s.equals("TakeCloud")){
+
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
+            for(int i = 1; i <= listCloud.size(); i++) {
+                pay.addParameter("cloud" + i, listCloud.get(i-1));
+            }
+        }
+
+        else if(s.equals("MoveMotherNature")){
+
+            for(int i = 0; i < listIsland.size(); i++) {
+                pay.addParameter("island" + i, listIsland.get(i));
+            }
+
+            for(int i = 1; i <= listTeam.size(); i++) {
+                pay.addParameter("team" + i, listTeam.get(i-1));
+            }
+            pay.addParameter("mothernature", motherNature);
+
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
+        }
+
+        else if(s.equals("Fusion")){
+
+            for(int i = 0; i < listIsland.size(); i++) {
+                pay.addParameter("island" + i, listIsland.get(i));
+            }
+
+            sm = new ServerMessage(sh, pay);
+            notify(sm);
+
+        }
+
+        else if(s.equals("PlayCharacterCard")){
+
+            for (int i = 1; i <= characterCards.size(); i++) {
+                pay.addParameter("charactercard" + i, new ConcreteCharacterCard(characterCards.get(i - 1).getNameCard(), characterCards.get(i - 1).getPrice()));
+            }
+
+            for(int i = 0; i < listIsland.size(); i++) {
+                pay.addParameter("island"+i, listIsland.get(i));
+            }
+
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
+
+            pay.addParameter("cardthrown", characterCardThrown);
+        }
+
+        else if(s.equals("CheckProfessor")){
+
+            for(int i = 1; i <= professors.size(); i++) {
+                pay.addParameter("professor" + i, professors.get(i-1));
+            }
+
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
+
+
+        }
+
+        else if(s.equals("CheckTowers")){
+
+            for(int i = 0; i < listIsland.size(); i++) {
+                pay.addParameter("island" + i, listIsland.get(i));
+            }
+
+            for(int i = 1; i <= listTeam.size(); i++) {
+                pay.addParameter("team" + i, listTeam.get(i-1));
+            }
+
+        }
+
+        else if(s.equals("STARTGAME")){
+            //se sei nel difficult fai:
+            if(!characterCards.isEmpty()) {
+                for (int i = 1; i <= characterCards.size(); i++) {
+                    pay.addParameter("charactercard" + i, new ConcreteCharacterCard(characterCards.get(i - 1).getNameCard(), characterCards.get(i - 1).getPrice()));
+                }
+
+                pay.addParameter("showCoins", true);
+            }
+            else{
+                pay.addParameter("showCoins", false);
+            }
+
+            for(int i = 0; i < listIsland.size(); i++) {
+                pay.addParameter("island"+i, listIsland.get(i));
+            }
+
+            for(int i = 1; i <= listTeam.size(); i++) {
+                pay.addParameter("team" + i, listTeam.get(i-1));
+            }
+
+            for(int i = 1; i <= professors.size(); i++) {
+                pay.addParameter("professor" + i, professors.get(i-1));
+            }
+
+            for(int i = 1; i <= listPlayer.size(); i++) {
+                pay.addParameter("player" + i, listPlayer.get(i-1));
+            }
+
+            pay.addParameter("mothernature", motherNature);
+
+            pay.addParameter("cardthrown", characterCardThrown);
+
+            pay.addParameter("currentClient", currentPlayer);
+
+            for(int i = 1; i <= listCloud.size(); i++) {
+                pay.addParameter("cloud" + i, listCloud.get(i-1));
+            }
+
+            //System.out.println("sto inviando il messaggio: " + sm);
+        }
+
+        else if(s.equals("refillcloud")){
+            for(int i = 1; i <= listCloud.size(); i++) {
+                pay.addParameter("cloud" + i, listCloud.get(i-1));
+            }
+        }
+
+        else if(s.equals("EndTurn")){
+            pay.addParameter("currentClient", currentPlayer);
+        }
+
+        sm = new ServerMessage(sh, pay);
+        notify(sm);
+    }
+
+    public void notifyWin() {
+        if(checkWin()) {
+            ServerMessage sm;
+            ServerHeader sh;
+            Payload pay;
+
+            //creo il messaggio dove specifico il player che ha sbagliato
+            sh = new ServerHeader(ServerAction.END_GAME, "");
+
+            pay = new Payload();
+            pay.addParameter("team", theWinnerIs());
+            sm = new ServerMessage(sh, pay);
+
+            //notifico tutti
+            notify(sm);
+        } else{
+            System.out.println("c'è stato una falsa chiamata di Possible win exception");
+        }
+
     }
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.MODEL;
 
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 import it.polimi.ingsw.MODEL.Exception.MissingPlayerException;
+import it.polimi.ingsw.MODEL.Exception.PossibleWinException;
 import junit.framework.TestCase;
 
 public class PlayerTest extends TestCase {
@@ -12,7 +13,7 @@ public class PlayerTest extends TestCase {
         assertTrue(t instanceof Team);
     }
 
-    public void testGetLastPlayedCard()throws MissingPlayerException, MissingCardException {
+    public void testGetLastPlayedCard()throws MissingPlayerException, MissingCardException, PossibleWinException {
         Game g = new Game("io", "tu");
         g.getPlayer("io").playCard(3);
         Card c = g.getPlayer("io").getLastPlayedCard();
@@ -49,7 +50,7 @@ public class PlayerTest extends TestCase {
         assertEquals(num,p.numProfessor());
     }
 
-    public void testPlayCard() throws MissingPlayerException, MissingCardException{
+    public void testPlayCard() throws MissingPlayerException, MissingCardException, PossibleWinException{
         Game g = new Game("io", "tu");
         int num = 3;
         int numCardInDeck_Prima, numCardInDeck_Dopo;

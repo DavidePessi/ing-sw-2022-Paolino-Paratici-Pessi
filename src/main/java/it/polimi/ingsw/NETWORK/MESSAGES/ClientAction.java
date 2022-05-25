@@ -11,7 +11,8 @@ public enum ClientAction {
     PLAY_CARD,
     PLAY_MOVE_STUDENT_IN_DININGROOM,
     PLAY_MOVE_STUDENT_IN_ISLAND,
-    PLAY_TAKE_CLOUD;
+    PLAY_TAKE_CLOUD,
+    END_GAME;
 
 
 }

@@ -1,9 +1,10 @@
 package it.polimi.ingsw.MODEL;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CharacterParameters {
+public class CharacterParameters implements Serializable {
     private String nickname;
     private String characterName;
     private Colour c1, c2, c3, c4, c5, c6;
@@ -22,7 +23,6 @@ public class CharacterParameters {
         this.num = num;
     }
 
-
     public CharacterParameters(String nickname, String characterName, int num , Colour colour){
         this.nickname = nickname;
         this.characterName = characterName;
@@ -30,7 +30,7 @@ public class CharacterParameters {
         this.c1 = colour;
     }
 
-    public CharacterParameters(String nickname,  String characterName,List<Colour> colours){
+    public CharacterParameters(String nickname,  String characterName, List<Colour> colours){
         this.nickname = nickname;
         this.characterName = characterName;
         this.c1 = colours.get(0);
@@ -40,6 +40,12 @@ public class CharacterParameters {
     public CharacterParameters(String nickname, String characterName){
         this.nickname = nickname;
         this.characterName = characterName;
+    }
+
+    public CharacterParameters(String nickname, String characterName, Colour colour){
+        this.nickname = nickname;
+        this.characterName = characterName;
+        this.c1 = colour;
     }
 
     public CharacterParameters(String nickname, String characterName, int num){

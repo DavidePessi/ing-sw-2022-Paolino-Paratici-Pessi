@@ -1,11 +1,12 @@
 package it.polimi.ingsw.MODEL;
 
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
+import it.polimi.ingsw.MODEL.Exception.PossibleWinException;
 import junit.framework.TestCase;
 
 public class DeckTest extends TestCase {
 
-    public void testRemoveCard() throws MissingCardException {
+    public void testRemoveCard() throws MissingCardException, PossibleWinException {
         Deck d = new Deck();
         Card c = new Card(1, 1);
         int n = 1;
@@ -22,7 +23,7 @@ public class DeckTest extends TestCase {
         }
     }
 
-    public void testGetCard() throws MissingCardException{
+    public void testGetCard() throws MissingCardException, PossibleWinException{
         Deck d = new Deck();
         Card c = new Card(1, 1);
 

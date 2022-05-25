@@ -82,8 +82,10 @@ public class ControllerTurnTest extends TestCase {
         //caso in cui voglio muovere madre natura
         ct.setMulligan(false);
         ct.setCurrentClient("io");
-
+        g.setCurrentPlayer("io");
+        g.getPlayer("io").playCard(7);
         ca.setCurrentAction(Action.MoveMotherNature);
+
         ct.callAction(Action.MoveMotherNature, "io", null, 2, null);
 
         assertEquals(false, g.getIsland(0).getHasMotherNature());

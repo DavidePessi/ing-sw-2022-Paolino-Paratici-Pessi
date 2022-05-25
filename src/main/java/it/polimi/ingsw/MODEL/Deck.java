@@ -1,6 +1,7 @@
 package it.polimi.ingsw.MODEL;
 
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
+import it.polimi.ingsw.MODEL.Exception.PossibleWinException;
 
 import java.io.Serializable;
 import java.util.*;
@@ -19,15 +20,16 @@ public class Deck implements Serializable {
         this.listCard.remove(c);
     }
 
-    public Card getCard(int value) throws MissingCardException {
+    public Card getCard(int value) throws MissingCardException , PossibleWinException {
         Card cardToReturn = null;
         for(Card card : listCard){
             if(card.getValue() == value){
                 cardToReturn = card;
             }
         }
-
-        if(cardToReturn == null){
+        if(size() == 0){
+            throw new PossibleWinException();
+        } else if(cardToReturn == null){
             throw new MissingCardException("The card you want to play is not in the deck");
         }
         return cardToReturn;
