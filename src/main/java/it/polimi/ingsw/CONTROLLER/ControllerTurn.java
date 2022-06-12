@@ -56,10 +56,11 @@ public class ControllerTurn implements Observer{
                 if(action.equals(Action.PlayCard)) {
                     try {
                         this.controllerAction.playCard(nickname, numberParameter);
+                        this.endTurn();
                     } catch (MissingCardException e) {
                         game.notifyError(e.getMessage(), nickname);
                     }
-                    this.endTurn();
+
 
                 } else{
                     game.notifyError("mossa selezionata non valida, prova a lanciare una carta assistente", nickname);

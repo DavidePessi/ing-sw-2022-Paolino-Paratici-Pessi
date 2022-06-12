@@ -40,13 +40,6 @@ public class SocketClientConnection extends Observable<String> implements Client
 
     @Override
     public synchronized void closeConnection() {
-
-        ServerMessage sm;
-        ServerHeader sh = new ServerHeader(ServerAction.PING, "Connection closed!");
-        Payload pay = new Payload();
-        sm = new ServerMessage(sh, pay);
-        send(sm);
-
         try {
             socket.close();
         } catch (IOException e) {
@@ -71,7 +64,6 @@ public class SocketClientConnection extends Observable<String> implements Client
             @Override
             public void run() {
                 try {
-                    if(message.equals(null)){System.out.println("async send riceve un elemento nullo");}
                     //System.out.println("ho ricevuto il messaggio: " + message);
                     //System.out.println("canale di uscita: " + out);
 
@@ -120,7 +112,7 @@ public class SocketClientConnection extends Observable<String> implements Client
 
                     cm = PingRead(in);
                     typeGame = (String) cm.getPayload().getParameter("typeGame");
-
+                    System.out.println("ho ricevuto il tipo di partita");
 
                     //CASO DI ERRORE
                     if (!typeGame.equals("difficult") && !typeGame.equals("easy")) {
@@ -145,6 +137,7 @@ public class SocketClientConnection extends Observable<String> implements Client
                     Integer n = (Integer) cm.getPayload().getParameter("numPlayer");
                     //System.out.println("numplayers: " + n);
                     numPlayers = n.intValue();
+                    System.out.println("ho ricevuto il numero di giocatori");
 
                     //CASO DI ERRORE
                     if (numPlayers != 2 && numPlayers != 3 && numPlayers != 4) {
@@ -167,6 +160,7 @@ public class SocketClientConnection extends Observable<String> implements Client
 
                     cm = PingRead(in);
                     name = (String) cm.getPayload().getParameter("nickname");
+                    System.out.println("ho ricevuto il nickname");
 
                     //VERIFICO LA VALIDITA' DEL NICKNAME CON 2E
                     if (numPlayers == 2 && typeGame.equals("easy")) {
@@ -253,6 +247,7 @@ public class SocketClientConnection extends Observable<String> implements Client
             sm = new ServerMessage(sh, pay);
 
             send(sm);
+                System.out.println("sei in lobby");
 
             //CICLO DI GIOCO
             //continuo ad inviare i messaggi al server finchè non trovo un messaggio di fine partita a quel
@@ -281,19 +276,23 @@ public class SocketClientConnection extends Observable<String> implements Client
         }
     }
 
+
     private ClientMessage PingRead(ObjectInputStream in){
         ClientMessage cm = null;
         try {
             do {
+
                 cm = (ClientMessage) in.readObject();
-                if (cm.getClientHeader().getClientAction().equals(ClientAction.PING)) {
+                if ((cm.getClientHeader().getClientAction()).equals(ClientAction.PING)) {
+                    //System.out.println("qui");
+                    //System.out.println("oggetto: " + cm.getClientHeader().getClientAction());
                     ping();
                 }
             } while (cm.getClientHeader().getClientAction().equals(ClientAction.PING));
 
         }catch(IOException e){
             System.out.println("IOexception nel pingRead");
-            System.out.println("oggetto: " + cm);
+            System.out.println("oggetto: " + cm.getClientHeader().getClientAction());
         }catch(ClassNotFoundException e){
             System.out.println("ClassNotFoundException nel pingCheck");
         }
@@ -322,6 +321,13 @@ public class SocketClientConnection extends Observable<String> implements Client
     }
     private void ping() {
         pingTime = 10;
+
+        ServerMessage sm;
+        ServerHeader sh = new ServerHeader(ServerAction.PING, "Connection stable");
+        Payload pay = new Payload();
+        sm = new ServerMessage(sh, pay);
+        send(sm);
+
     }
 
     private synchronized void send(ServerMessage sm){

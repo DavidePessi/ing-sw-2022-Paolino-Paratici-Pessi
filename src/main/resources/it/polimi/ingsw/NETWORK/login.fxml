@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1560.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.NETWORK.CLIENT.LoginController">
+   <children>
+      <Label layoutX="558.0" layoutY="187.0" text="ERIANTYS" textFill="#cf1616">
+         <font>
+            <Font size="96.0" />
+         </font>
+      </Label>
+      <Label id="IP" fx:id="IP" layoutX="619.0" layoutY="406.0" text="IP">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label id="PORT" fx:id="PORT" layoutX="603.0" layoutY="543.0" text="PORT">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="IP_text_field" layoutX="709.0" layoutY="401.0" promptText="127.0.0.1">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="PORT_text_field" layoutX="709.0" layoutY="531.0" promptText="12345">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </TextField>
+      <Button layoutX="742.0" layoutY="600.0" mnemonicParsing="false" onAction="#onLoginButtonClick" text="LOGIN">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

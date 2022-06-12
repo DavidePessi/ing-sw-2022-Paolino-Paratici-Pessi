@@ -1,6 +1,7 @@
 package it.polimi.ingsw.NETWORK.MESSAGES;
 
 public enum ClientAction {
+    STAI_FERMO,
     SEND_NICKNAME,
     SEND_GAMEMODE,
     SEND_NUM_PLAYERS,

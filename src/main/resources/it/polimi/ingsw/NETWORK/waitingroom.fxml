@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: F2E7BF;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.NETWORK.CLIENT.LoginController">
+   <children>
+      <Label layoutX="111.0" layoutY="143.0" prefHeight="17.0" prefWidth="378.0" text="PLEASE WAIT WHILE OTHER PLAYERS ARE TRYING TO CONNECT" textFill="#490add">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

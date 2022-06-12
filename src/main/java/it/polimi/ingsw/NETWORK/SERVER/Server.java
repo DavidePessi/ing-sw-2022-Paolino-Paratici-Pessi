@@ -9,7 +9,7 @@ import it.polimi.ingsw.NETWORK.VIEW.RemoteView;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.rmi.Remote;
+//import java.rmi.Remote;  todo................................................
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,16 +25,21 @@ public class Server {
     private Map<String, SocketClientConnection> waitingRoom3D = new HashMap<>();
     private Map<String, SocketClientConnection> waitingRoom4E = new HashMap<>();
     private Map<String, SocketClientConnection> waitingRoom4D = new HashMap<>();
-    private Map<SocketClientConnection, SocketClientConnection> playingConnection = new HashMap<>();
+    private Map<SocketClientConnection, ArrayList<SocketClientConnection>> playingConnection = new HashMap<>();
 
     //Deregister connection
     public synchronized void deregisterConnection(ClientConnection c) {
-        ClientConnection opponent = playingConnection.get(c);
-        if(opponent != null) {
-            opponent.closeConnection();
+
+        ArrayList<SocketClientConnection> opponents = playingConnection.get(c);
+
+        for(SocketClientConnection sc : opponents) {
+            if (sc != null) {
+                sc.closeConnection();
+            }
+            playingConnection.remove(sc);
         }
         playingConnection.remove(c);
-        playingConnection.remove(opponent);
+
 
         Iterator<String> iterator = waitingRoom2E.keySet().iterator();
         while(iterator.hasNext()){
@@ -109,8 +114,13 @@ public class Server {
             player1.addObserver(controllerTurn);
             player2.addObserver(controllerTurn);
 
-            playingConnection.put(c1, c2);
-            playingConnection.put(c2, c1);
+            ArrayList<SocketClientConnection> l1 = new ArrayList<>();
+            l1.add(c2);
+            ArrayList<SocketClientConnection> l2 = new ArrayList<>();
+            l1.add(c1);
+
+            playingConnection.put(c1, l1);
+            playingConnection.put(c2, l2);
             waitingRoom2E.clear();
 
             model.startGame(easy);
@@ -146,8 +156,14 @@ public class Server {
             player1.addObserver(controllerTurn);
             player2.addObserver(controllerTurn);
 
-            playingConnection.put(c1, c2);
-            playingConnection.put(c2, c1);
+
+            ArrayList<SocketClientConnection> l1 = new ArrayList<>();
+            l1.add(c2);
+            ArrayList<SocketClientConnection> l2 = new ArrayList<>();
+            l1.add(c1);
+
+            playingConnection.put(c1, l1);
+            playingConnection.put(c2, l2);
             waitingRoom2D.clear();
 
             model.startGame(easy);
@@ -188,12 +204,19 @@ public class Server {
             player3.addObserver(controllerTurn);
 
 
-            playingConnection.put(c1, c2);
-            playingConnection.put(c1, c3);
-            playingConnection.put(c2, c1);
-            playingConnection.put(c2, c3);
-            playingConnection.put(c3, c1);
-            playingConnection.put(c3, c2);
+            ArrayList<SocketClientConnection> l1 = new ArrayList<>();
+            l1.add(c2);
+            l1.add(c3);
+            ArrayList<SocketClientConnection> l2 = new ArrayList<>();
+            l1.add(c1);
+            l1.add(c3);
+            ArrayList<SocketClientConnection> l3 = new ArrayList<>();
+            l1.add(c1);
+            l1.add(c2);
+
+            playingConnection.put(c1, l1);
+            playingConnection.put(c2, l2);
+            playingConnection.put(c3, l3);
             waitingRoom3E.clear();
 
             model.startGame(easy);
@@ -232,12 +255,19 @@ public class Server {
             player2.addObserver(controllerTurn);
             player3.addObserver(controllerTurn);
 
-            playingConnection.put(c1, c2);
-            playingConnection.put(c1, c3);
-            playingConnection.put(c2, c1);
-            playingConnection.put(c2, c3);
-            playingConnection.put(c3, c1);
-            playingConnection.put(c3, c2);
+            ArrayList<SocketClientConnection> l1 = new ArrayList<>();
+            l1.add(c2);
+            l1.add(c3);
+            ArrayList<SocketClientConnection> l2 = new ArrayList<>();
+            l1.add(c1);
+            l1.add(c3);
+            ArrayList<SocketClientConnection> l3 = new ArrayList<>();
+            l1.add(c1);
+            l1.add(c2);
+
+            playingConnection.put(c1, l1);
+            playingConnection.put(c2, l2);
+            playingConnection.put(c3, l3);
             waitingRoom3D.clear();
 
             model.startGame(easy);
@@ -281,18 +311,27 @@ public class Server {
             player3.addObserver(controllerTurn);
             player4.addObserver(controllerTurn);
 
-            playingConnection.put(c1, c2);
-            playingConnection.put(c1, c3);
-            playingConnection.put(c1, c4);
-            playingConnection.put(c2, c1);
-            playingConnection.put(c2, c3);
-            playingConnection.put(c2, c4);
-            playingConnection.put(c3, c1);
-            playingConnection.put(c3, c2);
-            playingConnection.put(c3, c4);
-            playingConnection.put(c4, c1);
-            playingConnection.put(c4, c2);
-            playingConnection.put(c4, c3);
+            ArrayList<SocketClientConnection> l1 = new ArrayList<>();
+            l1.add(c2);
+            l1.add(c3);
+            l1.add(c4);
+            ArrayList<SocketClientConnection> l2 = new ArrayList<>();
+            l1.add(c1);
+            l1.add(c3);
+            l1.add(c4);
+            ArrayList<SocketClientConnection> l3 = new ArrayList<>();
+            l1.add(c1);
+            l1.add(c2);
+            l1.add(c4);
+            ArrayList<SocketClientConnection> l4 = new ArrayList<>();
+            l1.add(c1);
+            l1.add(c2);
+            l1.add(c3);
+
+            playingConnection.put(c1, l1);
+            playingConnection.put(c2, l2);
+            playingConnection.put(c3, l3);
+            playingConnection.put(c4, l4);
             waitingRoom4E.clear();
 
             model.startGame(easy);
@@ -335,18 +374,27 @@ public class Server {
             player3.addObserver(controllerTurn);
             player4.addObserver(controllerTurn);
 
-            playingConnection.put(c1, c2);
-            playingConnection.put(c1, c3);
-            playingConnection.put(c1, c4);
-            playingConnection.put(c2, c1);
-            playingConnection.put(c2, c3);
-            playingConnection.put(c2, c4);
-            playingConnection.put(c3, c1);
-            playingConnection.put(c3, c2);
-            playingConnection.put(c3, c4);
-            playingConnection.put(c4, c1);
-            playingConnection.put(c4, c2);
-            playingConnection.put(c4, c3);
+            ArrayList<SocketClientConnection> l1 = new ArrayList<>();
+            l1.add(c2);
+            l1.add(c3);
+            l1.add(c4);
+            ArrayList<SocketClientConnection> l2 = new ArrayList<>();
+            l1.add(c1);
+            l1.add(c3);
+            l1.add(c4);
+            ArrayList<SocketClientConnection> l3 = new ArrayList<>();
+            l1.add(c1);
+            l1.add(c2);
+            l1.add(c4);
+            ArrayList<SocketClientConnection> l4 = new ArrayList<>();
+            l1.add(c1);
+            l1.add(c2);
+            l1.add(c3);
+
+            playingConnection.put(c1, l1);
+            playingConnection.put(c2, l2);
+            playingConnection.put(c3, l3);
+            playingConnection.put(c4, l4);
             waitingRoom4D.clear();
 
             model.startGame(easy);
