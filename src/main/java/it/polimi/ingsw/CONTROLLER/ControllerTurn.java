@@ -183,6 +183,7 @@ public class ControllerTurn implements Observer{
             for(int i = 0 ; i < clientList.size() - 1; i++){
                 if(this.clientList.get(i).equals(currentClient)){
                     currentClient = this.clientList.get(i+1);
+                    break;
                 }
             }
         }
@@ -190,6 +191,7 @@ public class ControllerTurn implements Observer{
         game.setCurrentPlayer(currentClient);
         game.sendBoard("EndTurn");
     }
+
 
     private void setyouCanPlayCharacterCard(boolean b) {
         this.youCanPlayCharacterCard = b;

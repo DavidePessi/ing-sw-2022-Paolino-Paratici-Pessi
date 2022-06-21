@@ -117,7 +117,7 @@ public class Server {
             ArrayList<SocketClientConnection> l1 = new ArrayList<>();
             l1.add(c2);
             ArrayList<SocketClientConnection> l2 = new ArrayList<>();
-            l1.add(c1);
+            l2.add(c1);
 
             playingConnection.put(c1, l1);
             playingConnection.put(c2, l2);
@@ -160,7 +160,7 @@ public class Server {
             ArrayList<SocketClientConnection> l1 = new ArrayList<>();
             l1.add(c2);
             ArrayList<SocketClientConnection> l2 = new ArrayList<>();
-            l1.add(c1);
+            l2.add(c1);
 
             playingConnection.put(c1, l1);
             playingConnection.put(c2, l2);
@@ -208,11 +208,11 @@ public class Server {
             l1.add(c2);
             l1.add(c3);
             ArrayList<SocketClientConnection> l2 = new ArrayList<>();
-            l1.add(c1);
-            l1.add(c3);
+            l2.add(c1);
+            l2.add(c3);
             ArrayList<SocketClientConnection> l3 = new ArrayList<>();
-            l1.add(c1);
-            l1.add(c2);
+            l3.add(c1);
+            l3.add(c2);
 
             playingConnection.put(c1, l1);
             playingConnection.put(c2, l2);
@@ -259,11 +259,11 @@ public class Server {
             l1.add(c2);
             l1.add(c3);
             ArrayList<SocketClientConnection> l2 = new ArrayList<>();
-            l1.add(c1);
-            l1.add(c3);
+            l2.add(c1);
+            l2.add(c3);
             ArrayList<SocketClientConnection> l3 = new ArrayList<>();
-            l1.add(c1);
-            l1.add(c2);
+            l3.add(c1);
+            l3.add(c2);
 
             playingConnection.put(c1, l1);
             playingConnection.put(c2, l2);
@@ -316,17 +316,17 @@ public class Server {
             l1.add(c3);
             l1.add(c4);
             ArrayList<SocketClientConnection> l2 = new ArrayList<>();
-            l1.add(c1);
-            l1.add(c3);
-            l1.add(c4);
+            l2.add(c1);
+            l2.add(c3);
+            l2.add(c4);
             ArrayList<SocketClientConnection> l3 = new ArrayList<>();
-            l1.add(c1);
-            l1.add(c2);
-            l1.add(c4);
+            l3.add(c1);
+            l3.add(c2);
+            l3.add(c4);
             ArrayList<SocketClientConnection> l4 = new ArrayList<>();
-            l1.add(c1);
-            l1.add(c2);
-            l1.add(c3);
+            l4.add(c1);
+            l4.add(c2);
+            l4.add(c3);
 
             playingConnection.put(c1, l1);
             playingConnection.put(c2, l2);
@@ -379,17 +379,17 @@ public class Server {
             l1.add(c3);
             l1.add(c4);
             ArrayList<SocketClientConnection> l2 = new ArrayList<>();
-            l1.add(c1);
-            l1.add(c3);
-            l1.add(c4);
+            l2.add(c1);
+            l2.add(c3);
+            l2.add(c4);
             ArrayList<SocketClientConnection> l3 = new ArrayList<>();
-            l1.add(c1);
-            l1.add(c2);
-            l1.add(c4);
+            l3.add(c1);
+            l3.add(c2);
+            l3.add(c4);
             ArrayList<SocketClientConnection> l4 = new ArrayList<>();
-            l1.add(c1);
-            l1.add(c2);
-            l1.add(c3);
+            l4.add(c1);
+            l4.add(c2);
+            l4.add(c3);
 
             playingConnection.put(c1, l1);
             playingConnection.put(c2, l2);

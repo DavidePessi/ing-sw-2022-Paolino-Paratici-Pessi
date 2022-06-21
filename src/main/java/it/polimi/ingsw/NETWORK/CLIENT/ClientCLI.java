@@ -84,7 +84,10 @@ public final class ClientCLI {
                         else if (ServerAction.OK_START.equals(in2.getServerHeader().getServerAction())){
                             System.out.println(in2.getPayload().getParameter("OK_START"));
                             setClientAction(ClientAction.PLAY_ACTION);
-                            if(model instanceof ClientModelGUI) {
+                            if(model instanceof ClientModelCLI) {
+                                //ClientModelCLI.showMoves(nick);
+                            }
+                            else if(model instanceof ClientModelGUI) {
                                 ClientModelGUI.changeToWaitingPage();
                             }
                         }
@@ -97,6 +100,7 @@ public final class ClientCLI {
                                 ClientModelCLI.showMoves(nick);
                             }
                             else if(model instanceof ClientModelGUI){
+                                System.out.println("update received");
                                 ClientModelGUI.changeToBoard();
                                 //ClientModelGUI.showMoves(nick);
                             }
@@ -126,6 +130,7 @@ public final class ClientCLI {
                                     ClientModelCLI.clientError(in2);
                                 }
                                 else if(model instanceof ClientModelGUI){
+                                    System.out.println("errore di inserimento");
                                     ClientModelGUI.clientError(in2);
                                 }
                                 setClientAction(ClientAction.PLAY_ACTION);
@@ -155,9 +160,13 @@ public final class ClientCLI {
                             ClientMessage cm;
                             if(model instanceof ClientModelCLI) {
                                 cm = ClientModelCLI.sendNickname();
+
+                                nick = (String) cm.getPayload().getParameter("nickname");
+
                                 send(socketOut, cm);
                             }
                             else if(model instanceof ClientModelGUI){
+                                System.out.println("richiesta di messaggio per send nickname inviata");
                                 cm = ClientModelGUI.sendNickname();
                                 send(socketOut, cm);
                             }
@@ -170,6 +179,7 @@ public final class ClientCLI {
                                 send(socketOut, cm);
                             }
                             else if(model instanceof ClientModelGUI){
+                                System.out.println("richiesta di messaggio per send num players inviata");
                                 cm = ClientModelGUI.sendNumPlayers();
                                 send(socketOut, cm);
                             }
@@ -183,6 +193,7 @@ public final class ClientCLI {
                                 send(socketOut, cm);
                             }
                             else if(model instanceof ClientModelGUI){
+                                System.out.println("richiesta di messaggio per send gamemode inviata");
                                 cm = ClientModelGUI.sendTypeGame();
                                 send(socketOut, cm);
                             }
@@ -194,6 +205,7 @@ public final class ClientCLI {
                                 setClientAction(ClientModelCLI.sendTypeAction());
                             }
                             else if(model instanceof ClientModelGUI){
+                                System.out.println("richiesta di action inviata");
                                 setClientAction(ClientModelGUI.sendTypeAction());
                             }
                         }
@@ -206,6 +218,7 @@ public final class ClientCLI {
                                 setClientAction(ClientAction.PLAY_ACTION);
                             }
                             else if(model instanceof ClientModelGUI){
+                                System.out.println("richiesta di messaggio per play card inviata");
                                 cm = ClientModelGUI.sendPlayCard();
                                 send(socketOut, cm);
                                 setClientAction(ClientAction.PLAY_ACTION);
@@ -221,6 +234,7 @@ public final class ClientCLI {
                                 setClientAction(ClientAction.PLAY_ACTION);
                             }
                             else if(model instanceof ClientModelGUI){
+                                System.out.println("richiesta di messaggio per play charactercard inviata");
                                 cm = ClientModelGUI.sendPlayCharacterCard();
                                 send(socketOut, cm);
                                 setClientAction(ClientAction.PLAY_ACTION);
@@ -236,6 +250,7 @@ public final class ClientCLI {
                                 setClientAction(ClientAction.PLAY_ACTION);
                             }
                             else if(model instanceof ClientModelGUI){
+                                System.out.println("richiesta di messaggio per move mother nature inviata");
                                 cm = ClientModelGUI.sendMoveMotherNature();
                                 send(socketOut, cm);
                                 setClientAction(ClientAction.PLAY_ACTION);
@@ -252,6 +267,7 @@ public final class ClientCLI {
                                 setClientAction(ClientAction.PLAY_ACTION);
                             }
                             else if(model instanceof ClientModelGUI){
+                                System.out.println("richiesta di messaggio per move student in island inviata");
                                 cm = ClientModelGUI.sendMoveStudentInIsland();
                                 send(socketOut, cm);
                                 setClientAction(ClientAction.PLAY_ACTION);
@@ -268,6 +284,7 @@ public final class ClientCLI {
                                 setClientAction(ClientAction.PLAY_ACTION);
                             }
                             else if(model instanceof ClientModelGUI){
+                                System.out.println("richiesta di messaggio per move student in diningroom inviata");
                                 cm = ClientModelGUI.sendMoveStudentInDiningRoom();
                                 send(socketOut, cm);
                                 setClientAction(ClientAction.PLAY_ACTION);
@@ -282,6 +299,7 @@ public final class ClientCLI {
                                 cm = ClientModelCLI.sendTakeCloud();
                             }
                             else{
+                                System.out.println("richiesta di messaggio per take cloud inviata");
                                 cm = ClientModelGUI.sendTakeCloud();
                             }
 

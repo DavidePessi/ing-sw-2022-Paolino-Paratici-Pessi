@@ -182,123 +182,131 @@ public class Game extends Observable {
             //estrarre casualmente 3 carte
             Random random = new Random();
             for (int i = 0; i < 3; i++) {
-                boolean isPresent = false;
-                int num = random.nextInt(8);
+                    boolean isPresent = false;
+                    int num = random.nextInt(8);
 
-                if (num == 0) {
-                    for (CharacterCard c : characterCards) {
-                        if (c.getNameCard().equals("Jester")) {
-                            isPresent = true;
+                    if (num == 0) {
+                        for (CharacterCard c : characterCards) {
+                            if (c.getNameCard().equals("Jester")) {
+                                isPresent = true;
+                            }
+                        }
+                        if (!isPresent) {
+                            characterCards.add(new Jester(this));
+                        } else {
+                            i--;
                         }
                     }
-                    if (!isPresent) {
-                        characterCards.add(new Jester(this));
-                    } else {
-                        i--;
+
+                    if (num == 1) {
+                        for (CharacterCard c : characterCards) {
+                            if (c.getNameCard().equals("Knight")) {
+                                isPresent = true;
+                            }
+                        }
+                        if (!isPresent) {
+                            characterCards.add(new Knight(this));
+                        } else {
+                            i--;
+                        }
+                    }
+
+                    if (num == 2) {
+                        for (CharacterCard c : characterCards) {
+                            if (c.getNameCard().equals("Minstrell")) {
+                                isPresent = true;
+                            }
+                        }
+                        if (!isPresent) {
+                            characterCards.add(new Minstrell(this));
+                        } else {
+                            i--;
+                        }
+                    }
+
+                    if (num == 3) {
+                        for (CharacterCard c : characterCards) {
+                            if (c.getNameCard().equals("Pirate")) {
+                                isPresent = true;
+                            }
+                        }
+                        if (!isPresent) {
+                            characterCards.add(new Pirate(this));
+                        } else {
+                            i--;
+                        }
+                    }
+
+                    if (num == 4) {
+                        for (CharacterCard c : characterCards) {
+                            if (c.getNameCard().equals("PostMan")) {
+                                isPresent = true;
+                            }
+                        }
+                        if (!isPresent) {
+                            characterCards.add(new PostMan(this));
+                        } else {
+                            i--;
+                        }
+                    }
+
+                    if (num == 5) {
+                        for (CharacterCard c : characterCards) {
+                            if (c.getNameCard().equals("Priest")) {
+                                isPresent = true;
+                            }
+                        }
+                        if (!isPresent) {
+                            characterCards.add(new Priest(this));
+                        } else {
+                            i--;
+                        }
+                    }
+
+                    if (num == 6) {
+                        for (CharacterCard c : characterCards) {
+                            if (c.getNameCard().equals("Satyr")) {
+                                isPresent = true;
+                            }
+                        }
+                        if (!isPresent) {
+                            characterCards.add(new Satyr(this));
+                        } else {
+                            i--;
+                        }
+                    }
+
+                    if (num == 7) {
+                        for (CharacterCard c : characterCards) {
+                            if (c.getNameCard().equals("Woman")) {
+                                isPresent = true;
+                            }
+                        }
+                        if (!isPresent) {
+                            characterCards.add(new Woman(this));
+                        } else {
+                            i--;
+                        }
                     }
                 }
 
-                if (num == 1) {
-                    for (CharacterCard c : characterCards) {
-                        if (c.getNameCard().equals("Knight")) {
-                            isPresent = true;
-                        }
-                    }
-                    if (!isPresent) {
-                        characterCards.add(new Knight(this));
-                    } else {
-                        i--;
-                    }
-                }
-
-                if (num == 2) {
-                    for (CharacterCard c : characterCards) {
-                        if (c.getNameCard().equals("Minstrell")) {
-                            isPresent = true;
-                        }
-                    }
-                    if (!isPresent) {
-                        characterCards.add(new Minstrell(this));
-                    } else {
-                        i--;
-                    }
-                }
-
-                if (num == 3) {
-                    for (CharacterCard c : characterCards) {
-                        if (c.getNameCard().equals("Pirate")) {
-                            isPresent = true;
-                        }
-                    }
-                    if (!isPresent) {
-                        characterCards.add(new Pirate(this));
-                    } else {
-                        i--;
-                    }
-                }
-
-                if (num == 4) {
-                    for (CharacterCard c : characterCards) {
-                        if (c.getNameCard().equals("PostMan")) {
-                            isPresent = true;
-                        }
-                    }
-                    if (!isPresent) {
-                        characterCards.add(new PostMan(this));
-                    } else {
-                        i--;
-                    }
-                }
-
-                if (num == 5) {
-                    for (CharacterCard c : characterCards) {
-                        if (c.getNameCard().equals("Priest")) {
-                            isPresent = true;
-                        }
-                    }
-                    if (!isPresent) {
-                        characterCards.add(new Priest(this));
-                    } else {
-                        i--;
-                    }
-                }
-
-                if (num == 6) {
-                    for (CharacterCard c : characterCards) {
-                        if (c.getNameCard().equals("Satyr")) {
-                            isPresent = true;
-                        }
-                    }
-                    if (!isPresent) {
-                        characterCards.add(new Satyr(this));
-                    } else {
-                        i--;
-                    }
-                }
-
-                if (num == 7) {
-                    for (CharacterCard c : characterCards) {
-                        if (c.getNameCard().equals("Woman")) {
-                            isPresent = true;
-                        }
-                    }
-                    if (!isPresent) {
-                        characterCards.add(new Woman(this));
-                    } else {
-                        i--;
-                    }
-                }
-            }
         }
 
 
         for (Cloud cloud : listCloud) { //per ogni nuvola aggiungo 3 studenti estratti casualmente dalla bag
             if (cloud != null) {
                 StudentGroup studentGroup = new StudentGroup();
-                for (int i = 0; i < 3; i++) {
-                    studentGroup.addStudent(bag.pullOut());
+                if(listPlayer.size() == 3){
+                    for (int i = 0; i < 4; i++) {
+                        studentGroup.addStudent(bag.pullOut());
+                    }
+                    cloud.addStudents(studentGroup);
+                }else {
+                    for (int i = 0; i < 3; i++) {
+                        studentGroup.addStudent(bag.pullOut());
+                    }
+                    cloud.addStudents(studentGroup);
                 }
-                cloud.addStudents(studentGroup);
             }
         }
 
@@ -908,15 +916,29 @@ public class Game extends Observable {
         for (Cloud cloud : listCloud) { //per ogni nuvola aggiungo 3 studenti estratti casualmente dalla bag
             if (cloud != null) {
                 StudentGroup studentGroup = new StudentGroup();
-                for (int i = 0; i < 3; i++) {
-                    try {
-                        studentGroup.addStudent(bag.pullOut());
-                    } catch (MissingStudentException e) {
-                        //FINE GAME
-                        notifyWin();
+                if(listPlayer.size() == 3){
+                    for (int i = 0; i < 4; i++) {
+                        try {
+                            studentGroup.addStudent(bag.pullOut());
+                        } catch (MissingStudentException e) {
+                            //FINE GAME
+                            notifyWin();
+                        }
                     }
+                    cloud.addStudents(studentGroup);
                 }
-                cloud.addStudents(studentGroup);
+                else{
+                    for (int i = 0; i < 3; i++) {
+                        try {
+                            studentGroup.addStudent(bag.pullOut());
+                        } catch (MissingStudentException e) {
+                            //FINE GAME
+                            notifyWin();
+                        }
+                    }
+                    cloud.addStudents(studentGroup);
+                }
+
             }
         }
         sendBoard("refillcloud");

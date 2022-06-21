@@ -105,7 +105,37 @@ public class ControllerAction {
     //2. richiamo il controllo professori per verificare che i professori siano assegnati correttamente
     //3. cambio azione corrente
     public void moveStudentInDiningRoom(String nickname, Colour colour)throws WrongActionException{
-        if(currentAction == Action.MoveStudent1 || currentAction == Action.MoveStudent2 || currentAction == Action.MoveStudent3) {
+        if(listClient.size() == 3){
+            if(currentAction == Action.MoveStudent1 || currentAction == Action.MoveStudent2 || currentAction == Action.MoveStudent3 || currentAction == Action.MoveStudent4) {
+                try {
+                    game.doMoveStudentInDiningRoom(nickname, colour);
+
+                    if (this.currentAction == Action.MoveStudent1) {
+                        setCurrentAction(Action.MoveStudent2);
+
+                        this.game.checkProfessor(colour);
+                    } else if (this.currentAction == Action.MoveStudent2) {
+                        setCurrentAction(Action.MoveStudent3);
+
+                        this.game.checkProfessor(colour);
+                    } else if (this.currentAction == Action.MoveStudent3) {
+                        setCurrentAction(Action.MoveStudent4);
+
+                        this.game.checkProfessor(colour);
+                    } else if (this.currentAction == Action.MoveStudent4) {
+                        setCurrentAction(Action.MoveMotherNature);
+
+                        this.game.checkProfessor(colour);
+                    }
+                }catch(MissingStudentException e){
+                    game.notifyError("studente non presente nella Entrance", nickname);
+                }catch(Exception e){
+                    game.notifyError(e.getMessage(), nickname);
+                }
+
+            }
+        }
+        else if(currentAction == Action.MoveStudent1 || currentAction == Action.MoveStudent2 || currentAction == Action.MoveStudent3) {
             try {
                 game.doMoveStudentInDiningRoom(nickname, colour);
 
@@ -141,6 +171,31 @@ public class ControllerAction {
     * 3. cambio azione corrente
     */
     public void moveStudentInIsland(String nickname, Colour colour, int numIsland)throws WrongActionException{
+        if(listClient.size() == 3){
+            if(currentAction == Action.MoveStudent1 || currentAction == Action.MoveStudent2 || currentAction == Action.MoveStudent3 || currentAction == Action.MoveStudent4) {
+                try {
+                    this.game.doMoveStudentInIsland(nickname, colour, numIsland);
+
+                    if (this.currentAction == Action.MoveStudent1) {
+                        setCurrentAction(Action.MoveStudent2);
+
+                    } else if (this.currentAction == Action.MoveStudent2) {
+                        setCurrentAction(Action.MoveStudent3);
+
+                    } else if (this.currentAction == Action.MoveStudent3) {
+                        setCurrentAction(Action.MoveStudent4);
+
+                    } else if (this.currentAction == Action.MoveStudent4) {
+                        setCurrentAction(Action.MoveMotherNature);
+                    }
+
+                } catch(MissingStudentException e){
+                    game.notifyError("studente non presente nella Entrance", nickname);
+                } catch(IllegalArgumentException e){
+                    game.notifyError(e.getMessage(), nickname);
+                }
+            }
+        }
         if(currentAction == Action.MoveStudent1 || currentAction == Action.MoveStudent2 || currentAction == Action.MoveStudent3) {
             try {
                 this.game.doMoveStudentInIsland(nickname, colour, numIsland);
@@ -195,3 +250,16 @@ public class ControllerAction {
         return this.currentAction;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

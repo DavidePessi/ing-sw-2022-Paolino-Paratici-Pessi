@@ -59,20 +59,37 @@ public final class ClientModelCLI extends UserInterface{
             cloud = cloud + "cloud " + j + ": {";
 
             if(!listCloud.get(j).empty()){
-
-                for(int i = 0; i < 3; i++) {
-                    if(listCloud.get(j).getStudent(i).getColour().equals(Colour.BLUE)){
-                        colore = "[34m";
-                    } else if(listCloud.get(j).getStudent(i).getColour().equals(Colour.RED)){
-                        colore = "[31m";
-                    } else if(listCloud.get(j).getStudent(i).getColour().equals(Colour.PINK)){
-                        colore = "[35m";
-                    } else if(listCloud.get(j).getStudent(i).getColour().equals(Colour.GREEN)){
-                        colore = "[32m";
-                    } else if(listCloud.get(j).getStudent(i).getColour().equals(Colour.YELLOW)){
-                        colore = "[33m";
+                if(listPlayer.size() == 3) {
+                    for (int i = 0; i < 4; i++) {
+                        if (listCloud.get(j).getStudent(i).getColour().equals(Colour.BLUE)) {
+                            colore = "[34m";
+                        } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.RED)) {
+                            colore = "[31m";
+                        } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.PINK)) {
+                            colore = "[35m";
+                        } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.GREEN)) {
+                            colore = "[32m";
+                        } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.YELLOW)) {
+                            colore = "[33m";
+                        }
+                        cloud = cloud + (char) 27 + colore + "▪" + "\u001B[0m";
                     }
-                    cloud = cloud + (char) 27 + colore + "▪" + "\u001B[0m";
+                }
+                else{
+                    for (int i = 0; i < 3; i++) {
+                        if (listCloud.get(j).getStudent(i).getColour().equals(Colour.BLUE)) {
+                            colore = "[34m";
+                        } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.RED)) {
+                            colore = "[31m";
+                        } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.PINK)) {
+                            colore = "[35m";
+                        } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.GREEN)) {
+                            colore = "[32m";
+                        } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.YELLOW)) {
+                            colore = "[33m";
+                        }
+                        cloud = cloud + (char) 27 + colore + "▪" + "\u001B[0m";
+                    }
                 }
             }
             cloud = cloud + "}\n";
@@ -389,7 +406,7 @@ public final class ClientModelCLI extends UserInterface{
 
     public static int sendPort(){
         System.out.println("inserisci porta");
-        return Integer.parseInt(stdin.nextLine());//12345
+        return stringToInt(stdin.nextLine());
     }
 
     public static ClientMessage sendNickname(){
@@ -432,7 +449,7 @@ public final class ClientModelCLI extends UserInterface{
         inputLine = stdin.nextLine();
 
         ch = new ClientHeader(nick, ClientAction.SEND_NUM_PLAYERS);
-        int n = Integer.parseInt(inputLine);
+        int n = stringToInt(inputLine);
         pay = new Payload("numPlayer", n);
         cm = new ClientMessage(ch, pay);
 
@@ -510,7 +527,7 @@ public final class ClientModelCLI extends UserInterface{
         pay.addParameter("Action", Action.PlayCard);
 
         //CHIEDO I PARAMETRI PER L'AZIONE
-        int n = Integer.parseInt(inputLine);
+        int n = stringToInt(inputLine);
         pay.addParameter("num", n);
 
         //INSERISCO I PARAMETRI NON UTILIZZATI
@@ -652,7 +669,7 @@ public final class ClientModelCLI extends UserInterface{
         else if(inputLine.equals("Pirate")){
             System.out.println("Insert the number of the island: ");
             inputLine = stdin.nextLine();
-            int n = Integer.parseInt(inputLine);
+            int n = stringToInt(inputLine);
 
             charPar = new CharacterParameters(nick, "Pirate", n);
         }
@@ -662,7 +679,7 @@ public final class ClientModelCLI extends UserInterface{
         else if(inputLine.equals("Priest")){
             System.out.println("Insert the number of the island: ");
             inputLine = stdin.nextLine();
-            int n = Integer.parseInt(inputLine);
+            int n = stringToInt(inputLine);
 
             System.out.println("Insert the colour of the student: ");
             inputLine = stdin.nextLine();
@@ -708,7 +725,7 @@ public final class ClientModelCLI extends UserInterface{
         pay.addParameter("Action", Action.MoveMotherNature);
 
         //CHIEDO I PARAMETRI PER L'AZIONE
-        int n = Integer.parseInt(inputLine);
+        int n = stringToInt(inputLine);
         pay.addParameter("num", n);
 
         //INSERISCO I PARAMTRI NON UTILIZZATI
@@ -767,7 +784,7 @@ public final class ClientModelCLI extends UserInterface{
 
         System.out.println("inserisci il numero dell'isola dove inserire lo studente");
         inputLine = stdin.nextLine();
-        int n = Integer.parseInt(inputLine);
+        int n = stringToInt(inputLine);
         pay.addParameter("num", n-1);
 
         //INSERISCO I PARAMTRI NON UTILIZZATI
@@ -793,7 +810,8 @@ public final class ClientModelCLI extends UserInterface{
         pay.addParameter("Action", Action.TakeCloud);
 
         //CHIEDO I PARAMETRI PER L'AZIONE
-        int n = Integer.parseInt(inputLine);
+
+        int n = stringToInt(inputLine);
         pay.addParameter("num", n);
 
         //INSERISCO I PARAMTRI NON UTILIZZATI
@@ -837,5 +855,42 @@ public final class ClientModelCLI extends UserInterface{
         }
     }
 
+    private static int stringToInt(String inputLine){
+        int n;
+        if(inputLine.equals("12345")){
+            n = 12345;
+        }
+        if(inputLine.equals("0")){
+            n = 0;
+        }else if(inputLine.equals("1")){
+            n = 1;
+        }else if(inputLine.equals("2")){
+            n = 2;
+        }else if(inputLine.equals("3")){
+            n = 3;
+        }else if(inputLine.equals("4")){
+            n = 4;
+        }else if(inputLine.equals("5")){
+            n = 5;
+        }else if(inputLine.equals("6")){
+            n = 6;
+        }else if(inputLine.equals("7")){
+            n = 7;
+        }else if(inputLine.equals("8")){
+            n = 8;
+        }else if(inputLine.equals("9")){
+            n = 9;
+        }else if(inputLine.equals("10")){
+            n = 10;
+        }else if(inputLine.equals("11")){
+            n = 11;
+        }else if(inputLine.equals("12")){
+            n = 12;
+        }else{
+            n = 100;
+        }
+
+        return n;
+    }
 
 }

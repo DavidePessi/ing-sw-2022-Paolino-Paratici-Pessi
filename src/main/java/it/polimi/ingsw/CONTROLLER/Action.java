@@ -7,6 +7,7 @@ public enum Action {
     MoveStudent1,
     MoveStudent2,
     MoveStudent3,
+    MoveStudent4,
     MoveStudentInDiningRoom,
     MoveStudentInIsland,
     TakeCloud
