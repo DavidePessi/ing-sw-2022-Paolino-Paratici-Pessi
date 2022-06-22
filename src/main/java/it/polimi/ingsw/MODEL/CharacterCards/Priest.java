@@ -17,6 +17,7 @@ public class Priest extends ConcreteCharacterCard implements Decorator, Serializ
         this.game = game;
         initialPrice = 1;
         price = 1;
+        pool = new StudentGroup();
     }
 
 
@@ -75,5 +76,9 @@ public class Priest extends ConcreteCharacterCard implements Decorator, Serializ
         if(price==initialPrice){
             price = price+1;
         }
+    }
+
+    public StudentGroup getPool(){
+        return this.pool;
     }
 }

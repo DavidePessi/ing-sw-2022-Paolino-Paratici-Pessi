@@ -4,15 +4,18 @@ import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 import it.polimi.ingsw.MODEL.Exception.MissingPlayerException;
 import it.polimi.ingsw.MODEL.Exception.PossibleWinException;
 import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 public class PlayerTest extends TestCase {
 
+    @Test
     public void testGetTeam()throws MissingPlayerException {
         Game g = new Game("io", "tu");
         Team t = g.getPlayer("io").getTeam();
         assertTrue(t instanceof Team);
     }
 
+    @Test
     public void testGetLastPlayedCard()throws MissingPlayerException, MissingCardException, PossibleWinException {
         Game g = new Game("io", "tu");
         g.getPlayer("io").playCard(3);
@@ -21,23 +24,27 @@ public class PlayerTest extends TestCase {
         assertEquals(3, c.getValue());
     }
 
+    @Test
     public void testGetDeck()throws  MissingPlayerException {
         Game g = new Game("io", "tu");
         Deck d = g.getPlayer("io").getDeck();
         assertTrue(d instanceof Deck);
     }
 
+    @Test
     public void testGetNicknameClient() throws MissingPlayerException{
         Game g = new Game("io", "tu");
         assertEquals("io", g.getPlayer("io").getNicknameClient());
     }
 
+    @Test
     public void testGetEntrance() throws MissingPlayerException{
         Game g = new Game("io", "tu");
         Entrance e = g.getPlayer("io").getEntrance();
         assertTrue(e instanceof Entrance);
     }
 
+    @Test
     public void testNumProfessor() {
         Team t = new Team(ColourTower.BLACK, 8);
         Player p = new Player("io",t);
@@ -50,6 +57,7 @@ public class PlayerTest extends TestCase {
         assertEquals(num,p.numProfessor());
     }
 
+    @Test
     public void testPlayCard() throws MissingPlayerException, MissingCardException, PossibleWinException{
         Game g = new Game("io", "tu");
         int num = 3;
@@ -62,6 +70,7 @@ public class PlayerTest extends TestCase {
         assertEquals(numCardInDeck_Dopo, numCardInDeck_Prima-1);
     }
 
+    @Test
     public void testMoveStudentInDiningRoom() throws Exception{
 
         Team t = new Team(ColourTower.BLACK,8);
@@ -77,6 +86,7 @@ public class PlayerTest extends TestCase {
         assertEquals(numDopoStudentiInDiningRoom, numPrimaStudentiInDiningRoom+1);
     }
 
+    @Test
     public void testMoveStudentInIsland() throws Exception{
         Team t = new Team(ColourTower.BLACK, 8);
         Player p = new Player("io",t);
@@ -93,6 +103,7 @@ public class PlayerTest extends TestCase {
         assertEquals(1, i.countStudentsOfColour(c));
     }
 
+    @Test
     public void testAddStudentsToEntrances() {
         Team t = new Team(ColourTower.BLACK,8);
         Player pl = new Player("io", t);
@@ -109,6 +120,7 @@ public class PlayerTest extends TestCase {
         assertEquals(newEntrance, oldEntrance);
     }
 
+    @Test
     public void testRemoveProfessor() {
         Team t = new Team(ColourTower.BLACK, 8);
         Player p = new Player("io",t);
@@ -121,6 +133,7 @@ public class PlayerTest extends TestCase {
         assertEquals(0, p.numProfessor());
     }
 
+    @Test
     public void testAddProfessor() {
         Team t = new Team(ColourTower.BLACK, 8);
         Player p = new Player("io",t);
@@ -131,6 +144,7 @@ public class PlayerTest extends TestCase {
         assertEquals(1, p.numProfessor());
     }
 
+    @Test
     public void testNumStudentsDiningRoom() throws Exception{
         Team t = new Team(ColourTower.BLACK, 8);
         Player p = new Player("io",t);

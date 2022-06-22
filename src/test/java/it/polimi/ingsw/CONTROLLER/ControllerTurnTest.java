@@ -3,9 +3,16 @@ package it.polimi.ingsw.CONTROLLER;
 import it.polimi.ingsw.CONTROLLER.Exception.WrongClientException;
 import it.polimi.ingsw.MODEL.*;
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
+import it.polimi.ingsw.MODEL.Exception.MissingPlayerException;
+import it.polimi.ingsw.MODEL.Exception.MissingStudentException;
+import it.polimi.ingsw.MODEL.Exception.PossibleWinException;
+import it.polimi.ingsw.NETWORK.MESSAGES.ClientAction;
+import it.polimi.ingsw.NETWORK.MESSAGES.ClientMessage;
+import it.polimi.ingsw.NETWORK.MESSAGES.Payload;
 import junit.framework.TestCase;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
+import it.polimi.ingsw.NETWORK.MESSAGES.ClientHeader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -190,7 +197,7 @@ public class ControllerTurnTest extends TestCase {
         ct.setCurrentClient("io");
         assertTrue(ct.getCurrentClient() instanceof String);
     }
-
+/*//todo GUARDAAAAAAAAAAAAAAAAAAAA
     @Test
     public void testEndTurn() throws Exception{
         Game g = new Game("io", "tu");
@@ -228,7 +235,7 @@ public class ControllerTurnTest extends TestCase {
         assertEquals("tu", ct.getCurrentClient());
         assertEquals(false, ct.getMulligan());
     }
-
+*/
     @Test
     public void testSetMulligan() {
         Game g = new Game("io", "tu");
@@ -259,5 +266,55 @@ public class ControllerTurnTest extends TestCase {
         assertNotNull(ct.getMulligan());
 
 
+    }
+
+    @Test
+    public void testUpdate(){
+        ClientMessage m = new ClientMessage(new ClientHeader("io", ClientAction.SEND_NICKNAME), new Payload());
+        Game game = new Game("io", "tu");
+        List<String> list = new ArrayList<>();
+        list.add("io");
+        list.add("tu");
+        ControllerAction controllerAction = new ControllerAction(game, list);
+        ControllerTurn controllerTurn = new ControllerTurn(controllerAction, game, list);
+
+        controllerTurn.update(m);
+        assertTrue(m instanceof ClientMessage);
+
+
+
+    }
+
+    @Test
+    public void testEndTurn() throws MissingStudentException, MissingPlayerException, PossibleWinException, MissingCardException {
+        ClientMessage m = new ClientMessage(new ClientHeader("io", ClientAction.SEND_NICKNAME), new Payload());
+        Game game = new Game("io", "tu");
+        List<String> list = new ArrayList<>();
+        list.add("io");
+        list.add("tu");
+        ControllerAction controllerAction = new ControllerAction(game, list);
+        ControllerTurn controllerTurn = new ControllerTurn(controllerAction, game, list);
+
+        game.startGame(true);
+        game.getPlayer("io").playCard(4);
+        game.getPlayer("tu").playCard(3);
+
+        controllerTurn.setCurrentClient("tu");
+        controllerTurn.endTurn();
+
+        assertEquals(true, controllerTurn.getYouCanPlayCharacterCard());
+
+        //__
+        Game game1 = new Game("io", "tu");
+        ControllerAction controllerAction1 = new ControllerAction(game1, list);
+        ControllerTurn controllerTurn1 = new ControllerTurn(controllerAction, game1, list);
+        game1.startGame(true);
+        game.getPlayer("tu").playCard(4);
+
+        controllerTurn1.setMulligan(false);
+        controllerTurn1.setCurrentClient("tu");
+        controllerTurn1.endTurn();
+
+        assertEquals(true, controllerTurn.getYouCanPlayCharacterCard());
     }
 }

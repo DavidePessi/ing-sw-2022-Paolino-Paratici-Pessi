@@ -1,9 +1,11 @@
 package it.polimi.ingsw.MODEL;
 
 import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 public class TeamTest extends TestCase {
 
+    @Test
     public void testGetNumberOfTower() {
         ColourTower ct = ColourTower.BLACK;
         int nt = 7;
@@ -12,6 +14,7 @@ public class TeamTest extends TestCase {
         assertEquals(nt, t.getNumberOfTower());
     }
 
+    @Test
     public void testGetColourTower(){
         ColourTower ct = ColourTower.BLACK;
         int nt = 7;

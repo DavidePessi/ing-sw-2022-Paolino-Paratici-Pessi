@@ -2,12 +2,14 @@ package it.polimi.ingsw.MODEL.CharacterCards;
 
 import it.polimi.ingsw.MODEL.Game;
 import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PostManTest extends TestCase {
 
+    @Test
     public void testConstructor() {
         Game g = new Game("io", "tu");
         PostMan p = new PostMan(g);
@@ -16,6 +18,7 @@ public class PostManTest extends TestCase {
         assertEquals("PostMan", p.getNameCard());
     }
 
+    @Test
     public void testEffect() throws Exception{
         Game g = new Game("io", "tu");
         PostMan p = new PostMan(g);
@@ -26,6 +29,7 @@ public class PostManTest extends TestCase {
         assertEquals(2, p.getPrice());
     }
 
+    @Test
     public void testTestEffect() {
         Game g = new Game("io", "tu");
         PostMan p = new PostMan(g);

@@ -1,9 +1,11 @@
 package it.polimi.ingsw.MODEL;
 
 import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 public class MotherNatureTest extends TestCase {
 
+    @Test
     public void testMove() {
         Island i1 = new Island(0);
         Island i2 = new Island(5);
@@ -16,6 +18,7 @@ public class MotherNatureTest extends TestCase {
         assertEquals(i2,m.getPosition());
     }
 
+    @Test
     public void testGetNumIsland() {
         Island i1 = new Island(0);
         MotherNature m = new MotherNature(i1);
@@ -23,6 +26,7 @@ public class MotherNatureTest extends TestCase {
         assertEquals(m.getPosition().getNumIsland(), m.getNumIsland());
     }
 
+    @Test
     public void testGetPosition() {
         Island i1 = new Island(0);
         MotherNature m = new MotherNature(i1);

@@ -3,11 +3,13 @@ package it.polimi.ingsw.MODEL.CharacterCards;
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 import it.polimi.ingsw.MODEL.Game;
 import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SatyrTest extends TestCase {
 
+    @Test
     public void testConstructor() {
         Game g = new Game("io", "tu");
         Satyr s = new Satyr(g);
@@ -16,6 +18,7 @@ public class SatyrTest extends TestCase {
         assertEquals("Satyr", s.getNameCard());
     }
 
+    @Test
     public void testEffect() {
         Game g = new Game("io", "tu");
         Satyr s = new Satyr(g);
@@ -26,6 +29,7 @@ public class SatyrTest extends TestCase {
         assertEquals(4, s.getPrice());
     }
 
+    @Test
     public void testTestEffect() {
         Game g = new Game("io", "tu");
         Satyr s = new Satyr(g);

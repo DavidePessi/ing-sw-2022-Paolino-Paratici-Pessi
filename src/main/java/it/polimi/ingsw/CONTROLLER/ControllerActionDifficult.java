@@ -12,6 +12,11 @@ public class ControllerActionDifficult extends ControllerAction {
         super(game, nicknames);
     }
 
+    /**
+     * you use character card
+     * @param charPar
+     * @throws Exception
+     */
     @Override
     public void useCharacter(CharacterParameters charPar) throws Exception {
         try {

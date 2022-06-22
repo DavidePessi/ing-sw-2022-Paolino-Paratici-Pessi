@@ -3,9 +3,11 @@ package it.polimi.ingsw.MODEL;
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 import it.polimi.ingsw.MODEL.Exception.PossibleWinException;
 import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 public class DeckTest extends TestCase {
 
+    @Test
     public void testRemoveCard() throws MissingCardException, PossibleWinException {
         Deck d = new Deck();
         Card c = new Card(1, 1);
@@ -23,6 +25,7 @@ public class DeckTest extends TestCase {
         }
     }
 
+    @Test
     public void testGetCard() throws MissingCardException, PossibleWinException{
         Deck d = new Deck();
         Card c = new Card(1, 1);
@@ -31,6 +34,7 @@ public class DeckTest extends TestCase {
         assertEquals(d.getCard(10), new Card(10,5 ));
     }
 
+    @Test
     public void testSize() {
         Deck d = new Deck();
 

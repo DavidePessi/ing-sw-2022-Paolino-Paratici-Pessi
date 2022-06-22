@@ -1,9 +1,11 @@
 package it.polimi.ingsw.MODEL;
 
 import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 public class StudentTest extends TestCase {
 
+    @Test
     public void testGetColour() {
         Colour c = Colour.GREEN;
         Student s1 = new Student(c);

@@ -35,6 +35,12 @@ public class ControllerTurn implements Observer{
     }
 
     //restituisce true se il Sender sta facendo il suo turno (è il currentClient)
+
+    /**
+     * it returns true if is the turn of the sender
+     * @param sender
+     * @return true,false
+     */
     public boolean verifyClient(String sender){
         if(sender.equals(this.currentClient)){
             return true;
@@ -49,6 +55,16 @@ public class ControllerTurn implements Observer{
     * la funzione richiama il metodo richiesto dal client sse il player che sta chiamando è lo stesso che deve
     * effettuare la mossa altrimenti notifica con un errore
     */
+
+    /**
+     * the function calls correct method requested by the client iof the player who are calling is the same that have to play, else throw exception
+     * @param action
+     * @param nickname
+     * @param colourParameter
+     * @param numberParameter
+     * @param charPar
+     * @throws WrongClientException
+     */
     public void callAction(Action action, String nickname, Colour colourParameter, int numberParameter, CharacterParameters charPar)throws WrongClientException {
         if(verifyClient(nickname)){
 
@@ -124,10 +140,18 @@ public class ControllerTurn implements Observer{
 
     }
 
+    /**
+     * set new current client
+     * @param newCurrentClient
+     */
     public void setCurrentClient(String newCurrentClient){
         this.currentClient = newCurrentClient;
     }
 
+    /**
+     * returns currentClient
+     * @return currentClient
+     */
     public String getCurrentClient(){
         return this.currentClient;
     }
@@ -137,6 +161,10 @@ public class ControllerTurn implements Observer{
     * dell'ordine imposto dalle carte assistente
     * oppure ordina i player in base alle carte giocate
     */
+
+    /**
+     * it select the next player, or order players by played card
+     */
     public void endTurn(){
         //nel prossimo turno posso giocare un'altra carta
 
@@ -192,7 +220,10 @@ public class ControllerTurn implements Observer{
         game.sendBoard("EndTurn");
     }
 
-
+    /**
+     * set if you can play characterCard
+     * @param b
+     */
     private void setyouCanPlayCharacterCard(boolean b) {
         this.youCanPlayCharacterCard = b;
     }
@@ -211,11 +242,23 @@ public class ControllerTurn implements Observer{
 
     }
 
+    /**
+     * if mulligan is true you can throw a card
+     * @param mulligan
+     */
     public void setMulligan(boolean mulligan) {
         this.mulligan = mulligan;
     }
+
+    /**
+     * @return mulligan
+     */
     public boolean getMulligan() {
         return this.mulligan;
+    }
+
+    public boolean getYouCanPlayCharacterCard(){
+        return this.youCanPlayCharacterCard;
     }
 
 

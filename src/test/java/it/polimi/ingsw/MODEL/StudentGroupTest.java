@@ -1,9 +1,11 @@
 package it.polimi.ingsw.MODEL;
 
 import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 public class StudentGroupTest extends TestCase {
 
+    @Test
     public void testCountStudentsOfColour() {
         StudentGroup s = new StudentGroup();
         Colour c = Colour.GREEN;
@@ -19,6 +21,7 @@ public class StudentGroupTest extends TestCase {
         }
     }
 
+    @Test
     public void testRemoveStudent() throws Exception{
         StudentGroup s = new StudentGroup();
         Colour c = Colour.GREEN;
@@ -29,6 +32,7 @@ public class StudentGroupTest extends TestCase {
         assertEquals(0, s.countStudentsOfColour(c));
     }
 
+    @Test
     public void testClear() {
         StudentGroup s = new StudentGroup();
         Colour c = Colour.GREEN;
@@ -39,6 +43,7 @@ public class StudentGroupTest extends TestCase {
         assertEquals(0, s.countStudentsOfColour(c));
     }
 
+    @Test
     public void testSize() {
         StudentGroup s = new StudentGroup();
         Colour c = Colour.GREEN;
@@ -53,6 +58,7 @@ public class StudentGroupTest extends TestCase {
         assertEquals(1, n);
     }
 
+    @Test
     public void testGet() {
         StudentGroup studentGroup = new StudentGroup();
         studentGroup.addStudent(Colour.GREEN);
@@ -66,6 +72,7 @@ public class StudentGroupTest extends TestCase {
 
     }
 
+    @Test
     public void testAddStudents() {
         StudentGroup studentGroup = new StudentGroup();
         StudentGroup s = new StudentGroup();
@@ -84,6 +91,7 @@ public class StudentGroupTest extends TestCase {
 
     }
 
+    @Test
     public void testAddStudent() {
         StudentGroup studentGroup = new StudentGroup();
         int numAfter, numBefore;
@@ -97,8 +105,5 @@ public class StudentGroupTest extends TestCase {
 
         assertEquals(colourAfter,colourBefore+1);
         assertEquals(numAfter, numBefore+1);
-    }
-
-    public void testPullOut() {//bisogna prima implementarla
     }
 }

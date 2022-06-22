@@ -1,9 +1,11 @@
 package it.polimi.ingsw.MODEL;
 
 import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 public class ProfessorTest extends TestCase {
 
+    @Test
     public void testChangeOwner() {
         Colour c = Colour.GREEN;
         Professor p = new Professor(c);
@@ -16,6 +18,7 @@ public class ProfessorTest extends TestCase {
         assertEquals(p.getOwner(), player);
     }
 
+    @Test
     public void testGetOwner() {
         Colour c = Colour.GREEN;
         Professor p = new Professor(c);
@@ -28,6 +31,7 @@ public class ProfessorTest extends TestCase {
         //altra possibile soluzione un player che rappresenta il game che possiede inizialmente tutti i professori
     }
 
+    @Test
     public void testGetColour() {
         Colour c = Colour.GREEN;
         Professor p = new Professor(c);

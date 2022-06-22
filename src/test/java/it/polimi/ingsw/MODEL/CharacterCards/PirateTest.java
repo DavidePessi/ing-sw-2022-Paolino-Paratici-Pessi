@@ -8,9 +8,13 @@ import it.polimi.ingsw.MODEL.Exception.MissingTowerException;
 import it.polimi.ingsw.MODEL.Game;
 import it.polimi.ingsw.MODEL.StudentGroup;
 import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PirateTest extends TestCase {
 
+    @Test
     public void testEffect() throws Exception{
         Game game = new Game("gio", "ila");
         CharacterParameters cp = new CharacterParameters("tu", "Pirate", 3);
@@ -143,12 +147,44 @@ public class PirateTest extends TestCase {
         System.out.println(game.getProfessor(Colour.GREEN).getOwner().getNicknameClient());
         System.out.println(game.getProfessor(Colour.RED).getOwner().getNicknameClient());*/
 
-        try {
+       /* try {
             assertEquals(game.getPlayer("ila").getTeam().getColourTower(), game.getIsland(3).getColourTower());
         } catch (MissingPlayerException e) {
             e.printStackTrace();
         } catch (MissingTowerException e) {
             e.printStackTrace();
-        }
+        }*/
     }
+
+    @Test
+    public void testEffect1(){
+        Pirate pirate = new Pirate(new Game("io", "tu"));
+        assertThrows(Exception.class, ()-> pirate.effect("io"));
+    }
+
+    @Test
+    public void testEffect2(){
+        Pirate pirate = new Pirate(new Game("io", "tu"));
+        assertThrows(Exception.class, ()-> pirate.effect("io", Colour.PINK));
+    }
+
+    @Test
+    public void testEffect3(){
+        Pirate pirate = new Pirate(new Game("io", "tu"));
+        assertThrows(Exception.class, ()-> pirate.effect("io", Colour.PINK, Colour.GREEN));
+    }
+
+    @Test
+    public void testEffect4(){
+        Pirate pirate = new Pirate(new Game("io", "tu"));
+        assertThrows(Exception.class, ()-> pirate.effect("io", Colour.PINK, Colour.GREEN,Colour.PINK, Colour.GREEN));
+    }
+
+    @Test
+    public void testEffect5(){
+        Pirate pirate = new Pirate(new Game("io", "tu"));
+        assertThrows(Exception.class, ()-> pirate.effect("io", 2, Colour.PINK));
+    }
+
+
 }

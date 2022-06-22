@@ -90,24 +90,36 @@ public class ControllerActionTest extends TestCase {
     @Test
     public void testMoveStudentInDiningRoom() throws Exception{
         Game g = new Game("io", "tu");
+        Game g1 = new Game("io", "tu", "egli");
         List<String> l = new ArrayList<>();
+        List<String> l1 = new ArrayList<>();
         l.add("io");
         l.add("tu");
+        l1.add("io");
+        l1.add("tu");
+        l1.add("egli");
         ControllerAction ca = new ControllerAction(g, l);
+        ControllerAction ca1 = new ControllerAction(g1, l1);
 
         StudentGroup studentGroup = new StudentGroup();
         studentGroup.addStudent(Colour.GREEN); //aggiungiamo uno studente di quel colore per testare
         studentGroup.addStudent(Colour.GREEN);
         studentGroup.addStudent(Colour.GREEN);
         studentGroup.addStudent(Colour.GREEN);
+        studentGroup.addStudent(Colour.GREEN);
+        studentGroup.addStudent(Colour.GREEN);
+        studentGroup.addStudent(Colour.GREEN);
+        studentGroup.addStudent(Colour.GREEN);
+        studentGroup.addStudent(Colour.GREEN);
         g.getPlayer("io").addStudentsToEntrance(studentGroup);
+        g1.getPlayer("io").addStudentsToEntrance(studentGroup);
 
         int numPrimaStudentiInDiningRoom = g.getPlayer("io").numStudentsDiningRoom(Colour.GREEN);
 
         ca.moveStudentInDiningRoom("io",Colour.GREEN);
 
         int numDopoStudentiInDiningRoom = g.getPlayer("io").numStudentsDiningRoom(Colour.GREEN);
-        Assertions.assertEquals(numDopoStudentiInDiningRoom, numPrimaStudentiInDiningRoom+1);
+        assertEquals(numDopoStudentiInDiningRoom, numPrimaStudentiInDiningRoom+1);
 
         //caso di eccezioni
         ca.setCurrentAction(Action.TakeCloud);
@@ -122,6 +134,33 @@ public class ControllerActionTest extends TestCase {
         ca.moveStudentInDiningRoom("io",Colour.GREEN);
 
         assertEquals(Action.MoveMotherNature, ca.getCurrentAction());
+
+        //---
+
+        int numPrimaStudentiInDiningRoom1 = g1.getPlayer("io").numStudentsDiningRoom(Colour.GREEN);
+
+        ca1.moveStudentInDiningRoom("io",Colour.GREEN);
+
+        int numDopoStudentiInDiningRoom1 = g1.getPlayer("io").numStudentsDiningRoom(Colour.GREEN);
+        assertEquals(numDopoStudentiInDiningRoom1, numPrimaStudentiInDiningRoom1+1);
+
+        //caso di eccezioni
+        ca1.setCurrentAction(Action.TakeCloud);
+        assertThrows(WrongActionException.class, ()->ca.moveStudentInDiningRoom("io",Colour.GREEN));
+
+        //caso moveStudent2
+        ca1.setCurrentAction(Action.MoveStudent2);
+        ca1.moveStudentInDiningRoom("io",Colour.GREEN);
+
+        assertEquals(Action.MoveStudent3, ca1.getCurrentAction());
+        //caso moveStudent3
+        ca1.moveStudentInDiningRoom("io",Colour.GREEN);
+
+        assertEquals(Action.MoveStudent4, ca1.getCurrentAction());
+
+        ca1.moveStudentInIsland("io", Colour.GREEN, 2);
+
+        assertEquals(Action.MoveMotherNature, ca1.getCurrentAction());
     }
 
     @Test

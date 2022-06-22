@@ -2,9 +2,11 @@ package it.polimi.ingsw.MODEL;
 
 import it.polimi.ingsw.MODEL.Exception.MissingStudentException;
 import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 public class BagTest extends TestCase {
 
+    @Test
     public void testSize()throws MissingStudentException {
         Bag b = new Bag();
         Colour c;
@@ -17,6 +19,7 @@ public class BagTest extends TestCase {
         assertTrue(b.size() == 0);
     }
 
+    @Test
     public void testStartingPullOut() {
         Bag b = new Bag();
         StudentGroup s = new StudentGroup();
@@ -31,6 +34,7 @@ public class BagTest extends TestCase {
         }
     }
 
+    @Test
     public void testPullOut() throws MissingStudentException{
         Bag b = new Bag();
         Colour c;

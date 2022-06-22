@@ -1,9 +1,11 @@
 package it.polimi.ingsw.MODEL;
 
 import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 public class EntranceTest extends TestCase {
 
+    @Test
     public void testRemoveStudent() throws Exception{
         Entrance e = new Entrance();
         StudentGroup s = new StudentGroup();
@@ -16,6 +18,7 @@ public class EntranceTest extends TestCase {
         assertEquals(0,e.getStudentGroup().countStudentsOfColour(c));
     }
 
+    @Test
     public void testAddGroup() {
         Entrance e = new Entrance();
         StudentGroup s = new StudentGroup();
@@ -27,6 +30,7 @@ public class EntranceTest extends TestCase {
         assertEquals(1, e.getStudentGroup().countStudentsOfColour(c));
     }
 
+    @Test
     public void testGetStudentGroup() {
         Entrance e = new Entrance();
 

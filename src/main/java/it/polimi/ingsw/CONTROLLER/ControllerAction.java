@@ -12,7 +12,7 @@ public class ControllerAction {
     protected Game game;
     protected List<String> listClient;
     protected Action currentAction;
-    
+
     public ControllerAction(Game game, List<String> nicknames){
         listClient = new ArrayList<>();
         for(String n : nicknames){
@@ -26,6 +26,13 @@ public class ControllerAction {
     * il metodo ha la funzione di verificare se la carta giocata dall'utente nickname
     * è valida ovvero, se nessuno ha ancora giocato quella carta o (nel caso sia già stata giocata)
     * tutte le carte del player sono state giocate da altri quindi il player può giocarne una qualsiasi
+     */
+
+    /**
+     * verify if is valid the card that is played by the player, or anyone has played that card, or if all the card of the player are already played by other players
+     * @param numCard
+     * @param nickname
+     * @return
      */
     public boolean checkCardToPlay(int numCard, String nickname){
         boolean toReturn = true;
@@ -75,7 +82,12 @@ public class ControllerAction {
         return toReturn;
     }
 
-
+    /**
+     * call doPlayCard of Game
+     * @param nickname
+     * @param numCard
+     * @throws MissingCardException
+     */
     public void playCard(String nickname, int numCard) throws MissingCardException {
         if(checkCardToPlay(numCard,nickname)){
             this.game.doPlayCard(nickname, numCard);
@@ -84,7 +96,11 @@ public class ControllerAction {
         }
     }
 
-
+    /**
+     * call doMoveMotherNature of Game
+     * @param numMovement
+     * @throws Exception
+     */
     public void moveMotherNature(int numMovement)throws Exception {
         if(currentAction == Action.MoveMotherNature) {
 
@@ -104,6 +120,13 @@ public class ControllerAction {
     //1. richiamo la funzione se è il momento di spostare gli studenti (altrimenti lancio un'eccezione)
     //2. richiamo il controllo professori per verificare che i professori siano assegnati correttamente
     //3. cambio azione corrente
+
+    /**
+     * call doMoveStudentInDiningRoom of Game
+     * @param nickname
+     * @param colour
+     * @throws WrongActionException
+     */
     public void moveStudentInDiningRoom(String nickname, Colour colour)throws WrongActionException{
         if(listClient.size() == 3){
             if(currentAction == Action.MoveStudent1 || currentAction == Action.MoveStudent2 || currentAction == Action.MoveStudent3 || currentAction == Action.MoveStudent4) {
@@ -170,6 +193,14 @@ public class ControllerAction {
     * 2. se è l'ultimo studente devo verifico le influenze sulll'isola e sostituisco eventuali torri
     * 3. cambio azione corrente
     */
+
+    /**
+     * call doMoveStudentInIsland
+     * @param nickname
+     * @param colour
+     * @param numIsland
+     * @throws WrongActionException
+     */
     public void moveStudentInIsland(String nickname, Colour colour, int numIsland)throws WrongActionException{
         if(listClient.size() == 3){
             if(currentAction == Action.MoveStudent1 || currentAction == Action.MoveStudent2 || currentAction == Action.MoveStudent3 || currentAction == Action.MoveStudent4) {
@@ -196,7 +227,7 @@ public class ControllerAction {
                 }
             }
         }
-        if(currentAction == Action.MoveStudent1 || currentAction == Action.MoveStudent2 || currentAction == Action.MoveStudent3) {
+        else if(currentAction == Action.MoveStudent1 || currentAction == Action.MoveStudent2 || currentAction == Action.MoveStudent3) {
             try {
                 this.game.doMoveStudentInIsland(nickname, colour, numIsland);
 
@@ -221,7 +252,12 @@ public class ControllerAction {
         }
     }
 
-
+    /**
+     * call doTakeCloud of Game
+     * @param nickname
+     * @param numCloud
+     * @throws WrongActionException
+     */
     public void takeCloud(String nickname, int numCloud)throws WrongActionException{
 
         if(currentAction.equals(Action.TakeCloud)){
@@ -237,11 +273,20 @@ public class ControllerAction {
         }
     }
 
+    /**
+     * throw exception because you are in easy mode
+     * @param charPar
+     * @throws Exception
+     */
     public void useCharacter(CharacterParameters charPar) throws Exception {
         game.notifyError("This move is not valid in gamemode: easy", charPar.getPlayerName());
 
     }
 
+    /**
+     * set the action between PlayCard, UseCharacter, MoveMotherNature, MoveStudent, TakeCloud
+     * @param action
+     */
     public void setCurrentAction(Action action){
         this.currentAction = action;
     }

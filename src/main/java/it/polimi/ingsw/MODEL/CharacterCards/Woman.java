@@ -16,6 +16,7 @@ public class Woman extends ConcreteCharacterCard implements Decorator, Serializa
         this.game = game;
         initialPrice = 3;
         price = 3;
+        pool = new StudentGroup();
     }
 
     @Override
@@ -81,5 +82,9 @@ public class Woman extends ConcreteCharacterCard implements Decorator, Serializa
     @Override
     public void effect(String nickname, int num, Colour colour)  throws Exception{
         throw new Exception("Error");
+    }
+
+    public StudentGroup getPool(){
+        return this.pool;
     }
 }

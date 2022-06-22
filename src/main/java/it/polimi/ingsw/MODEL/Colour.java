@@ -3,9 +3,9 @@ package it.polimi.ingsw.MODEL;
 import java.io.Serializable;
 
 public enum Colour implements Serializable {
-    GREEN,
-    RED,
+    BLUE,
     YELLOW,
+    RED,
     PINK,
-    BLUE;
+    GREEN;
 }

@@ -9,6 +9,7 @@ import java.util.List;
 
 public class IslandTest extends TestCase {
 
+    @Test
     public void testSetMotherNature() {
         int num = 0;
         Island i = new Island(num);
@@ -20,6 +21,7 @@ public class IslandTest extends TestCase {
         assertFalse(i.getHasMotherNature());
     }
 
+    @Test
     public void testGetHasMotherNature() {
         int num=0;
         Island i = new Island(num);
@@ -28,6 +30,7 @@ public class IslandTest extends TestCase {
         assertTrue(b instanceof Boolean);
     }
 
+    @Test
     public void testGetNumIsland() {
         Island i = new Island(0);
 
@@ -35,6 +38,7 @@ public class IslandTest extends TestCase {
 
     }
 
+    @Test
     public void testAddStudent() {
         int num = 0;
         Island i = new Island(num);
@@ -47,31 +51,11 @@ public class IslandTest extends TestCase {
         assertEquals(col_After, col_Before+1);
     }
 
+    @Test
     public void testCountStudentsOfColour() {
         Island i = new Island(0);
         i.addStudent(Colour.GREEN);
 
         assertEquals(1,i.countStudentsOfColour(Colour.GREEN));
-    }
-
-    public void testTestEquals() {
-    }
-
-    public void testTestHashCode() {
-    }
-
-    public void testTestToString() {
-    }
-
-    public void testGetNumSubIsland() {
-    }
-
-    public void testGetColourTower() {
-    }
-
-    public void testSetColourTower() {
-    }
-
-    public void testSetNumIsland() {
     }
 }

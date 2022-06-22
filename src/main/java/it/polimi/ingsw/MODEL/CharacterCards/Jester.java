@@ -51,7 +51,9 @@ public class Jester extends ConcreteCharacterCard implements Decorator, Serializ
         this.game.getPlayer(nickname).removeStudentFromEntrance(colour2);
 
         this.pool.addStudent(colour2);
-        this.game.getPlayer(nickname).removeStudentFromEntrance(colour);
+        StudentGroup studentGroup = new StudentGroup();
+        studentGroup.addStudent(colour);
+        this.game.getPlayer(nickname).addStudentsToEntrance(studentGroup);
     }
 
     @Override
@@ -70,8 +72,12 @@ public class Jester extends ConcreteCharacterCard implements Decorator, Serializ
         //aggiungo gli studenti
         this.pool.addStudent(colour3);
         this.pool.addStudent(colour4);
-        this.game.getPlayer(nickname).removeStudentFromEntrance(colour);
-        this.game.getPlayer(nickname).removeStudentFromEntrance(colour2);
+        StudentGroup studentGroup = new StudentGroup();
+        StudentGroup studentGroup1 = new StudentGroup();
+        studentGroup.addStudent(colour);
+        studentGroup1.addStudent(colour2);
+        this.game.getPlayer(nickname).addStudentsToEntrance(studentGroup);
+        this.game.getPlayer(nickname).addStudentsToEntrance(studentGroup1);
     }
 
     @Override
@@ -93,9 +99,16 @@ public class Jester extends ConcreteCharacterCard implements Decorator, Serializ
         this.pool.addStudent(colour4);
         this.pool.addStudent(colour5);
         this.pool.addStudent(colour6);
-        this.game.getPlayer(nickname).removeStudentFromEntrance(colour);
-        this.game.getPlayer(nickname).removeStudentFromEntrance(colour2);
-        this.game.getPlayer(nickname).removeStudentFromEntrance(colour3);
+
+        StudentGroup studentGroup = new StudentGroup();
+        StudentGroup studentGroup1 = new StudentGroup();
+        StudentGroup studentGroup2 = new StudentGroup();
+        studentGroup.addStudent(colour);
+        studentGroup1.addStudent(colour2);
+        studentGroup2.addStudent(colour3);
+        this.game.getPlayer(nickname).addStudentsToEntrance(studentGroup);
+        this.game.getPlayer(nickname).addStudentsToEntrance(studentGroup1);
+        this.game.getPlayer(nickname).addStudentsToEntrance(studentGroup2);
     }
 
     @Override
@@ -106,5 +119,9 @@ public class Jester extends ConcreteCharacterCard implements Decorator, Serializ
     @Override
     public void effect(String nickname, int num, Colour colour)  throws Exception{
         throw new Exception("Error");
+    }
+
+    public StudentGroup getPool(){
+        return this.pool;
     }
 }
