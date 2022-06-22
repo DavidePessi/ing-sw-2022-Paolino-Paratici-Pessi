@@ -18,8 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -168,12 +167,27 @@ public  class LoginController {
             EventHandler<DragEvent> dragHandler = new EventHandler<DragEvent>() {
                 @Override
                 public void handle(DragEvent dragEvent) {
-                    System.out.println("funziona");
                     if(dragEvent.getEventType().equals(dragEvent.DRAG_DONE)){
-                        if(dragEvent.getSource() instanceof ImageView){
-                            if(((ImageView) dragEvent.getSource()).getAccessibleText().equals("mothernature")){
-                                System.out.println("funziona");
+                        if (dragEvent.getTransferMode() == TransferMode.MOVE) {
+
+
+                            if(ClientModelGUI.getActionPlayed().substring(0,6).equals("island")){//MOVEMOTHER NATURE
+                                if(((ImageView)(dragEvent.getSource())).getAccessibleText().equals("mothernature")) {
+                                    ClientModelGUI.setAction(ClientAction.PLAY_MOVE_MOTHERNATURE);
+                                    ClientModelGUI.setButtonIsClicked(true);
+                                }
+
+                            }else if(ClientModelGUI.getActionPlayed().substring(0,9).equals("dashboard")){//MOVE_STUDENT_IN_DININGROOM
+                                if(!((ImageView)(dragEvent.getSource())).getAccessibleText().equals("mothernature")) {
+                                    ClientModelGUI.setActionPlayed(((ImageView) (dragEvent.getSource())).getAccessibleText());
+                                    ClientModelGUI.setAction(ClientAction.PLAY_MOVE_STUDENT_IN_DININGROOM);
+                                    ClientModelGUI.setButtonIsClicked(true);
+
+                                }
                             }
+                            System.out.println(((ImageView)(dragEvent.getSource())).getAccessibleText());
+                            System.out.println(dragEvent.getTarget());
+
                         }
                     }
                 }
@@ -237,11 +251,11 @@ public  class LoginController {
             centerBoard.setAlignment(Pos.CENTER);
 
             //BOTTOM BOARD
-            bottomBoard = showBottomBoard(eventHandler);
+            bottomBoard = showBottomBoard(eventHandler, dragHandler);
             bottomBoard.setAlignment(Pos.CENTER);
 
             //RIGHT BOARD
-            rightBoard = showRightBoard(eventHandler);
+            rightBoard = showRightBoard(eventHandler, dragHandler);
             rightBoard.setAlignment(Pos.CENTER);
 
             //ADDING EVERYTHING TO THE BOARD
@@ -257,7 +271,7 @@ public  class LoginController {
     });
     }
 
-    public GridPane showBottomBoard(EventHandler<? super MouseEvent> eventHandler){
+    public GridPane showBottomBoard(EventHandler<? super MouseEvent> eventHandler, EventHandler<? super DragEvent> dragHandler){
         GridPane bottomBoard = new GridPane();
         int width;
         int heigth;
@@ -267,7 +281,7 @@ public  class LoginController {
             p = ClientModelGUI.getPlayer(ClientModelGUI.nickname);
 
         //PLANCIA
-        GridPane gpane = createDashBoard(2, ClientModelGUI.nickname);
+        GridPane gpane = createDashBoard(2, ClientModelGUI.nickname, dragHandler, true);
         bottomBoard.add(gpane, 0,0);
 
 
@@ -512,7 +526,7 @@ public  class LoginController {
         return centerBoard;
     }
 
-    private GridPane showRightBoard(EventHandler<? super MouseEvent> eventHandler){
+    private GridPane showRightBoard(EventHandler<? super MouseEvent> eventHandler, EventHandler<? super DragEvent> dragHandler){
         GridPane rightBoard = new GridPane();
         int j = 0;
         for(Player p : ClientModelGUI.listPlayer){
@@ -520,7 +534,7 @@ public  class LoginController {
                 j++;
 
                 Text t = new Text(p.getNicknameClient());
-                GridPane dashboard = createDashBoard(1, p.getNicknameClient());
+                GridPane dashboard = createDashBoard(1, p.getNicknameClient(), dragHandler, false);
 
                 rightBoard.add(t, 1, j*2);
                 rightBoard.add(dashboard,1, 1+j*2);
@@ -542,6 +556,33 @@ public  class LoginController {
 
     private GridPane createIsland(int i, EventHandler<? super MouseEvent> eventHandler, EventHandler<? super DragEvent> dragHandler) {
         GridPane pane = new GridPane();
+
+        //funzioni per drag and drop con mother nature
+        pane.setOnDragDropped(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+
+                if (db.hasString()) {
+                    ClientModelGUI.setActionPlayed(((GridPane)event.getTarget()).getAccessibleText());
+                    success = true;
+                }
+
+                event.setDropCompleted(success);
+                event.consume();
+            }
+        });
+
+        pane.setOnDragOver(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                if (event.getGestureSource() != pane && event.getDragboard().hasString()) {
+                    event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                }
+                event.consume();
+            }
+        });
+
         pane.setMinSize(100,100);
         pane.setMaxSize(100,100);
 
@@ -563,15 +604,15 @@ public  class LoginController {
         int width = 10;
         int heigth = 10;
 
-        img = new Image("it/polimi/ingsw/NETWORK/Images/student_blue.png", width, heigth, false, true, true);
+        img = new Image("it/polimi/ingsw/NETWORK/Images/student_green.png", width, heigth, false, true, true);
         ImageView view = new ImageView(img);
         pane.add(view, 1,1 );
 
-        img = new Image("it/polimi/ingsw/NETWORK/Images/student_yellow.png", width, heigth, false, true, true);
+        img = new Image("it/polimi/ingsw/NETWORK/Images/student_red.png", width, heigth, false, true, true);
         view = new ImageView(img);
         pane.add(view, 1,2 );
 
-        img = new Image("it/polimi/ingsw/NETWORK/Images/student_red.png", width, heigth, false, true, true);
+        img = new Image("it/polimi/ingsw/NETWORK/Images/student_yellow.png", width, heigth, false, true, true);
         view = new ImageView(img);
         pane.add(view, 1,3 );
 
@@ -579,7 +620,7 @@ public  class LoginController {
         view = new ImageView(img);
         pane.add(view, 3,1 );
 
-        img = new Image("it/polimi/ingsw/NETWORK/Images/student_green.png", width, heigth, false, true, true);
+        img = new Image("it/polimi/ingsw/NETWORK/Images/student_blue.png", width, heigth, false, true, true);
         view = new ImageView(img);
         pane.add(view, 3,2 );
 
@@ -590,8 +631,22 @@ public  class LoginController {
 
             view.addEventFilter(DragEvent.DRAG_DONE, dragHandler);
 
+            view.setOnDragDetected(new EventHandler<MouseEvent>() {
+                        public void handle(MouseEvent e) {
+                            Dragboard db = ((ImageView)(e.getTarget())).startDragAndDrop(TransferMode.ANY);
+
+                            ClipboardContent content = new ClipboardContent();
+                            content.putString(((ImageView)(e.getTarget())).getAccessibleText());
+                            db.setContent(content);
+
+                            event.consume();
+                        }
+                    });
+
             pane.add(view, 5,1 );
         }
+
+
 
         int j = 1;
         for(Colour c : Colour.values()){
@@ -676,10 +731,38 @@ public  class LoginController {
         return gpane;
     }
 
-    private GridPane createDashBoard(int factor, String client){
+    private GridPane createDashBoard(int factor, String client, EventHandler<? super DragEvent> dragHandler, boolean drag){
 
         //PLANCIA
         GridPane gpane = new GridPane();
+
+        //setto il drag event solo se è la mia board
+        if(drag) {
+            gpane.setAccessibleText("dashboard");
+            gpane.setOnDragDropped(new EventHandler<DragEvent>() {
+                public void handle(DragEvent event) {
+
+                    Dragboard db = event.getDragboard();
+                    boolean success = false;
+
+                    if (db.hasString()) {
+                        ClientModelGUI.setActionPlayed("dashboard");
+                        success = true;
+                    }
+
+                    event.setDropCompleted(success);
+                    event.consume();
+                }
+            });
+            gpane.setOnDragOver(new EventHandler<DragEvent>() {
+                public void handle(DragEvent event) {
+                    if (event.getGestureSource() != gpane && event.getDragboard().hasString()) {
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                    }
+                    event.consume();
+                }
+            });
+        }
 
         gpane.setMinSize(220*factor, 110*factor);
         gpane.setMaxSize(220*factor, 110*factor);
@@ -696,23 +779,23 @@ public  class LoginController {
 
         gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
         gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
-        gpane.getColumnConstraints().add(new ColumnConstraints(2.5*factor));
+        gpane.getColumnConstraints().add(new ColumnConstraints(1*factor));
         gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
-        gpane.getColumnConstraints().add(new ColumnConstraints(2.5*factor));
+        gpane.getColumnConstraints().add(new ColumnConstraints(1*factor));
         gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
-        gpane.getColumnConstraints().add(new ColumnConstraints(2.5*factor));
+        gpane.getColumnConstraints().add(new ColumnConstraints(1*factor));
         gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
-        gpane.getColumnConstraints().add(new ColumnConstraints(2.5*factor));
+        gpane.getColumnConstraints().add(new ColumnConstraints(1*factor));
         gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
-        gpane.getColumnConstraints().add(new ColumnConstraints(2.5*factor));
+        gpane.getColumnConstraints().add(new ColumnConstraints(1*factor));
         gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
-        gpane.getColumnConstraints().add(new ColumnConstraints(2.5*factor));
+        gpane.getColumnConstraints().add(new ColumnConstraints(1*factor));
         gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
-        gpane.getColumnConstraints().add(new ColumnConstraints(2.5*factor));
+        gpane.getColumnConstraints().add(new ColumnConstraints(1*factor));
         gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
-        gpane.getColumnConstraints().add(new ColumnConstraints(2.5*factor));
+        gpane.getColumnConstraints().add(new ColumnConstraints(1*factor));
         gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
-        gpane.getColumnConstraints().add(new ColumnConstraints(2.5*factor));
+        gpane.getColumnConstraints().add(new ColumnConstraints(1*factor));
         gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
 
         gpane.getRowConstraints().add(new RowConstraints(20*factor));
@@ -748,6 +831,24 @@ public  class LoginController {
                     String address = getAddress(ClientModelGUI.listPlayer.get(i).getEntrance().getStudentGroup().get(j).getColour());
                     img = new Image(address, width, heigth, false, true, true);
                     ImageView view = new ImageView(img);
+
+                    view.setAccessibleText(ClientModelGUI.colourToString(ClientModelGUI.listPlayer.get(i).getEntrance().getStudentGroup().get(j).getColour()));
+
+                    view.addEventFilter(DragEvent.DRAG_DONE, dragHandler);
+                    view.setOnDragDetected(new EventHandler<MouseEvent>() {
+                                public void handle(MouseEvent e) {
+                                    Dragboard db = ((ImageView)(e.getTarget())).startDragAndDrop(TransferMode.ANY);
+
+                                    //System.out.println("drag detected");
+
+                                    ClipboardContent content = new ClipboardContent();
+                                    content.putString(((ImageView)(e.getTarget())).getAccessibleText());
+                                    db.setContent(content);
+
+                                    event.consume();
+                                }
+                            });
+
                     gpane.add(view, x, y);
                 }
 
@@ -763,6 +864,7 @@ public  class LoginController {
                         gpane.add(view, x, y);
                         x = x + 2;
                     }
+                    y = y + 2;
                 }
             }
         }

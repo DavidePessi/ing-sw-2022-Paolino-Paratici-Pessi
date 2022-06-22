@@ -38,12 +38,6 @@ public final class ClientModelGUI extends UserInterface {
         super();
     }
 
-    //todo non e' detto che sia necessario
-    public static void showMoves(String nickname){
-    }
-
-    //todo potrebbe anche essere vuoto
-    public static void showBoard(){}
 
     //todo : deve mostrare che cosa non va bene
     public static void clientError(ServerMessage message){}
@@ -176,37 +170,69 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
+    public static ClientMessage sendMoveMotherNature(){
+        ClientHeader ch;
+        Payload pay;
+        ClientMessage cm;
+
+
+        //INSERISCO I PARAMETRI PER RICONOSCERE L'AZIONE
+        pay = new Payload("nickname", nickname);
+        pay.addParameter("Action", Action.MoveMotherNature);
+
+        //CHIEDO I PARAMETRI PER L'AZIONE
+        int n;
+        if(actionPlayed.length() == 7){
+            n = stringToInt(getActionPlayed().substring(6,7));
+        } else{
+            n = stringToInt(getActionPlayed().substring(6,8));
+        }
+        int temp = n - motherNature.getNumIsland();
+
+        if(temp < 0){
+            n = listIsland.size() - motherNature.getNumIsland() + n;
+        }else {
+            n = temp;
+        }
+        pay.addParameter("num", n);
+
+        //INSERISCO I PARAMTRI NON UTILIZZATI
+        pay.addParameter("Colour", null);
+        pay.addParameter("CharacterParameters", null);
+
+        //COSTRUISCO E INVIO IL MESSAGGIO
+        ch = new ClientHeader(nickname, ClientAction.PLAY_MOVE_MOTHERNATURE);
+        cm = new ClientMessage(ch, pay);
+
+        return cm;
+    }
+
+    public static ClientMessage sendMoveStudentInDiningRoom(){
+        ClientHeader ch;
+        Payload pay;
+        ClientMessage cm;
+
+        //INSERISCO I PARAMETRI PER RICONOSCERE L'AZIONE
+        pay = new Payload("nickname", nickname);
+        pay.addParameter("Action", Action.MoveStudentInDiningRoom);
+
+        //CHIEDO I PARAMETRI PER L'AZIONE
+        Colour colour = stringToColour(getActionPlayed());
+        pay.addParameter("Colour", colour);
+
+        //INSERISCO I PARAMTRI NON UTILIZZATI
+        pay.addParameter("CharacterParameters", null);
+        pay.addParameter("num", 0);
+
+        //COSTRUISCO E INVIO IL MESSAGGIO
+        ch = new ClientHeader(nickname, ClientAction.PLAY_MOVE_STUDENT_IN_DININGROOM);
+        cm = new ClientMessage(ch, pay);
+
+        return cm;
+    }
+
     //TODO : TUTTI I METODI SOTTO QUESTO TODO
     public static ClientMessage sendPlayCharacterCard(){
-        String inputLine;
-        ClientHeader ch;
-        Payload pay;
-        ClientMessage cm;
-
-
-        ch = new ClientHeader("", ClientAction.SEND_NICKNAME);
-        pay = new Payload("nickname", "");
-        cm = new ClientMessage(ch, pay);
-
-        return cm;
-    }
-
-    public static ClientMessage sendMoveMotherNature(){
-        String inputLine;
-        ClientHeader ch;
-        Payload pay;
-        ClientMessage cm;
-
-
-        ch = new ClientHeader("", ClientAction.SEND_NICKNAME);
-        pay = new Payload("nickname", "");
-        cm = new ClientMessage(ch, pay);
-
-        return cm;
-    }
-
-    @NotNull
-    public static ClientMessage sendMoveStudentInDiningRoom(){
         String inputLine;
         ClientHeader ch;
         Payload pay;
@@ -233,8 +259,6 @@ public final class ClientModelGUI extends UserInterface {
 
         return cm;
     }
-
-
 
     public static String keepPlaying(){
         return "no";
@@ -312,7 +336,19 @@ public final class ClientModelGUI extends UserInterface {
 
         return n;
     }
-
+    private static Colour stringToColour(String inputLine) {
+        if(inputLine.equals("blue")){
+            return Colour.BLUE;
+        } else if(inputLine.equals("red")){
+            return Colour.RED;
+        } else if(inputLine.equals("yellow")){
+            return Colour.YELLOW;
+        } else if(inputLine.equals("green")){
+            return Colour.GREEN;
+        } else {
+            return Colour.PINK;
+        }
+    }
     protected static String colourToString(Colour inputLine){
 
         if(inputLine.equals(Colour.BLUE)){
