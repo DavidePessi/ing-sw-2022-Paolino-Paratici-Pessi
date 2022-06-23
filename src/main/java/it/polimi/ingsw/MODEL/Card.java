@@ -8,15 +8,28 @@ public class Card implements Serializable {
     private int value;
     private int movements;
 
+    /**
+     * initialize an object Card
+     * @param value
+     * @param movements
+     */
     public Card(int value, int movements) {
         this.value = value;
         this.movements = movements;
     }
 
+    /**
+     * returns the value of the card
+     * @return
+     */
     public int getValue() {
         return this.value;
     }
 
+    /**
+     * returns the maximum number of movement
+     * @return
+     */
     public int getMovement() {
         return this.movements;
     }

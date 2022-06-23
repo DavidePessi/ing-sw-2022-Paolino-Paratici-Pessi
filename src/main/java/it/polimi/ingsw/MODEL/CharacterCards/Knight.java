@@ -14,8 +14,8 @@ public class Knight extends ConcreteCharacterCard implements Decorator, Serializ
     public Knight(Game game){
         nameCard = "Knight";
         this.game = game;
-        initialPrice = 3;
-        price = 3;
+        initialPrice = 2;
+        price = 2;
     }
 
     @Override

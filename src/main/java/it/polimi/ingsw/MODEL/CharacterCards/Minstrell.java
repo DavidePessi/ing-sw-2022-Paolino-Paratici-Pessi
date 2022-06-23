@@ -34,8 +34,8 @@ public class Minstrell extends ConcreteCharacterCard implements Decorator, Seria
     }
 
     @Override
-    //colour: da Entrance a DiningRoom
-    //colour2: da DiningRoom a Entrance
+    //colour: from Entrance to DiningRoom
+    //colour2: from DiningRoom to Entrance
     public void effect(String nickname, Colour colour, Colour colour2) throws Exception {
         if(price==initialPrice){
             price = price+1;
@@ -53,8 +53,8 @@ public class Minstrell extends ConcreteCharacterCard implements Decorator, Seria
     }
 
     @Override
-    //colour, colour2: da Entrance a DiningRoom
-    //colour3, colour4: da DiningRoom a Entrance
+    //colour, colour2: from Entrance to DiningRoom
+    //colour3, colour4: from DiningRoom to Entrance
     public void effect(String nickname, Colour colour, Colour colour2, Colour colour3, Colour colour4) throws Exception{
         if(price==initialPrice){
             price = price+1;

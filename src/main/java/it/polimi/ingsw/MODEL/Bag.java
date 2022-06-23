@@ -20,10 +20,18 @@ public class Bag {
         numYellow = 26;
     }
 
+    /**
+     * return the size of bag
+     * @return
+     */
     public int size(){
         return numBlue+numGreen+numPink+numRed+numYellow;
     }
 
+    /**
+     * pull two student from the bag to island
+     * @return
+     */
     public StudentGroup startingPullOut(){
         StudentGroup studentGroup = new StudentGroup();
         studentGroup.addStudent(Colour.BLUE);
@@ -45,6 +53,11 @@ public class Bag {
         return studentGroup;
     }
 
+    /**
+     * pull student from bag
+     * @return
+     * @throws MissingStudentException
+     */
     public Colour pullOut()throws MissingStudentException {
         /*
         * il metodo calcola uno studente di colore randomico basato sui colori rimasti nel sacchetto e lo estrae

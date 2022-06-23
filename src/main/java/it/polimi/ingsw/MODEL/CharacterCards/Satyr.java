@@ -28,7 +28,7 @@ public class Satyr extends ConcreteCharacterCard implements Decorator, Serializa
         if(price == initialPrice){
             price = price+1;
         }
-        //torri non valgono niente
+        //the value of the tower is null
         game.setCardThrown(this.nameCard);
     }
 

@@ -41,8 +41,8 @@ public class Jester extends ConcreteCharacterCard implements Decorator, Serializ
     }
 
     @Override
-    //colour: da pool a entrance
-    //colour2: da entrance a pool
+    //colour: from pool to entrance
+    //colour2: from entrance to pool
     public void effect(String nickname, Colour colour, Colour colour2) throws Exception {
         if(price==initialPrice){
             price = price+1;
@@ -57,8 +57,8 @@ public class Jester extends ConcreteCharacterCard implements Decorator, Serializ
     }
 
     @Override
-    //colour, colour2: da pool a entrance
-    //colour3, colour4: da entrance a pool
+    //colour, colour2: from pool to entrance
+    //colour3, colour4: from entrance to pool
     public void effect(String nickname, Colour colour, Colour colour2, Colour colour3, Colour colour4) throws Exception{
         if(price==initialPrice){
             price = price+1;
@@ -81,8 +81,8 @@ public class Jester extends ConcreteCharacterCard implements Decorator, Serializ
     }
 
     @Override
-    //colour, colour2, colour3: da pool a entrance
-    //colour4, colour5, colour6: da entrance a pool
+    //colour, colour2, colour3: from pool to entrance
+    //colour4, colour5, colour6: from entrance to pool
     public void effect(String nickname, Colour colour, Colour colour2, Colour colour3, Colour colour4, Colour colour5, Colour colour6) throws Exception{
         if(price==initialPrice){
             price = price+1;
@@ -121,6 +121,10 @@ public class Jester extends ConcreteCharacterCard implements Decorator, Serializ
         throw new Exception("Error");
     }
 
+    /**
+     * returns the pull of the jester
+     * @return
+     */
     public StudentGroup getPool(){
         return this.pool;
     }

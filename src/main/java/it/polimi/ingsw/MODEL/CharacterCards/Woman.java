@@ -84,6 +84,10 @@ public class Woman extends ConcreteCharacterCard implements Decorator, Serializa
         throw new Exception("Error");
     }
 
+    /**
+     * returns the pool of the woman
+     * @return
+     */
     public StudentGroup getPool(){
         return this.pool;
     }

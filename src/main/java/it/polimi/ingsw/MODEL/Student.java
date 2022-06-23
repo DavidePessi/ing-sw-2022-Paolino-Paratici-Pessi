@@ -6,15 +6,16 @@ public class Student implements Serializable {
     private Colour colour;
 
     public Student(){
-        //getColour deve sempre poter restituire un valore valido quindi inizializzo a blue
-        //se non inserisco niente
         this.colour =Colour.BLUE;
     }
-
     public Student(Colour colour) {
         this.colour = colour;
     }
 
+    /**
+     * returns the colour of the student
+     * @return
+     */
     public Colour getColour() {
         return colour;
     }

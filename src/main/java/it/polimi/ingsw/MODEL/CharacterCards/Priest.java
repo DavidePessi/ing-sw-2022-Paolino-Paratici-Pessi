@@ -78,6 +78,10 @@ public class Priest extends ConcreteCharacterCard implements Decorator, Serializ
         }
     }
 
+    /**
+     * returns the pool of the priest
+     * @return
+     */
     public StudentGroup getPool(){
         return this.pool;
     }

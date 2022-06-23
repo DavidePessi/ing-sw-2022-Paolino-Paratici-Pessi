@@ -5,14 +5,16 @@ import java.io.Serializable;
 import java.util.*;
 
 public class StudentGroup implements Serializable {
-
     private List<Student> listStudent;
 
     public StudentGroup() {
         listStudent = new ArrayList<>();
     }
 
-    //create a new StudentGroup that is the copy of the one given
+    /**
+     * create a new StudentGroup that is the copy of the one given
+     * @param copy
+     */
     public StudentGroup(StudentGroup copy) {
         listStudent = new ArrayList<>();
         try {
@@ -24,6 +26,11 @@ public class StudentGroup implements Serializable {
         }
     }
 
+    /**
+     * count student with that colour
+     * @param colour
+     * @return
+     */
     public int countStudentsOfColour(Colour colour) {
         int numC = 0;
         for (Student student : listStudent) {
@@ -34,6 +41,11 @@ public class StudentGroup implements Serializable {
         return numC;
     }
 
+    /**
+     * remove student with that colour
+     * @param colour
+     * @throws MissingStudentException
+     */
     public void removeStudent(Colour colour) throws MissingStudentException{
         boolean removed = false;
         for (int i = 0; i < listStudent.size() && !removed; i++) {
@@ -45,22 +57,34 @@ public class StudentGroup implements Serializable {
         if (!removed) throw new MissingStudentException();
     }
 
-    //delete every students from the list listStudent
+    /**
+     * delete every students from the list listStudent
+     */
     public void clear() {
         listStudent.clear();
     }
 
-    //return the length of the list listStudent (the number of students)
+    /**
+     * returns the length of the list listStudent (the number of students)
+     * @return
+     */
     public int size() {
         return this.listStudent.size();
     }
 
-    //return the student in position pos in the list listStudent
+    /**
+     * return the student in position pos in the list listStudent
+     * @param pos
+     * @return
+     */
     public Student get(int pos) {
         return this.listStudent.get(pos);
     }
 
-    //add every students of the group given to the list listStudent
+    /**
+     * add every students of the group given to the list listStudent
+     * @param students
+     */
     public void addStudents(StudentGroup students) {
         try {
             for (int i = 0; i < students.size(); i++) {
@@ -71,6 +95,10 @@ public class StudentGroup implements Serializable {
         }
     }
 
+    /**
+     * add student with that colour
+     * @param colour
+     */
     public void addStudent(Colour colour) {
         listStudent.add(new Student(colour));
     }
@@ -92,11 +120,14 @@ public class StudentGroup implements Serializable {
         return returnvalue;
     }
 
+    /**
+     * The method calculates a random -colored student based on the colors
+     * remained in the student group and extracts it if there are no more students in the bag is launched a missingstudenTentexception to warn
+     * @return
+     * @throws MissingStudentException
+     */
     public Colour pullOut()throws MissingStudentException {
-        /*
-         * il metodo calcola uno studente di colore randomico basato sui colori rimasti nelLO StudentGroup e lo estrae
-         * se non ci sono più studenti nella bag viene lanciata una missingstudentexception per avvisare
-         */
+
         int NumBlue = this.countStudentsOfColour(Colour.BLUE);
         int NumRed = this.countStudentsOfColour(Colour.RED);
         int NumGreen = this.countStudentsOfColour(Colour.GREEN);

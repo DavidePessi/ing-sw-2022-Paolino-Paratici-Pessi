@@ -5,7 +5,6 @@ import it.polimi.ingsw.MODEL.Exception.MissingTowerException;
 import java.io.Serializable;
 import java.util.Objects;
 
-// equals modificata senza: Objects.equals(students, island.students), se da problemi controlliamo questo
 public class Island implements Serializable {
 
     private ColourTower colourTower;
@@ -14,7 +13,6 @@ public class Island implements Serializable {
     private StudentGroup students;
     private int numSubIsland;
 
-    /*Why don't we pass 2 attributes of type Island to the constructor? */
     public Island(int numIsland) {
         this.numIsland = numIsland;
         this.numSubIsland = 1;
@@ -22,7 +20,6 @@ public class Island implements Serializable {
         this.hasMotherNature = false;
         this.students = new StudentGroup();
     }
-
     public Island (Island i1, Island i2){
         if(i1.getNumIsland() < i2.getNumIsland()){
             this.numIsland = i1.getNumIsland();
@@ -50,32 +47,10 @@ public class Island implements Serializable {
         }
     }
 
-    /*public static Island fusion(Island i1, Island i2, List<Island> li) {
-
-        if (i1 != null && i2 !=null && li!=null){
-            Island i = new Island(i1.getNumIsland()); //numero della isola1 < numero della isola2, passate in senso antiorario
-
-            //mettiamo sulla nuova isola i tutti gli studenti delle due isole
-            i.students.addStudents(i1.students);
-            i.students.addStudents(i2.students);
-
-            i.numSubisland = i1.getNumSubIsland() + i2.getNumSubIsland();
-
-            li.remove(i2.getNumIsland());
-            li.remove(i1.getNumIsland()); //le isole vanno da 0 a 11
-
-            li.add(i1.getNumIsland(), i);
-
-            for (Island x : li) {
-                if (x.getNumIsland() > i.getNumIsland()) {
-                    x.setNumIsland(x.getNumIsland() - 1);
-                }
-            }
-            return i;
-        }
-        return null;
-    }*/
-
+    /**
+     * set if mother nature is present or not into the island
+     * @param hasMotherNature
+     */
     public void setMotherNature(boolean hasMotherNature){
         if(hasMotherNature){
             this.hasMotherNature = true;
@@ -83,18 +58,35 @@ public class Island implements Serializable {
         else this.hasMotherNature = false;
     }
 
+    /**
+     * returns if mother nature is on that island
+     * @return
+     */
     public boolean getHasMotherNature (){
         return this.hasMotherNature;
     }
 
+    /**
+     * return the number of the island
+     * @return
+     */
     public int getNumIsland(){
         return numIsland;
     }
 
+    /**
+     * add a student to island with the colour of the parameter
+     * @param colour
+     */
     public void addStudent(Colour colour){
         students.addStudent(colour);
     }
 
+    /**
+     * count students with the colour of the parameter
+     * @param colour
+     * @return
+     */
     public int countStudentsOfColour (Colour colour){
         return this.students.countStudentsOfColour(colour);
     }
@@ -123,10 +115,19 @@ public class Island implements Serializable {
                 '}';
     }
 
+    /**
+     * returns the number of sub-islands that the island have
+     * @return
+     */
     public int getNumSubIsland() {
         return this.numSubIsland;
     }
 
+    /**
+     * return which colour dominate that island
+     * @return
+     * @throws MissingTowerException
+     */
     public ColourTower getColourTower() throws MissingTowerException {
         if(this.colourTower.equals(null)){
             throw new MissingTowerException();
@@ -136,11 +137,18 @@ public class Island implements Serializable {
         }
     }
 
-    //cambia il colore delle torri sull'isola
+    /**
+     * change the colour of the tower on the island
+     * @param colourTower
+     */
     public void setColourTower(ColourTower colourTower){
         this.colourTower = colourTower;
     }
 
+    /**
+     * set the num of the island
+     * @param numIsland
+     */
      public void setNumIsland(int numIsland){
         this.numIsland = numIsland;
     }

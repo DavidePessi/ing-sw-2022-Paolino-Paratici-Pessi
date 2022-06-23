@@ -13,15 +13,28 @@ public class Team implements Serializable {
         this.numberOfTower = numberOfTower;
     }
 
+    /**
+     * returns the number of the tower
+     * @return
+     */
     public int getNumberOfTower(){
         return this.numberOfTower;
 
     }
 
+    /**
+     * returns the colour of the tower of the team
+     * @return
+     */
     public ColourTower getColourTower(){
         return this.colourTower;
     }
 
+    /**
+     * use tower to dominate an island
+     * @param numTowerUsed
+     * @throws MissingTowerException
+     */
     public void useTowers(int numTowerUsed)throws MissingTowerException {
         if(numTowerUsed >= this.numberOfTower){
             throw new MissingTowerException();
@@ -31,6 +44,10 @@ public class Team implements Serializable {
         }
     }
 
+    /**
+     * you lost some towers, and you need to add that towers to yours
+     * @param numTowerLost
+     */
     public void takeTowers(int numTowerLost) {
         this.numberOfTower = this.numberOfTower + numTowerLost;
     }

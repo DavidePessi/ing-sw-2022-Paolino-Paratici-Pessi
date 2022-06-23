@@ -11,6 +11,13 @@ public class CharacterParameters implements Serializable {
     private List<Colour> colours;
     private int num;
 
+    /**
+     * initialize an object CharacterParameter
+     * @param nickname
+     * @param characterName
+     * @param colours
+     * @param num
+     */
     public CharacterParameters(String nickname, String characterName,List<Colour> colours, int num){
         this.nickname = nickname;
         this.characterName = characterName;
@@ -23,6 +30,13 @@ public class CharacterParameters implements Serializable {
         this.num = num;
     }
 
+    /**
+     * initialize an object CharacterParameter
+     * @param nickname
+     * @param characterName
+     * @param num
+     * @param colour
+     */
     public CharacterParameters(String nickname, String characterName, int num , Colour colour){
         this.nickname = nickname;
         this.characterName = characterName;
@@ -30,6 +44,12 @@ public class CharacterParameters implements Serializable {
         this.c1 = colour;
     }
 
+    /**
+     * initialize an object CharacterParameter
+     * @param nickname
+     * @param characterName
+     * @param colours
+     */
     public CharacterParameters(String nickname,  String characterName, List<Colour> colours){
         this.nickname = nickname;
         this.characterName = characterName;
@@ -37,27 +57,52 @@ public class CharacterParameters implements Serializable {
         this.colours = colours;
     }
 
+    /**
+     * initialize an object CharacterParameter
+     * @param nickname
+     * @param characterName
+     */
     public CharacterParameters(String nickname, String characterName){
         this.nickname = nickname;
         this.characterName = characterName;
     }
 
+    /**
+     * initialize an object CharacterParameter
+     * @param nickname
+     * @param characterName
+     * @param colour
+     */
     public CharacterParameters(String nickname, String characterName, Colour colour){
         this.nickname = nickname;
         this.characterName = characterName;
         this.c1 = colour;
     }
 
+    /**
+     * initialize an object CharacterParameter
+     * @param nickname
+     * @param characterName
+     * @param num
+     */
     public CharacterParameters(String nickname, String characterName, int num){
         this.nickname = nickname;
         this.characterName = characterName;
         this.num = num;
     }
 
+    /**
+     * returns the name of character
+     * @return
+     */
     public String getCharacterName() {
         return characterName;
     }
 
+    /**
+     * returns the nickname of those who are playing the card
+     * @return
+     */
     public String getPlayerName() {
         return nickname;
     }
@@ -66,6 +111,11 @@ public class CharacterParameters implements Serializable {
         return num;
     }
 
+    /**
+     * returns the colour #1
+     * @return
+     * @throws Exception
+     */
     public Colour getColour1()throws Exception{
         if(this.c1 == null){
             throw new Exception();
@@ -74,6 +124,11 @@ public class CharacterParameters implements Serializable {
             return this.c1;
         }
     }
+    /**
+     * returns the colour #2
+     * @return
+     * @throws Exception
+     */
     public Colour getColour2()throws Exception{
         if(this.c2 == null){
             throw new Exception();
@@ -82,6 +137,11 @@ public class CharacterParameters implements Serializable {
             return this.c2;
         }
     }
+    /**
+     * returns the colour #3
+     * @return
+     * @throws Exception
+     */
     public Colour getColour3()throws Exception{
         if(this.c3 == null){
             throw new Exception();
@@ -90,6 +150,11 @@ public class CharacterParameters implements Serializable {
             return this.c3;
         }
     }
+    /**
+     * returns the colour #4
+     * @return
+     * @throws Exception
+     */
     public Colour getColour4()throws Exception{
         if(this.c4 == null){
             throw new Exception();
@@ -98,6 +163,11 @@ public class CharacterParameters implements Serializable {
             return this.c4;
         }
     }
+    /**
+     * returns the colour #5
+     * @return
+     * @throws Exception
+     */
     public Colour getColour5()throws Exception{
         if(this.c5 == null){
             throw new Exception();
@@ -106,6 +176,11 @@ public class CharacterParameters implements Serializable {
             return this.c5;
         }
     }
+    /**
+     * returns the colour #6
+     * @return
+     * @throws Exception
+     */
     public Colour getColour6()throws Exception{
         if(this.c6 == null){
             throw new Exception();

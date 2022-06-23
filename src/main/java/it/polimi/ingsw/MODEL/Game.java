@@ -68,7 +68,6 @@ public class Game extends Observable {
         characterCardThrown = "";
         currentPlayer = listPlayer.get(0).getNicknameClient();
     }
-
     public Game(String nickname1, String nickname2, String nickname3) {
 
         listPlayer = new ArrayList<>();
@@ -117,7 +116,6 @@ public class Game extends Observable {
         characterCardThrown = "";
         currentPlayer = listPlayer.get(0).getNicknameClient();
     }
-
     public Game(String nickname1, String nickname2, String nickname3, String nickname4) {
 
         listPlayer = new ArrayList<>();
@@ -169,7 +167,11 @@ public class Game extends Observable {
         currentPlayer = listPlayer.get(0).getNicknameClient();
     }
 
-
+    /**
+     * with this method start the preparation phase of the game
+     * @param easy
+     * @throws MissingStudentException
+     */
     public void startGame(boolean easy) throws MissingStudentException {
 
         if(easy == false){
@@ -336,10 +338,10 @@ public class Game extends Observable {
         sendBoard("STARTGAME");
     }
 
-
-    /*
-    * if the game is finished and there's a winner return True, else return False
-    */
+    /**
+     * if the game is finished and there's a winner return true, else return false
+     * @return
+     */
     public boolean checkWin() {
         if (listIsland.size() <= 3 || bag.size() == 0) { //if there's 3 or less island or the bag is empty, the game ends
             return true;
@@ -353,6 +355,10 @@ public class Game extends Observable {
         }
     }
 
+    /**
+     * returns who won the game
+     * @return
+     */
     public Team theWinnerIs() {
         int MinTower = listTeam.get(0).getNumberOfTower();
         int numProfteam1 = 0;
@@ -385,11 +391,14 @@ public class Game extends Observable {
         return WinTeam;
     }
 
-    /*
-    * 1. viene sommato il numero dell'isola su cui si trova madre natura con il numero di spostamenti che deve fare
-    * 2. si fa modulo num isole che ci sono, si trova il numero dell'isola su cui madre natura si deve spostare
-    * 3. questo numero è dato alla funzione getIsland, che ritorna l'oggetto isola avente quel numero
-    */
+    /**
+     * move mother nature:
+     * 1. The number of the island on which mother nature is found with the number of movements it must make is added
+     * 2. Do the module with islands that are there, this is the number of the island on which mother nature must move
+     * 3. This number is given to the getIsland function, which returns the island object with that number
+     * @param numMovement
+     * @throws Exception
+     */
     public void doMoveMotherNature(int numMovement) throws Exception{
 
         if (characterCardThrown.equals("PostMan")) {
@@ -424,7 +433,12 @@ public class Game extends Observable {
         sendBoard("MoveMotherNature");
     }
 
-
+    /**
+     * move a student form entrance to dining room
+     * @param nickname
+     * @param colour
+     * @throws Exception
+     */
     public void doMoveStudentInDiningRoom(String nickname, Colour colour) throws Exception {
         try {
             this.getPlayer(nickname).moveStudentInDiningRoom(colour);
@@ -433,11 +447,31 @@ public class Game extends Observable {
         sendBoard("MoveStudentInDiningRoom");
     }
 
-    /*
-    * search the id of the player in the player list
-    * once is done it calls the method that add the students from the group to the entrance
-    * passing as parameter the studentGroup in the cloud that we want to take
-    */
+    /**
+     * move student from entrance to island
+     * @param nickname
+     * @param colour
+     * @param numIsland
+     * @throws MissingStudentException
+     * @throws IllegalArgumentException
+     */
+    public void doMoveStudentInIsland(String nickname, Colour colour, int numIsland)throws MissingStudentException, IllegalArgumentException {
+        for (Player player : listPlayer) {
+            if (player.getNicknameClient().equals(nickname)) {
+                player.moveStudentInIsland(colour, this.getIsland(numIsland));
+            }
+        }
+        sendBoard("MoveStudentInIsland");
+    }
+
+    /**
+     * search the id of the player in the player list
+     * once is done it calls the method that add the students from the group to the entrance
+     * passing as parameter the studentGroup in the cloud that we want to take
+     * @param nickname
+     * @param numCloud
+     * @throws MissingCloudException
+     */
     public void doTakeCloud(String nickname, int numCloud) throws MissingCloudException {
 
         if (numCloud < listCloud.size() && numCloud >= 0) {
@@ -452,16 +486,12 @@ public class Game extends Observable {
         sendBoard("TakeCloud");
     }
 
-
-    public void doMoveStudentInIsland(String nickname, Colour colour, int numIsland)throws MissingStudentException, IllegalArgumentException {
-        for (Player player : listPlayer) {
-            if (player.getNicknameClient().equals(nickname)) {
-                player.moveStudentInIsland(colour, this.getIsland(numIsland));
-            }
-        }
-        sendBoard("MoveStudentInIsland");
-    }
-
+    /**
+     * returns the island with number in parameter
+     * @param numIsland
+     * @return
+     * @throws IllegalArgumentException
+     */
     public Island getIsland(int numIsland) throws IllegalArgumentException {
         Island island = null;
         if (numIsland < 0 || numIsland > (listIsland.size() - 1)) {
@@ -476,7 +506,12 @@ public class Game extends Observable {
         return island;
     }
 
-
+    /**
+     * makes the player play the card
+     * @param nickname
+     * @param numCard
+     * @throws MissingCardException
+     */
     public void doPlayCard(String nickname, int numCard) throws MissingCardException{
         try {
             for (Player player : listPlayer) {
@@ -493,9 +528,11 @@ public class Game extends Observable {
         }
     }
 
-    /*
-    * il metodo ha la funzione di verificare dopo lo spostamento di uno studente che i professori
-    * assegnati al player corretto, se così non è riassegna al player corretto i professori
+    /**
+     * The method has the function of verifying
+     * after the movement of a student that the professors assigned to the correct player,
+     * if this is not the case with the correct player the professors
+     * @param colour
      */
     public void checkProfessor(Colour colour) {
 
@@ -536,13 +573,14 @@ public class Game extends Observable {
         sendBoard("CheckProfessor");
     }
 
-
-    /*
-    * il metodo ha la funzione di calcolare l'influenza degli studenti
-    * sull'isola ed in base a chi ha più influenza sostituire le torri o meno
-    * se c'è un caso di vittoria vien segnalato dalla sua eccezione
-    * se l'isola è assente viene segnalato dalla sua eccezione
-    */
+    /**
+     * The method has the function of calculating the influence of students on the island
+     * and on the basis of those who have more influence replace the towers or not if there is a case of victory
+     * is reported by its exception if the island is absent is reported by his exception
+     * @param numIsland
+     * @throws MissingIslandException
+     * @throws MissingTowerException
+     */
     public void checkTowers(int numIsland) throws MissingIslandException, MissingTowerException {
 
         Island island = null;
@@ -650,7 +688,10 @@ public class Game extends Observable {
         //sendBoard("CheckTowers");
     }
 
-
+    /**
+     * make a fusion between two or tree island
+     * @param numIsland
+     */
     public void fusion(int numIsland) {
         if (numIsland == 0) {
             try {
@@ -768,11 +809,17 @@ public class Game extends Observable {
         //sendBoard("Fusion");
     }
 
-    public Player getPlayer(String io) throws MissingPlayerException {
+    /**
+     * returns the player the that nickanme
+     * @param s
+     * @return
+     * @throws MissingPlayerException
+     */
+    public Player getPlayer(String s) throws MissingPlayerException {
         Player playerreturn = null;
 
         for (Player p : listPlayer) {
-            if (p.getNicknameClient().equals(io)) {
+            if (p.getNicknameClient().equals(s)) {
                 playerreturn = p;
             }
         }
@@ -783,10 +830,21 @@ public class Game extends Observable {
         }
     }
 
+    /**
+     * returns the cloud with that number
+     * @param num
+     * @return
+     */
     public Cloud getCloud(int num) {
         return listCloud.get(num);
     }
 
+    /**
+     * returns the professor with that colour
+     * @param col
+     * @return
+     * @throws MissingProfessorException
+     */
     public Professor getProfessor(Colour col) throws MissingProfessorException {
         Professor professorreturn = null;
 
@@ -802,14 +860,28 @@ public class Game extends Observable {
         }
     }
 
+    /**
+     * returns the bag of the game
+     * @return
+     */
     public Bag getBag() {
         return this.bag;
     }
 
+    /**
+     * return the character cart that is thrown
+     * @return
+     */
     public String getCharacterCardThrown(){
         return this.characterCardThrown;
     }
 
+    /**
+     * reurn the character card with that index
+     * @param index
+     * @return
+     * @throws Exception
+     */
     public ConcreteCharacterCard getCharacterCard(int index) throws Exception {
         if (index < 0 || index > characterCards.size()) throw new Exception();
         else {
@@ -817,12 +889,19 @@ public class Game extends Observable {
         }
     }
 
-
+    /**
+     * set the character chard that is thrown
+     * @param characterCard
+     */
     public void setCardThrown(String characterCard) {
         this.characterCardThrown = characterCard;
     }
 
-
+    /**
+     * play the character card with that parameters
+     * @param charPar
+     * @throws Exception
+     */
     public void doPlayCharacterCard(CharacterParameters charPar) throws Exception {
         //per capire sia stata giocata o meno metto un booleano
         boolean cardplayed = false;
@@ -907,11 +986,17 @@ public class Game extends Observable {
         }
     }
 
-    //per testing
+    /**
+     * add character card
+     * @param cc
+     */
     public void addCharacterCard(ConcreteCharacterCard cc){
         characterCards.add(cc);
     }
 
+    /**
+     * fills the clouds with the students after the end of a turn
+     */
     public void refillCloud(){
         for (Cloud cloud : listCloud) { //per ogni nuvola aggiungo 3 studenti estratti casualmente dalla bag
             if (cloud != null) {
@@ -944,12 +1029,15 @@ public class Game extends Observable {
         sendBoard("refillcloud");
     }
 
+    /**
+     * set current player with the nickname in the parameter
+     * @param newCurrentPlayer
+     */
     public void setCurrentPlayer(String newCurrentPlayer){
         currentPlayer = newCurrentPlayer;
     }
 
-    //METODI PER NETWORK
-
+    //Method for network
     public void notifyError(String description, String nickname){
         ServerMessage sm;
         ServerHeader sh;
