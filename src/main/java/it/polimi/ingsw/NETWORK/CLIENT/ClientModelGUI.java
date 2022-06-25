@@ -1,6 +1,7 @@
 package it.polimi.ingsw.NETWORK.CLIENT;
 
 import it.polimi.ingsw.CONTROLLER.Action;
+import it.polimi.ingsw.MODEL.CharacterParameters;
 import it.polimi.ingsw.MODEL.Colour;
 import it.polimi.ingsw.MODEL.Player;
 import it.polimi.ingsw.NETWORK.CLIENT.LoginController;
@@ -16,11 +17,18 @@ import java.util.Scanner;
 public final class ClientModelGUI extends UserInterface {
 
     private static boolean buttonIsClicked = false;
+
     private static ClientAction action;
     private static String actionPlayed;
+    private static String actionPlayed2;
+    private static String actionPlayed3;
+
+    private static String cardThrown = "";
     protected static boolean boardCreated = false;
     protected static Stage stage = new Stage();
     private static LoginController controller;
+
+    protected static String nickname = "";
 
     static {
         try {
@@ -31,8 +39,7 @@ public final class ClientModelGUI extends UserInterface {
     }
 
 
-    protected static String nickname = "";
-
+    
     public ClientModelGUI(){
 
         super();
@@ -101,7 +108,6 @@ public final class ClientModelGUI extends UserInterface {
 
         return cm;
     }
-
 
     public static ClientAction sendTypeAction(){
         while(!getButtonIsClicked()){try{Thread.sleep(100);}catch(Exception e){}}
@@ -231,35 +237,86 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
-    //TODO : TUTTI I METODI SOTTO QUESTO TODO
-    public static ClientMessage sendPlayCharacterCard(){
-        String inputLine;
-        ClientHeader ch;
-        Payload pay;
-        ClientMessage cm;
-
-
-        ch = new ClientHeader("", ClientAction.SEND_NICKNAME);
-        pay = new Payload("nickname", "");
-        cm = new ClientMessage(ch, pay);
-
-        return cm;
-    }
-
     public static ClientMessage sendMoveStudentInIsland(){
-        String inputLine;
         ClientHeader ch;
         Payload pay;
         ClientMessage cm;
 
+        //INSERISCO I PARAMETRI PER RICONOSCERE L'AZIONE
+        pay = new Payload("nickname", nickname);
+        pay.addParameter("Action", Action.MoveStudentInIsland);
 
-        ch = new ClientHeader("", ClientAction.SEND_NICKNAME);
-        pay = new Payload("nickname", "");
+        //CHIEDO I PARAMETRI PER L'AZIONE
+        Colour colour = stringToColour(getActionPlayed());
+        pay.addParameter("Colour", colour);
+
+
+        int n = stringToInt(getActionPlayed2());
+        pay.addParameter("num", n);
+
+        //INSERISCO I PARAMTRI NON UTILIZZATI
+        pay.addParameter("CharacterParameters", null);
+
+        //COSTRUISCO E INVIO IL MESSAGGIO
+        ch = new ClientHeader(nickname, ClientAction.PLAY_MOVE_STUDENT_IN_ISLAND);
         cm = new ClientMessage(ch, pay);
 
         return cm;
     }
 
+
+    public static ClientMessage sendPlayCharacterCard(){
+        ClientHeader ch;
+        Payload pay;
+        ClientMessage cm;
+
+        //INSERISCO I PARAMETRI PER RICONOSCERE L'AZIONE
+        pay = new Payload();
+        pay.addParameter("nickname", nickname);
+        pay.addParameter("Action", Action.UseCharacter);
+
+        //CHIEDO I PARAMETRI PER L'AZIONE
+        CharacterParameters charPar;
+
+        if(getActionPlayed().equals("Knight")){
+            charPar = new CharacterParameters(nickname, "Knight");
+        }
+        else if(getActionPlayed().equals("PostMan")){
+            charPar = new CharacterParameters(nickname, "PostMan");
+        }
+        else if(getActionPlayed().equals("Satyr")){
+            charPar = new CharacterParameters(nickname, "Satyr");
+        }
+        else if(getActionPlayed().equals("Pirate")){
+            int n = stringToInt(getActionPlayed2());
+            charPar = new CharacterParameters(nickname, "Pirate", n);
+
+        }
+        else if(getActionPlayed().equals("Priest")){
+            int n = stringToInt(getActionPlayed3());
+            charPar = new CharacterParameters(nickname, "Priest", n, stringToColour(getActionPlayed2()));
+        }
+        else if(getActionPlayed().equals("Woman")){
+            charPar = new CharacterParameters(nickname, "Woman", stringToColour(getActionPlayed2()));
+        }
+        else {
+            charPar = new CharacterParameters(nickname, "");
+        }//CASO ERRORE
+
+        pay.addParameter("CharacterParameters", charPar);
+
+        //INSERISCO I PARAMETRI NON UTILIZZATI
+        pay.addParameter("Colour", null);
+        pay.addParameter("num", 0);
+
+        //COSTRUISCO E INVIO IL MESSAGGIO
+        ch = new ClientHeader(nickname, ClientAction.PLAY_CHARACTERCARD);
+        cm = new ClientMessage(ch, pay);
+
+        return cm;
+    }
+
+    //TODO : TUTTI I METODI SOTTO QUESTO TODO
     public static String keepPlaying(){
         return "no";
     }
@@ -295,11 +352,31 @@ public final class ClientModelGUI extends UserInterface {
         return actionPlayed;
     }
 
+    protected static void setActionPlayed2(String s){
+        actionPlayed2 = s;
+    }
+    public static String getActionPlayed2(){
+        setButtonIsClicked(false);
+        return actionPlayed2;
+    }
+
     public static boolean getButtonIsClicked() {
         return buttonIsClicked;
     }
     protected static void setButtonIsClicked(boolean b) {
         buttonIsClicked = b;
+    }
+
+    protected static void setCardThrown(String s){
+        cardThrown = s;
+    }
+    protected static String getCardThrown(){return cardThrown;}
+
+    public static void setActionPlayed3(String actionPlayed3) {
+        ClientModelGUI.actionPlayed3 = actionPlayed3;
+    }
+    public static String getActionPlayed3(){
+        return actionPlayed3;
     }
 
     private static int stringToInt(String inputLine){

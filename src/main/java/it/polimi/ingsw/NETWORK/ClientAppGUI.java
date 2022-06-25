@@ -22,6 +22,5 @@ public class ClientAppGUI extends Application {
 
     public static void main(String[] args) {
         launch();
-
     }
 }

@@ -9,13 +9,14 @@ import java.io.Serializable;
 
 public class Pirate extends ConcreteCharacterCard implements Decorator, Serializable {
 
-    private Game game;
+    private transient Game game;
 
     public Pirate(Game game) {
         nameCard = "Pirate";
         this.game = game;
         initialPrice = 3;
         price = 3;
+        initialization();
     }
 
 

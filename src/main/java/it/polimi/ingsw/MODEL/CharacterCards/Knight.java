@@ -9,13 +9,14 @@ import java.io.Serializable;
 
 public class Knight extends ConcreteCharacterCard implements Decorator, Serializable {
 
-    private Game game;
+    private transient Game game;
 
     public Knight(Game game){
         nameCard = "Knight";
         this.game = game;
         initialPrice = 2;
         price = 2;
+        initialization();
     }
 
     @Override

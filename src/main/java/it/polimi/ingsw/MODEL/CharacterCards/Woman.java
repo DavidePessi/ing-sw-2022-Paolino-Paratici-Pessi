@@ -8,15 +8,16 @@ import it.polimi.ingsw.MODEL.Exception.PossibleWinException;
 import java.io.Serializable;
 
 public class Woman extends ConcreteCharacterCard implements Decorator, Serializable {
-    private Game game;
+    private transient Game game;
     private StudentGroup pool;
 
     public Woman(Game game){
         nameCard = "Woman";
         this.game = game;
-        initialPrice = 3;
-        price = 3;
+        initialPrice = 2;
+        price = 2;
         pool = new StudentGroup();
+        initialization();
     }
 
     @Override

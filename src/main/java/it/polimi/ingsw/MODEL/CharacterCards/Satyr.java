@@ -10,13 +10,14 @@ import java.io.Serializable;
 
 public class Satyr extends ConcreteCharacterCard implements Decorator, Serializable {
 
-    private Game game;
+    private transient Game game;
 
     public Satyr(Game game) {
         nameCard = "Satyr";
         this.game = game;
         initialPrice = 3;
         price = 3;
+        initialization();
     }
 
     @Override

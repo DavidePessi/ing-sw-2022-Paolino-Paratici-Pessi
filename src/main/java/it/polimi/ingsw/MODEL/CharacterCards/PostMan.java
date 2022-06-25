@@ -5,13 +5,14 @@ import it.polimi.ingsw.MODEL.Game;
 import java.io.Serializable;
 
 public class PostMan extends ConcreteCharacterCard implements  Decorator, Serializable {
-    private Game game;
+    private transient Game game;
 
     public PostMan(Game game){
         nameCard = "PostMan";
         this.game = game;
         initialPrice = 1;
         price = 1;
+        initialization();
     }
 
     @Override

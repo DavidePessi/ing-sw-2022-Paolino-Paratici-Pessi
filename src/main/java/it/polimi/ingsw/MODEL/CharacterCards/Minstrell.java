@@ -10,13 +10,14 @@ import java.io.Serializable;
 
 public class Minstrell extends ConcreteCharacterCard implements Decorator, Serializable {
 
-    private Game game;
+    private transient Game game;
 
     public Minstrell(Game game){
         nameCard = "Minstrell";
         this.game = game;
         initialPrice = 1;
         price = 1;
+        initialization();
     }
 
     @Override

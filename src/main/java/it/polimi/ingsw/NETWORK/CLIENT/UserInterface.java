@@ -1,7 +1,7 @@
 package it.polimi.ingsw.NETWORK.CLIENT;
 
 import it.polimi.ingsw.MODEL.*;
-import it.polimi.ingsw.MODEL.CharacterCards.ConcreteCharacterCard;
+import it.polimi.ingsw.MODEL.CharacterCards.*;
 import it.polimi.ingsw.NETWORK.CLIENT.CLI.ClientModelCLI;
 import it.polimi.ingsw.NETWORK.MESSAGES.*;
 
@@ -144,9 +144,60 @@ public class UserInterface {
         // --> characterCardThrown, charactercards, players,
         else if(message.getServerHeader().getDescription().equals("PlayCharacterCard")){
 
-            characterCards.set(0, (ConcreteCharacterCard) message.getPayload().getParameter("charactercard1"));
-            characterCards.set(1, (ConcreteCharacterCard) message.getPayload().getParameter("charactercard2"));
-            characterCards.set(2, (ConcreteCharacterCard) message.getPayload().getParameter("charactercard3"));
+            if(message.getPayload().getParameter("charactercard1") instanceof Knight){
+                characterCards.set(0, (Knight) message.getPayload().getParameter("charactercard1"));
+            }else if(message.getPayload().getParameter("charactercard1") instanceof Priest){
+                characterCards.set(0, (Priest) message.getPayload().getParameter("charactercard1"));
+            }else if(message.getPayload().getParameter("charactercard1") instanceof Jester){
+                characterCards.set(0, (Jester) message.getPayload().getParameter("charactercard1"));
+            }else if(message.getPayload().getParameter("charactercard1") instanceof Minstrell){
+                characterCards.set(0, (Minstrell) message.getPayload().getParameter("charactercard1"));
+            }else if(message.getPayload().getParameter("charactercard1") instanceof Woman){
+                characterCards.set(0, (Woman) message.getPayload().getParameter("charactercard1"));
+            }else if(message.getPayload().getParameter("charactercard1") instanceof PostMan){
+                characterCards.set(0, (PostMan) message.getPayload().getParameter("charactercard1"));
+            }else if(message.getPayload().getParameter("charactercard1") instanceof Satyr){
+                characterCards.set(0, (Satyr) message.getPayload().getParameter("charactercard1"));
+            }else if(message.getPayload().getParameter("charactercard1") instanceof Pirate){
+                characterCards.set(0, (Pirate) message.getPayload().getParameter("charactercard1"));
+            }
+            if(message.getPayload().getParameter("charactercard2") instanceof Knight){
+                characterCards.set(1, (Knight) message.getPayload().getParameter("charactercard2"));
+            }else if(message.getPayload().getParameter("charactercard2") instanceof Priest){
+                characterCards.set(1, (Priest) message.getPayload().getParameter("charactercard2"));
+            }else if(message.getPayload().getParameter("charactercard2") instanceof Jester){
+                characterCards.set(1, (Jester) message.getPayload().getParameter("charactercard2"));
+            }else if(message.getPayload().getParameter("charactercard2") instanceof Minstrell){
+                characterCards.set(1, (Minstrell) message.getPayload().getParameter("charactercard2"));
+            }else if(message.getPayload().getParameter("charactercard2") instanceof Woman){
+                characterCards.set(1, (Woman) message.getPayload().getParameter("charactercard2"));
+            }else if(message.getPayload().getParameter("charactercard2") instanceof PostMan){
+                characterCards.set(1, (PostMan) message.getPayload().getParameter("charactercard2"));
+            }else if(message.getPayload().getParameter("charactercard2") instanceof Satyr){
+                characterCards.set(1, (Satyr) message.getPayload().getParameter("charactercard2"));
+            }else if(message.getPayload().getParameter("charactercard2") instanceof Pirate){
+                characterCards.set(1, (Pirate) message.getPayload().getParameter("charactercard2"));
+            }
+            if(message.getPayload().getParameter("charactercard3") instanceof Knight){
+                characterCards.set(2, (Knight) message.getPayload().getParameter("charactercard3"));
+            }else if(message.getPayload().getParameter("charactercard3") instanceof Priest){
+                characterCards.set(2, (Priest) message.getPayload().getParameter("charactercard3"));
+            }else if(message.getPayload().getParameter("charactercard3") instanceof Jester){
+                characterCards.set(2, (Jester) message.getPayload().getParameter("charactercard3"));
+            }else if(message.getPayload().getParameter("charactercard3") instanceof Minstrell){
+                characterCards.set(2, (Minstrell) message.getPayload().getParameter("charactercard3"));
+            }else if(message.getPayload().getParameter("charactercard3") instanceof Woman){
+                characterCards.set(2, (Woman) message.getPayload().getParameter("charactercard3"));
+            }else if(message.getPayload().getParameter("charactercard3") instanceof PostMan){
+                characterCards.set(2, (PostMan) message.getPayload().getParameter("charactercard3"));
+            }else if(message.getPayload().getParameter("charactercard3") instanceof Satyr){
+                characterCards.set(2, (Satyr) message.getPayload().getParameter("charactercard3"));
+            }else if(message.getPayload().getParameter("charactercard3") instanceof Pirate){
+                characterCards.set(2, (Pirate) message.getPayload().getParameter("charactercard3"));
+            }
+            //characterCards.set(0, (ConcreteCharacterCard) message.getPayload().getParameter("charactercard1"));
+            //characterCards.set(1, (ConcreteCharacterCard) message.getPayload().getParameter("charactercard2"));
+            //characterCards.set(2, (ConcreteCharacterCard) message.getPayload().getParameter("charactercard3"));
 
             characterCardThrown = (String) message.getPayload().getParameter("cardthrown");
 
@@ -265,12 +316,63 @@ public class UserInterface {
             //todo da tenere sott'occhio
             characterCardThrown = (String)message.getPayload().getParameter("charactercardthrown");
 
+
             //setto le carte personaggio
+            if(message.getPayload().getParameter("charactercard1") instanceof Knight){
+                characterCards.add(0, (Knight) message.getPayload().getParameter("charactercard1"));
+            }else if(message.getPayload().getParameter("charactercard1") instanceof Priest){
+                characterCards.add(0, (Priest) message.getPayload().getParameter("charactercard1"));
+            }else if(message.getPayload().getParameter("charactercard1") instanceof Jester){
+                characterCards.add(0, (Jester) message.getPayload().getParameter("charactercard1"));
+            }else if(message.getPayload().getParameter("charactercard1") instanceof Minstrell){
+                characterCards.add(0, (Minstrell) message.getPayload().getParameter("charactercard1"));
+            }else if(message.getPayload().getParameter("charactercard1") instanceof Woman){
+                characterCards.add(0, (Woman) message.getPayload().getParameter("charactercard1"));
+            }else if(message.getPayload().getParameter("charactercard1") instanceof PostMan){
+                characterCards.add(0, (PostMan) message.getPayload().getParameter("charactercard1"));
+            }else if(message.getPayload().getParameter("charactercard1") instanceof Satyr){
+                characterCards.add(0, (Satyr) message.getPayload().getParameter("charactercard1"));
+            }else if(message.getPayload().getParameter("charactercard1") instanceof Pirate){
+                characterCards.add(0, (Pirate) message.getPayload().getParameter("charactercard1"));
+            }
+            if(message.getPayload().getParameter("charactercard2") instanceof Knight){
+                characterCards.add(1, (Knight) message.getPayload().getParameter("charactercard2"));
+            }else if(message.getPayload().getParameter("charactercard2") instanceof Priest){
+                characterCards.add(1, (Priest) message.getPayload().getParameter("charactercard2"));
+            }else if(message.getPayload().getParameter("charactercard2") instanceof Jester){
+                characterCards.add(1, (Jester) message.getPayload().getParameter("charactercard2"));
+            }else if(message.getPayload().getParameter("charactercard2") instanceof Minstrell){
+                characterCards.add(1, (Minstrell) message.getPayload().getParameter("charactercard2"));
+            }else if(message.getPayload().getParameter("charactercard2") instanceof Woman){
+                characterCards.add(1, (Woman) message.getPayload().getParameter("charactercard2"));
+            }else if(message.getPayload().getParameter("charactercard2") instanceof PostMan){
+                characterCards.add(1, (PostMan) message.getPayload().getParameter("charactercard2"));
+            }else if(message.getPayload().getParameter("charactercard2") instanceof Satyr){
+                characterCards.add(1, (Satyr) message.getPayload().getParameter("charactercard2"));
+            }else if(message.getPayload().getParameter("charactercard2") instanceof Pirate){
+                characterCards.add(1, (Pirate) message.getPayload().getParameter("charactercard2"));
+            }
+            if(message.getPayload().getParameter("charactercard3") instanceof Knight){
+                characterCards.add(2, (Knight) message.getPayload().getParameter("charactercard3"));
+            }else if(message.getPayload().getParameter("charactercard3") instanceof Priest){
+                characterCards.add(2, (Priest) message.getPayload().getParameter("charactercard3"));
+            }else if(message.getPayload().getParameter("charactercard3") instanceof Jester){
+                characterCards.add(2, (Jester) message.getPayload().getParameter("charactercard3"));
+            }else if(message.getPayload().getParameter("charactercard3") instanceof Minstrell){
+                characterCards.add(2, (Minstrell) message.getPayload().getParameter("charactercard3"));
+            }else if(message.getPayload().getParameter("charactercard3") instanceof Woman){
+                characterCards.add(2, (Woman) message.getPayload().getParameter("charactercard3"));
+            }else if(message.getPayload().getParameter("charactercard3") instanceof PostMan){
+                characterCards.add(2, (PostMan) message.getPayload().getParameter("charactercard3"));
+            }else if(message.getPayload().getParameter("charactercard3") instanceof Satyr){
+                characterCards.add(2, (Satyr) message.getPayload().getParameter("charactercard3"));
+            }else if(message.getPayload().getParameter("charactercard3") instanceof Pirate){
+                characterCards.add(2, (Pirate) message.getPayload().getParameter("charactercard3"));
+            }
 
-
-            characterCards.add((ConcreteCharacterCard) message.getPayload().getParameter("charactercard1"));
-            characterCards.add((ConcreteCharacterCard) message.getPayload().getParameter("charactercard2"));
-            characterCards.add((ConcreteCharacterCard) message.getPayload().getParameter("charactercard3"));
+            //characterCards.add((ConcreteCharacterCard) message.getPayload().getParameter("charactercard1"));
+            //characterCards.add((ConcreteCharacterCard) message.getPayload().getParameter("charactercard2"));
+            //characterCards.add((ConcreteCharacterCard) message.getPayload().getParameter("charactercard3"));
 
             //setto il player corrente
             ClientModelCLI.currentPlayer = (String)message.getPayload().getParameter("currentClient");

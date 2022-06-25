@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class Jester extends ConcreteCharacterCard implements Decorator, Serializable {
 
-    private Game game;
+    private transient Game game;
     private StudentGroup pool;
 
     public Jester(Game game){
@@ -18,6 +18,7 @@ public class Jester extends ConcreteCharacterCard implements Decorator, Serializ
         pool = new StudentGroup();
         initialPrice = 1;
         price = 1;
+        initialization();
     }
 
     @Override

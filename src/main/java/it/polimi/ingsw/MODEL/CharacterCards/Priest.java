@@ -9,7 +9,7 @@ import it.polimi.ingsw.MODEL.StudentGroup;
 import java.io.Serializable;
 
 public class Priest extends ConcreteCharacterCard implements Decorator, Serializable {
-    private Game game;
+    private transient Game game;
     private StudentGroup pool;
 
     public Priest(Game game) {
@@ -18,6 +18,7 @@ public class Priest extends ConcreteCharacterCard implements Decorator, Serializ
         initialPrice = 1;
         price = 1;
         pool = new StudentGroup();
+        initialization();
     }
 
 

@@ -1124,8 +1124,8 @@ public class Game extends Observable {
 
         else if(s.equals("PlayCharacterCard")){
 
-            for (int i = 1; i <= characterCards.size(); i++) {
-                pay.addParameter("charactercard" + i, new ConcreteCharacterCard(characterCards.get(i - 1).getNameCard(), characterCards.get(i - 1).getPrice()));
+            for (int i = 0; i < characterCards.size(); i++) {
+                pay.addParameter("charactercard" + (i+1), characterCards.get(i));
             }
 
             for(int i = 0; i < listIsland.size(); i++) {
@@ -1167,8 +1167,8 @@ public class Game extends Observable {
         else if(s.equals("STARTGAME")){
             //se sei nel difficult fai:
             if(!characterCards.isEmpty()) {
-                for (int i = 1; i <= characterCards.size(); i++) {
-                    pay.addParameter("charactercard" + i, new ConcreteCharacterCard(characterCards.get(i - 1).getNameCard(), characterCards.get(i - 1).getPrice()));
+                for (int i = 0; i < characterCards.size(); i++) {
+                    pay.addParameter("charactercard" + (i+1), characterCards.get(i));
                 }
 
                 pay.addParameter("showCoins", true);
