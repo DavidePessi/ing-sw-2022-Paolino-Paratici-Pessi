@@ -312,8 +312,6 @@ public final class ClientModelGUI extends UserInterface {
             List<Colour> list = new ArrayList<>();
             if(actionPlayed8.equals("1")){
 
-                System.out.println(stringToColour(actionPlayed2) +" "+ stringToColour(actionPlayed3));
-
                 list.add(stringToColour(actionPlayed2));
                 list.add(stringToColour(actionPlayed3));
             }else if(actionPlayed8.equals("2")){
@@ -336,8 +334,6 @@ public final class ClientModelGUI extends UserInterface {
         else if(getActionPlayed().equals("Minstrell")){
             List<Colour> list = new ArrayList<>();
             if(actionPlayed8.equals("1")){
-
-                System.out.println(stringToColour(actionPlayed2) +" "+ stringToColour(actionPlayed3));
 
                 list.add(stringToColour(actionPlayed2));
                 list.add(stringToColour(actionPlayed3));

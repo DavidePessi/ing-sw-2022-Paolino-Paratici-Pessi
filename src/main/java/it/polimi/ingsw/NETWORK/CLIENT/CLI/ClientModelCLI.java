@@ -559,7 +559,7 @@ public final class ClientModelCLI extends UserInterface{
 
         if(inputLine.equals("Jester")){
             List<Colour> list = new ArrayList<>();
-
+            int n;
             System.out.println("Select how many students you want to move: 1\n2\n3\n");
             do {
                 inputLine = stdin.nextLine();
@@ -576,6 +576,7 @@ public final class ClientModelCLI extends UserInterface{
                 System.out.println("select the colour from the entrance");
                 inputLine = stdin.nextLine();
                 list.add(stringToColour(inputLine, stdin));
+                n = 1;
             }
             else if(inputLine.equals("2")){
                 System.out.println("select the first colour from the card");
@@ -593,6 +594,7 @@ public final class ClientModelCLI extends UserInterface{
                 System.out.println("select the second colour from the entrance");
                 inputLine = stdin.nextLine();
                 list.add(stringToColour(inputLine, stdin));
+                n = 2;
             }
             else {
                 System.out.println("select the first colour from the card");
@@ -618,16 +620,18 @@ public final class ClientModelCLI extends UserInterface{
                 System.out.println("select the third colour from the entrance");
                 inputLine = stdin.nextLine();
                 list.add(stringToColour(inputLine, stdin));
+                n = 3;
             }
 
             //compongo i parametri della carta
-            charPar = new CharacterParameters(nick, "Jester", list);
+            charPar = new CharacterParameters(nick, "Jester", list, n);
         }
         else if(inputLine.equals("Knight")){
             charPar = new CharacterParameters(nick, "Knight");
         }
         else if(inputLine.equals("Minstrell")){
             List<Colour> list = new ArrayList<>();
+            int n;
             System.out.println("Select how many students you want to move: 1\n2\n");
             do {
                 inputLine = stdin.nextLine();
@@ -644,6 +648,7 @@ public final class ClientModelCLI extends UserInterface{
                 System.out.println("select the colour from the dining room");
                 inputLine = stdin.nextLine();
                 list.add(stringToColour(inputLine, stdin));
+                n = 1;
             }
             else {
                 System.out.println("select the first colour from the entrance");
@@ -661,10 +666,11 @@ public final class ClientModelCLI extends UserInterface{
                 System.out.println("select the second colour from the dining room");
                 inputLine = stdin.nextLine();
                 list.add(stringToColour(inputLine, stdin));
+                n = 2;
             }
 
             //compongo i parametri della carta
-            charPar = new CharacterParameters(nick, "Minstrell", list);
+            charPar = new CharacterParameters(nick, "Minstrell", list, n);
         }
         else if(inputLine.equals("Pirate")){
             System.out.println("Insert the number of the island: ");
