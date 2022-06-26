@@ -21,12 +21,20 @@ public class CharacterParameters implements Serializable {
     public CharacterParameters(String nickname, String characterName,List<Colour> colours, int num){
         this.nickname = nickname;
         this.characterName = characterName;
-        this.c1 = colours.get(0);
-        this.c2 = colours.get(1);
-        this.c3 = colours.get(2);
-        this.c4 = colours.get(3);
-        this.c5 = colours.get(4);
-        this.c6 = colours.get(5);
+        if(num >= 1){
+            this.c1 = colours.get(0);
+            this.c2 = colours.get(1);
+        }
+        if(num >= 2){
+            this.c3 = colours.get(2);
+            this.c4 = colours.get(3);
+        }
+        if(num == 3){
+            this.c5 = colours.get(4);
+            this.c6 = colours.get(5);
+        }
+
+
         this.num = num;
     }
 

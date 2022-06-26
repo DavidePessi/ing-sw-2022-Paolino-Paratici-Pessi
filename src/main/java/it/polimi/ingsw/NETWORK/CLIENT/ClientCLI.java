@@ -234,10 +234,10 @@ public final class ClientCLI {
                                 setClientAction(ClientAction.PLAY_ACTION);
                             }
                             else if(model instanceof ClientModelGUI){
-                                System.out.println("richiesta di messaggio per play charactercard inviata");
                                 cm = ClientModelGUI.sendPlayCharacterCard();
                                 send(socketOut, cm);
                                 setClientAction(ClientAction.PLAY_ACTION);
+                                System.out.println("richiesta di messaggio per play charactercard inviata");
                             }
 
 

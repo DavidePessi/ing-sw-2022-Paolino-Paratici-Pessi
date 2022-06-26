@@ -60,6 +60,9 @@ public class Minstrell extends ConcreteCharacterCard implements Decorator, Seria
         if(price==initialPrice){
             price = price+1;
         }
+        System.out.println("dinnerroom: "+ colour + " " + colour2);
+        System.out.println("entrance: "+ colour3 + " " + colour4);
+
         //tolgo gli studenti
         this.game.getPlayer(nickname).removeStudentFromDiningRoom(colour);
         this.game.getPlayer(nickname).removeStudentFromDiningRoom(colour2);

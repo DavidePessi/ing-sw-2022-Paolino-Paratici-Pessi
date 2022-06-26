@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public final class ClientModelGUI extends UserInterface {
@@ -22,6 +24,13 @@ public final class ClientModelGUI extends UserInterface {
     private static String actionPlayed;
     private static String actionPlayed2;
     private static String actionPlayed3;
+    private static String actionPlayed4;
+    private static String actionPlayed5;
+    private static String actionPlayed6;
+    private static String actionPlayed7;
+    private static String actionPlayed8;
+    private static int colors1 = 0;
+    private static int colors2 = 0;
 
     private static String cardThrown = "";
     protected static boolean boardCreated = false;
@@ -299,7 +308,49 @@ public final class ClientModelGUI extends UserInterface {
         else if(getActionPlayed().equals("Woman")){
             charPar = new CharacterParameters(nickname, "Woman", stringToColour(getActionPlayed2()));
         }
-        else {
+        else if(getActionPlayed().equals("Jester")){
+            List<Colour> list = new ArrayList<>();
+            if(actionPlayed8.equals("1")){
+
+                System.out.println(stringToColour(actionPlayed2) +" "+ stringToColour(actionPlayed3));
+
+                list.add(stringToColour(actionPlayed2));
+                list.add(stringToColour(actionPlayed3));
+            }else if(actionPlayed8.equals("2")){
+
+                list.add(stringToColour(actionPlayed2));
+                list.add(stringToColour(actionPlayed3));
+                list.add(stringToColour(actionPlayed4));
+                list.add(stringToColour(actionPlayed5));
+            }else if(actionPlayed8.equals("3")){
+
+                list.add(stringToColour(actionPlayed2));
+                list.add(stringToColour(actionPlayed3));
+                list.add(stringToColour(actionPlayed4));
+                list.add(stringToColour(actionPlayed5));
+                list.add(stringToColour(actionPlayed6));
+                list.add(stringToColour(actionPlayed7));
+            }
+            charPar = new CharacterParameters(nickname, "Jester", list, stringToInt(actionPlayed8));
+        }
+        else if(getActionPlayed().equals("Minstrell")){
+            List<Colour> list = new ArrayList<>();
+            if(actionPlayed8.equals("1")){
+
+                System.out.println(stringToColour(actionPlayed2) +" "+ stringToColour(actionPlayed3));
+
+                list.add(stringToColour(actionPlayed2));
+                list.add(stringToColour(actionPlayed3));
+            }else if(actionPlayed8.equals("2")){
+
+                list.add(stringToColour(actionPlayed2));
+                list.add(stringToColour(actionPlayed3));
+                list.add(stringToColour(actionPlayed4));
+                list.add(stringToColour(actionPlayed5));
+            }
+            charPar = new CharacterParameters(nickname, "Minstrell", list, stringToInt(actionPlayed8));
+        }
+        else{
             charPar = new CharacterParameters(nickname, "");
         }//CASO ERRORE
 
@@ -378,6 +429,47 @@ public final class ClientModelGUI extends UserInterface {
     public static String getActionPlayed3(){
         return actionPlayed3;
     }
+
+    public static void setActionPlayed4(String actionPlayed4) {
+        ClientModelGUI.actionPlayed4 = actionPlayed4;
+    }
+    public static String getActionPlayed4(){
+        return actionPlayed4;
+    }
+
+    public static void setActionPlayed5(String actionPlayed5) {
+        ClientModelGUI.actionPlayed5 = actionPlayed5;
+    }
+    public static String getActionPlayed5(){
+        return actionPlayed5;
+    }
+
+    public static void setActionPlayed6(String actionPlayed6) {
+        ClientModelGUI.actionPlayed6 = actionPlayed6;
+    }
+    public static String getActionPlayed6(){
+        return actionPlayed6;
+    }
+
+    public static void setActionPlayed7(String actionPlayed7) {
+        ClientModelGUI.actionPlayed7 = actionPlayed7;
+    }
+    public static String getActionPlayed7(){
+        return actionPlayed7;
+    }
+
+    public static void setActionPlayed8(String actionPlayed8) {
+        ClientModelGUI.actionPlayed8 = actionPlayed8;
+    }
+    public static String getActionPlayed8(){
+        return actionPlayed8;
+    }
+
+    public static void setColors1(int num){ClientModelGUI.colors1 = num;}
+    public static int getColors1(){return colors1;}
+
+    public static void setColors2(int num){ClientModelGUI.colors2 = num;}
+    public static int getColors2(){return colors2;}
 
     private static int stringToInt(String inputLine){
         int n;

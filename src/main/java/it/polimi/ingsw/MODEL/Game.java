@@ -941,9 +941,11 @@ public class Game extends Observable {
                     cardplayed = true;
 
                 } else if (cha.getNameCard().equals("Minstrell")) {
+                    System.out.println("mossa iniziata");
                     getPlayer(charPar.getPlayerName()).useCoins(cha.getPrice());
                     Minstrell m = (Minstrell) cha;
                     try {
+                        System.out.println("provo 4");
                         m.effect(charPar.getPlayerName(), charPar.getColour1(), charPar.getColour2(), charPar.getColour3(), charPar.getColour4());
                         cardplayed = true;
                     } catch (Exception e1) {

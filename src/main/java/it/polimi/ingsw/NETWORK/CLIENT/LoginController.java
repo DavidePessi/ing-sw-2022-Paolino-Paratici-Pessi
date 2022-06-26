@@ -238,37 +238,51 @@ public  class LoginController {
                                     ClientModelGUI.setButtonIsClicked(true);
 
                                     ClientModelGUI.setActionPlayed(((GridPane) (e.getTarget())).getAccessibleText());
-                                } else if (((GridPane) (e.getTarget())).getAccessibleText().equals("Satyr")) {
+                                }
+                                else if (((GridPane) (e.getTarget())).getAccessibleText().equals("Satyr")) {
                                     ClientModelGUI.setAction(ClientAction.PLAY_CHARACTERCARD);
                                     ClientModelGUI.setButtonIsClicked(true);
                                     ClientModelGUI.setActionPlayed("Satyr");
-                                } else if (((GridPane) (e.getTarget())).getAccessibleText().equals("PostMan")) {
+                                }
+                                else if (((GridPane) (e.getTarget())).getAccessibleText().equals("PostMan")) {
                                     ClientModelGUI.setAction(ClientAction.PLAY_CHARACTERCARD);
                                     ClientModelGUI.setButtonIsClicked(true);
                                     ClientModelGUI.setActionPlayed("PostMan");
-                                } else if (((GridPane) (e.getTarget())).getAccessibleText().equals("Knight")) {
+                                }
+                                else if (((GridPane) (e.getTarget())).getAccessibleText().equals("Knight")) {
                                     ClientModelGUI.setAction(ClientAction.PLAY_CHARACTERCARD);
                                     ClientModelGUI.setButtonIsClicked(true);
                                     ClientModelGUI.setActionPlayed("Knight");
-                                } else if (((GridPane) (e.getTarget())).getAccessibleText().equals("Priest")) {
+                                }
+                                else if (((GridPane) (e.getTarget())).getAccessibleText().equals("Priest")) {
                                     ClientModelGUI.setCardThrown("Priest");
-                                    System.out.println("settato a priest");
-                                } else if (((GridPane) (e.getTarget())).getAccessibleText().equals("Woman")) {
+                                }
+                                else if (((GridPane) (e.getTarget())).getAccessibleText().equals("Woman")) {
                                     ClientModelGUI.setCardThrown("Woman");
-                                } else if (((GridPane) (e.getTarget())).getAccessibleText().equals("Pirate")) {
+                                }
+                                else if (((GridPane) (e.getTarget())).getAccessibleText().equals("Pirate")) {
                                     ClientModelGUI.setCardThrown("Pirate");
-                                }else if(((GridPane) (e.getTarget())).getAccessibleText().equals("Jester")){
+                                }
+                                else if(((GridPane) (e.getTarget())).getAccessibleText().equals("Jester")){
                                     ClientModelGUI.setCardThrown("Jester");
-                                }else if(((GridPane) (e.getTarget())).getAccessibleText().equals("Minstrell")) {
+                                    ClientModelGUI.setColors1(0);
+                                    ClientModelGUI.setColors2(0);
+                                }
+                                else if(((GridPane) (e.getTarget())).getAccessibleText().equals("Minstrell")) {
                                     ClientModelGUI.setCardThrown("Minstrell");
-                                }else if (((GridPane) (e.getTarget())).getAccessibleText().substring(0, 6).equals("island")) {
+                                    ClientModelGUI.setColors1(0);
+                                    ClientModelGUI.setColors2(0);
+                                }
+                                else if (((GridPane) (e.getTarget())).getAccessibleText().substring(0, 6).equals("island")) {
                                 }
                             } else if (e.getTarget() instanceof ImageView) {
                                 System.out.println(((ImageView) (e.getTarget())).getAccessibleText());
-                                if (((ImageView) (e.getTarget())).getAccessibleText().substring(0, 4).equals("card")) {
-                                    ClientModelGUI.setAction(ClientAction.PLAY_CARD);
-                                    ClientModelGUI.setButtonIsClicked(true);
-                                    ClientModelGUI.setActionPlayed(((ImageView) (e.getTarget())).getAccessibleText());
+                                if(((ImageView) (e.getTarget())).getAccessibleText().length() >= 4) {
+                                    if (((ImageView) (e.getTarget())).getAccessibleText().substring(0, 4).equals("card")) {
+                                        ClientModelGUI.setAction(ClientAction.PLAY_CARD);
+                                        ClientModelGUI.setButtonIsClicked(true);
+                                        ClientModelGUI.setActionPlayed(((ImageView) (e.getTarget())).getAccessibleText());
+                                    }
                                 }
                             }
                         }
@@ -276,7 +290,6 @@ public  class LoginController {
 
                     //HO ATTIVATO UNA CARTA QUINDI O ESEGUO L'AZIONE O SI ANNULLA
                     else{
-
                         if(e.getEventType().equals(MouseEvent.MOUSE_PRESSED)) {
                             if (ClientModelGUI.getCardThrown().equals("Woman")) {
 
@@ -295,7 +308,8 @@ public  class LoginController {
                                 System.out.println("resettato");
                                 ClientModelGUI.setCardThrown("");
 
-                            } else if (ClientModelGUI.getCardThrown().equals("Pirate")) {
+                            }
+                            else if (ClientModelGUI.getCardThrown().equals("Pirate")) {
                                 if (e.getTarget() instanceof GridPane) {
                                     if (((GridPane) (e.getTarget())).getAccessibleText().length() > 6) {
                                         if (((GridPane) (e.getTarget())).getAccessibleText().substring(0, 6).equals("island")) {
@@ -313,14 +327,109 @@ public  class LoginController {
                                         }
                                     }
                                 }
-                                System.out.println("resettato");
                                 ClientModelGUI.setCardThrown("");
                             }
+                            else if (ClientModelGUI.getCardThrown().equals("Jester")) {
+                                    if(e.getTarget() instanceof ImageView){
+                                        String student = ((ImageView)(e.getTarget())).getAccessibleText();
+                                        System.out.println(student);
+                                        if(student.substring(0,1).equals("j")){
+                                            String parameter = student.substring(1,student.length());
 
+                                            if(ClientModelGUI.getColors1() == 0) {
+                                                ClientModelGUI.setActionPlayed2(parameter);
+                                                ClientModelGUI.setColors1(1);
+                                            }else if(ClientModelGUI.getColors1() == 1){
+                                                ClientModelGUI.setActionPlayed4(parameter);
+                                                ClientModelGUI.setColors1(2);
+                                            }else if(ClientModelGUI.getColors1() == 2) {
+                                                ClientModelGUI.setActionPlayed6(parameter);
+                                                ClientModelGUI.setColors1(3);
+                                            }
+                                            System.out.println("aggiunto colore pool, "+ ClientModelGUI.getColors1());
+                                        }else if(!student.substring(0,1).equals("c") && !student.substring(0, 1).equals("d")){
+                                            if(ClientModelGUI.getColors2() == 0) {
+                                                ClientModelGUI.setActionPlayed3(student);
+                                                ClientModelGUI.setColors2(1);
+                                            }else if(ClientModelGUI.getColors2() == 1){
+                                                ClientModelGUI.setActionPlayed5(student);
+                                                ClientModelGUI.setColors2(2);
+                                            }else if(ClientModelGUI.getColors2() == 2) {
+                                                ClientModelGUI.setActionPlayed7(student);
+                                                ClientModelGUI.setColors2(3);
+                                            }
+                                            System.out.println("aggiunto colore entrance, " + ClientModelGUI.getColors2());
+                                        }
+                            } else if(e.getTarget() instanceof GridPane){
+                                        System.out.println("sto per inviare: " + ((GridPane) (e.getTarget())).getAccessibleText());
+                                        if(((GridPane) (e.getTarget())).getAccessibleText().equals("Jester")) {
+                                            if (ClientModelGUI.getColors2() != 0 && ClientModelGUI.getColors1() != 0) {
+
+                                                ClientModelGUI.setActionPlayed("Jester");
+                                                ClientModelGUI.setButtonIsClicked(true);
+                                                ClientModelGUI.setAction(ClientAction.PLAY_CHARACTERCARD);
+
+                                                if (ClientModelGUI.getColors1() > ClientModelGUI.getColors2()) {
+                                                    ClientModelGUI.setActionPlayed8(String.valueOf(ClientModelGUI.getColors2()));
+                                                } else {
+                                                    ClientModelGUI.setActionPlayed8(String.valueOf(ClientModelGUI.getColors1()));
+                                                }
+
+                                                System.out.println("inviato");
+                                                ClientModelGUI.setCardThrown("");
+                                            }
+                                        }
+
+                                }
+                        } else if(ClientModelGUI.getCardThrown().equals("Minstrell")) {
+                                if (e.getTarget() instanceof ImageView) {
+                                    String student = ((ImageView) (e.getTarget())).getAccessibleText();
+                                    if (student.substring(0, 1).equals("d")) {
+                                        String parameter = student.substring(1, student.length());
+
+                                        if (ClientModelGUI.getColors1() == 0) {
+                                            ClientModelGUI.setActionPlayed2(parameter);
+                                            ClientModelGUI.setColors1(1);
+                                        } else if (ClientModelGUI.getColors1() == 1) {
+                                            ClientModelGUI.setActionPlayed3(parameter);
+                                            ClientModelGUI.setColors1(2);
+                                        }
+                                        System.out.println("aggiunto colore diningroom, " + ClientModelGUI.getColors1());
+                                    } else if (!student.substring(0, 1).equals("c") && !student.substring(0,1).equals("j")) {
+                                        if (ClientModelGUI.getColors2() == 0) {
+                                            ClientModelGUI.setActionPlayed4(student);
+                                            ClientModelGUI.setColors2(1);
+                                        } else if (ClientModelGUI.getColors2() == 1) {
+                                            ClientModelGUI.setActionPlayed5(student);
+                                            ClientModelGUI.setColors2(2);
+                                        }
+                                        System.out.println("aggiunto colore entrance, " + ClientModelGUI.getColors2());
+                                    }
+                                }else if(e.getTarget() instanceof GridPane){
+                                    System.out.println("sto per inviare: " + ((GridPane) (e.getTarget())).getAccessibleText());
+                                    if(((GridPane) (e.getTarget())).getAccessibleText().equals("Minstrell")) {
+                                        if (ClientModelGUI.getColors2() != 0 && ClientModelGUI.getColors1() != 0) {
+
+                                            ClientModelGUI.setActionPlayed("Minstrell");
+                                            ClientModelGUI.setButtonIsClicked(true);
+                                            ClientModelGUI.setAction(ClientAction.PLAY_CHARACTERCARD);
+
+                                            if (ClientModelGUI.getColors1() > ClientModelGUI.getColors2()) {
+                                                ClientModelGUI.setActionPlayed8(String.valueOf(ClientModelGUI.getColors2()));
+                                            } else {
+                                                ClientModelGUI.setActionPlayed8(String.valueOf(ClientModelGUI.getColors1()));
+                                            }
+
+                                            System.out.println("inviato");
+                                            ClientModelGUI.setCardThrown("");
+                                        }
+                                    }
+
+                                }
                         }
                     }
                 }
-            };
+            }};
 
 
             //FUNZIONE DI EVENT HANDLE  (invio carte assistente)
@@ -381,7 +490,7 @@ public  class LoginController {
             p = ClientModelGUI.getPlayer(ClientModelGUI.nickname);
 
         //PLANCIA
-        GridPane gpane = createDashBoard(2, ClientModelGUI.nickname, dragHandler, true);
+        GridPane gpane = createDashBoard(2, ClientModelGUI.nickname, dragHandler, eventHandler, true);
         bottomBoard.add(gpane, 0,0);
 
 
@@ -630,7 +739,7 @@ public  class LoginController {
                 j++;
 
                 Text t = new Text(p.getNicknameClient());
-                GridPane dashboard = createDashBoard(1, p.getNicknameClient(), dragHandler, false);
+                GridPane dashboard = createDashBoard(1, p.getNicknameClient(), dragHandler, eventHandler, false);
 
                 rightBoard.add(t, 1, j*2);
                 rightBoard.add(dashboard,1, 1+j*2);
@@ -827,7 +936,7 @@ public  class LoginController {
         return gpane;
     }
 
-    private GridPane createDashBoard(int factor, String client, EventHandler<? super DragEvent> dragHandler, boolean drag){
+    private GridPane createDashBoard(int factor, String client, EventHandler<? super DragEvent> dragHandler, EventHandler<? super MouseEvent> eventHandler , boolean drag){
 
         //PLANCIA
         GridPane gpane = new GridPane();
@@ -930,23 +1039,24 @@ public  class LoginController {
                     img = new Image(address, width, heigth, false, true, true);
                     ImageView view = new ImageView(img);
 
-                    view.setAccessibleText(ClientModelGUI.colourToString(ClientModelGUI.listPlayer.get(i).getEntrance().getStudentGroup().get(j).getColour()));
+                    if(drag) {
+                        view.setAccessibleText(ClientModelGUI.colourToString(ClientModelGUI.listPlayer.get(i).getEntrance().getStudentGroup().get(j).getColour()));
+                        view.addEventFilter(MouseEvent.MOUSE_PRESSED, eventHandler);
+                        view.addEventFilter(DragEvent.DRAG_DONE, dragHandler);
+                        view.setOnDragDetected(new EventHandler<MouseEvent>() {
+                            public void handle(MouseEvent e) {
+                                Dragboard db = ((ImageView) (e.getTarget())).startDragAndDrop(TransferMode.ANY);
 
-                    view.addEventFilter(DragEvent.DRAG_DONE, dragHandler);
-                    view.setOnDragDetected(new EventHandler<MouseEvent>() {
-                                public void handle(MouseEvent e) {
-                                    Dragboard db = ((ImageView)(e.getTarget())).startDragAndDrop(TransferMode.ANY);
+                                //System.out.println("drag detected");
 
-                                    //System.out.println("drag detected");
+                                ClipboardContent content = new ClipboardContent();
+                                content.putString(((ImageView) (e.getTarget())).getAccessibleText());
+                                db.setContent(content);
 
-                                    ClipboardContent content = new ClipboardContent();
-                                    content.putString(((ImageView)(e.getTarget())).getAccessibleText());
-                                    db.setContent(content);
-
-                                    event.consume();
-                                }
-                            });
-
+                                event.consume();
+                            }
+                        });
+                    }
                     gpane.add(view, x, y);
                 }
 
@@ -958,7 +1068,10 @@ public  class LoginController {
                         String address = getAddress(c);
                         img = new Image(address, width, heigth, false, true, true);
                         ImageView view = new ImageView(img);
-                        view.setAccessibleText(ClientModelGUI.colourToString(c));
+
+                        view.setAccessibleText("d" + ClientModelGUI.colourToString(c));
+                        view.addEventFilter(MouseEvent.MOUSE_PRESSED, eventHandler);
+
                         gpane.add(view, x, y);
                         x = x + 2;
                     }
@@ -1021,7 +1134,8 @@ public  class LoginController {
 
                 gp.add(view, 1,j);
             }
-        }else if(name.equals("Woman")){
+        }
+        else if(name.equals("Woman")){
             Woman woman = (Woman)(ClientModelGUI.characterCards.get(k));
 
             for(int j = 0; j < woman.getPool().size(); j++){
@@ -1033,7 +1147,8 @@ public  class LoginController {
 
                 gp.add(view, 1,j);
             }
-        }else if(name.equals("Jester")){
+        }
+        else if(name.equals("Jester")){
             ConcreteCharacterCard cha = ClientModelGUI.characterCards.get(k);
             Jester jester = (Jester)cha;
 
@@ -1041,8 +1156,7 @@ public  class LoginController {
                 img = new Image(getAddress(jester.getPool().get(j).getColour()), 20, 20, false, true, true);
                 view = new ImageView(img);
 
-                view.setAccessibleText("c"+ClientModelGUI.colourToString(jester.getPool().get(j).getColour()));
-                view.addEventFilter(MouseEvent.MOUSE_PRESSED, eventHandler);
+                view.setAccessibleText("j"+ClientModelGUI.colourToString(jester.getPool().get(j).getColour()));
 
                 gp.add(view, 1,j);
             }
