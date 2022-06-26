@@ -14,7 +14,7 @@ public class KnightTest extends TestCase {
         Game g = new Game("io", "tu");
         Knight k = new Knight(g);
 
-        assertEquals(3, k.getPrice());
+        assertEquals(2, k.getPrice());
         assertEquals("Knight", k.getNameCard());
     }
 
@@ -26,7 +26,7 @@ public class KnightTest extends TestCase {
         k.effect("io");
 
         assertEquals("Knight", g.getCharacterCardThrown());
-        assertEquals(4, k.getPrice());
+        assertEquals(3, k.getPrice());
     }
 
     @Test

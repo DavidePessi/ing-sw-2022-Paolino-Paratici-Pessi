@@ -186,5 +186,11 @@ public class PirateTest extends TestCase {
         assertThrows(Exception.class, ()-> pirate.effect("io", 2, Colour.PINK));
     }
 
+    @Test
+    public void testEffect6() {
+        Minstrell minstrell = new Minstrell(new Game("io", "tu"));
+
+        assertThrows(Exception.class, ()-> minstrell.effect("io", Colour.GREEN, Colour.GREEN, Colour.BLUE, Colour.RED, Colour.RED, Colour.PINK));
+    }
 
 }

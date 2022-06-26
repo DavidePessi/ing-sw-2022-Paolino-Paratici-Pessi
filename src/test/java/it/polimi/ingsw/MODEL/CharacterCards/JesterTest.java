@@ -4,6 +4,7 @@ import it.polimi.ingsw.MODEL.Colour;
 import it.polimi.ingsw.MODEL.Exception.MissingPlayerException;
 import it.polimi.ingsw.MODEL.Exception.MissingStudentException;
 import it.polimi.ingsw.MODEL.Game;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,6 @@ class JesterTest {
     @Test
     void initialization() {
         Jester jester = new Jester(new Game("io", "tu"));
-        jester.initialization();
         int size = jester.getPool().size();
         assertNotEquals(0,size);
         assertEquals(6, size);
@@ -23,34 +23,32 @@ class JesterTest {
     @RepeatedTest(50)
     void effect() throws Exception {
         Game game = new Game("io", "tu");
-        Jester jester = new Jester(game);
         game.startGame(false);
+
+        Jester jester = new Jester(game);
         game.addCharacterCard(jester);
 
-        jester.getPool().addStudent(game.getPlayer("io").getEntrance().getStudentGroup().get(0).getColour());
+        Colour colour = game.getPlayer("io").getEntrance().getStudentGroup().get(0).getColour();
+        Colour colour2 = game.getPlayer("io").getEntrance().getStudentGroup().get(1).getColour();
 
-        Colour colour0 = game.getPlayer("io").getEntrance().getStudentGroup().get(0).getColour();
-        Colour colour1 = game.getPlayer("io").getEntrance().getStudentGroup().get(1).getColour();
-        int num_colour0_entrance = game.getPlayer("io").getEntrance().getStudentGroup().countStudentsOfColour(colour0);
-        int num_colour1_entrance = game.getPlayer("io").getEntrance().getStudentGroup().countStudentsOfColour(colour1);
+        int num_colour_jester = jester.getPool().countStudentsOfColour(colour);
+        int num_colour2_jester = jester.getPool().countStudentsOfColour(colour2);
+        int num_colour_game = game.getPlayer("io").getEntrance().getStudentGroup().countStudentsOfColour(colour);
+        int num_colour2_game = game.getPlayer("io").getEntrance().getStudentGroup().countStudentsOfColour(colour2);
 
+        if(jester.getPool().countStudentsOfColour(colour)>0) {
+            jester.effect("io", colour, colour2);
 
-        jester.effect("io", colour0, colour1);
-
-
-        assertEquals(2, jester.price);
-
-
-        if (colour0.equals(colour1)) {
-
-            assertEquals(num_colour0_entrance, game.getPlayer("io").getEntrance().getStudentGroup().countStudentsOfColour(colour0));
-            assertEquals(1, jester.getPool().countStudentsOfColour(colour0));
-        }
-        else {
-            assertEquals(num_colour0_entrance+1, game.getPlayer("io").getEntrance().getStudentGroup().countStudentsOfColour(colour0));
-            assertEquals(num_colour1_entrance-1, game.getPlayer("io").getEntrance().getStudentGroup().countStudentsOfColour(colour1));
-            assertEquals(0, jester.getPool().countStudentsOfColour(colour0));
-
+            if(!colour.equals(colour2)) {
+                assertEquals(num_colour_jester - 1, jester.getPool().countStudentsOfColour(colour));
+                assertEquals(num_colour2_jester + 1, jester.getPool().countStudentsOfColour(colour2));
+                assertEquals(num_colour_game + 1, game.getPlayer("io").getEntrance().getStudentGroup().countStudentsOfColour(colour) );
+                assertEquals(num_colour2_game - 1, game.getPlayer("io").getEntrance().getStudentGroup().countStudentsOfColour(colour2) );
+            }
+            else{
+                assertEquals(num_colour_jester, jester.getPool().countStudentsOfColour(colour));
+                assertEquals(num_colour_game, game.getPlayer("io").getEntrance().getStudentGroup().countStudentsOfColour(colour));
+            }
         }
     }
 

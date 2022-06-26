@@ -10,7 +10,7 @@ class MinstrellTest {
 
 
     @Test
-    void effect() {
+    public void effect() {
 
         Minstrell minstrell = new Minstrell(new Game("io", "tu"));
 
@@ -19,28 +19,28 @@ class MinstrellTest {
     }
 
     @Test
-    void testEffect() {
+    public void testEffect() {
         Minstrell minstrell = new Minstrell(new Game("io", "tu"));
 
         assertThrows(Exception.class, ()-> minstrell.effect("io", Colour.RED));
     }
 
     @Test
-    void testEffect1() {
+    public void testEffect1() {
         Minstrell minstrell = new Minstrell(new Game("io", "tu"));
 
         assertThrows(Exception.class, ()-> minstrell.effect("io", Colour.RED, Colour.GREEN, Colour.BLUE, Colour.RED, Colour.RED, Colour.GREEN));
     }
 
     @Test
-    void testEffect2() {
+    public void testEffect2() {
         Minstrell minstrell = new Minstrell(new Game("io", "tu"));
 
         assertThrows(Exception.class, ()-> minstrell.effect("io", 2, Colour.PINK));
     }
 
     @Test
-    void testEffect3() {
+    public void testEffect3() {
         Minstrell minstrell = new Minstrell(new Game("io", "tu"));
 
         assertThrows(Exception.class, ()-> minstrell.effect("io", 2));
