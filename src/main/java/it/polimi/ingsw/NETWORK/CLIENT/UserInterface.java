@@ -403,6 +403,15 @@ public class UserInterface {
         }
     }
 
+    public static void reset(){
+        listCloud = new ArrayList<>();
+        listIsland = new ArrayList<>();
+        listPlayer = new ArrayList<>();
+        listTeam = new ArrayList<>();
+        professors = new ArrayList<>();
+        characterCards = new ArrayList<>();
+    }
+
     public static boolean verifyClient(String nickname){
         if(nickname.equals(currentPlayer)) return true;
         else return false;

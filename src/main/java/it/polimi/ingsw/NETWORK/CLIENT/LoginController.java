@@ -2,6 +2,7 @@ package it.polimi.ingsw.NETWORK.CLIENT;
 
 import it.polimi.ingsw.MODEL.*;
 import it.polimi.ingsw.MODEL.CharacterCards.*;
+import it.polimi.ingsw.MODEL.Exception.MissingTowerException;
 import it.polimi.ingsw.NETWORK.ClientAppGUI;
 import it.polimi.ingsw.NETWORK.MESSAGES.ClientAction;
 import javafx.application.Platform;
@@ -295,8 +296,8 @@ public  class LoginController {
 
                                     }
                                 }
-                                System.out.println(((ImageView) (dragEvent.getSource())).getAccessibleText());
-                                System.out.println(dragEvent.getTarget());
+                                //System.out.println(((ImageView) (dragEvent.getSource())).getAccessibleText());
+                                //System.out.println(dragEvent.getTarget());
 
                             }if(ClientModelGUI.getCardThrown().equals("Priest")){
                                 String student = ((ImageView)(dragEvent.getTarget())).getAccessibleText();
@@ -375,7 +376,7 @@ public  class LoginController {
                                 else if (((GridPane) (e.getTarget())).getAccessibleText().substring(0, 6).equals("island")) {
                                 }
                             } else if (e.getTarget() instanceof ImageView) {
-                                System.out.println(((ImageView) (e.getTarget())).getAccessibleText());
+                                //System.out.println(((ImageView) (e.getTarget())).getAccessibleText());
                                 if(((ImageView) (e.getTarget())).getAccessibleText().length() >= 4) {
                                     if (((ImageView) (e.getTarget())).getAccessibleText().substring(0, 4).equals("card")) {
                                         ClientModelGUI.setAction(ClientAction.PLAY_CARD);
@@ -537,16 +538,16 @@ public  class LoginController {
 
                         public void handle(ActionEvent t) {
                             if(((Button)(t.getTarget())).getText().substring(0,4).equals("card")){
-                                System.out.println(((Button)(t.getTarget())).getText());
+                                //System.out.println(((Button)(t.getTarget())).getText());
                                 ClientModelGUI.setAction(ClientAction.PLAY_CARD);
                                 ClientModelGUI.setButtonIsClicked(true);
 
                                 ClientModelGUI.setActionPlayed(((Button)(t.getTarget())).getText());
                             }
                             else{
-                                System.out.println(((Button)(t.getTarget())).getText());
+                                //System.out.println(((Button)(t.getTarget())).getText());
                             }
-                            System.out.println(t.getEventType().getName());
+                            //System.out.println(t.getEventType().getName());
                         }};
 
 
@@ -984,6 +985,18 @@ public  class LoginController {
             }
 
         }
+        //SETTING TOWERS
+        String address = "";
+        try {
+            address = getAddressTower(ClientModelGUI.listIsland.get(i).getColourTower());
+        } catch (MissingTowerException e) {
+            e.printStackTrace();
+        }
+        if(address!="") {
+            img = new Image(address, 20, 20, false, true, true);
+            ImageView view = new ImageView(img);
+            pane.add(view, 6, 2);
+        }
 
         return pane;
     }
@@ -1173,6 +1186,10 @@ public  class LoginController {
         gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
         gpane.getColumnConstraints().add(new ColumnConstraints(4*factor));
         gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
+        gpane.getColumnConstraints().add(new ColumnConstraints(15*factor));
+        gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
+        gpane.getColumnConstraints().add(new ColumnConstraints(1*factor));
+        gpane.getColumnConstraints().add(new ColumnConstraints(10*factor));
 
         gpane.getRowConstraints().add(new RowConstraints(20*factor));
         gpane.getRowConstraints().add(new RowConstraints(10*factor));
@@ -1259,6 +1276,27 @@ public  class LoginController {
                         gpane.add(view, x, y);
                     }
                     y = y + 2;
+                }
+
+                //TOWERS
+                y = 1;
+                x = 27;
+                ColourTower colourTower = ClientModelGUI.listPlayer.get(i).getTeam().getColourTower();
+                for(int j = 0; j < ClientModelGUI.listPlayer.get(i).getTeam().getNumberOfTower(); j++) {
+
+                    String address = getAddressTower(colourTower);
+                    img = new Image(address, width, heigth, false, true, true);
+                    ImageView view = new ImageView(img);
+                    //view.setAccessibleText(ClientModelGUI.colourTowerToString(colourTower));
+                    gpane.add(view, x, y);
+
+                    if(j%2 == 1) {
+                        x = 27;
+                        y = y + 2;
+                    }else{
+                        x = x + 2;
+                    }
+
                 }
             }
         }
@@ -1418,6 +1456,18 @@ public  class LoginController {
             address = "it/polimi/ingsw/NETWORK/Images/teacher_green.png";
         }else if(c.equals(Colour.PINK)){
             address = "it/polimi/ingsw/NETWORK/Images/teacher_pink.png";
+        }
+
+        return address;
+    }
+    private String getAddressTower(ColourTower c){
+        String address = "";
+        if (c.equals(ColourTower.BLACK)){
+            address = "it/polimi/ingsw/NETWORK/Images/black_tower.png";
+        }else if(c.equals(ColourTower.GREY)){
+            address = "it/polimi/ingsw/NETWORK/Images/grey_tower.png";
+        }else if(c.equals(ColourTower.WHITE)) {
+            address = "it/polimi/ingsw/NETWORK/Images/white_tower.png";
         }
 
         return address;

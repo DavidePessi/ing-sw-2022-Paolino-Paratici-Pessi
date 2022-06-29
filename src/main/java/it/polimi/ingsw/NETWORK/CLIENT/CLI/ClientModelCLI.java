@@ -8,7 +8,6 @@ import it.polimi.ingsw.MODEL.CharacterCards.Priest;
 import it.polimi.ingsw.MODEL.CharacterCards.Woman;
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 import it.polimi.ingsw.MODEL.Exception.MissingTowerException;
-import it.polimi.ingsw.NETWORK.CLIENT.ClientCLI;
 import it.polimi.ingsw.NETWORK.CLIENT.UserInterface;
 import it.polimi.ingsw.NETWORK.MESSAGES.*;
 
@@ -20,7 +19,6 @@ public final class ClientModelCLI extends UserInterface{
 
     private static Scanner stdin;
     private static String nick;
-    public static boolean end = false;
 
     public ClientModelCLI(Scanner std){
         super();
@@ -532,55 +530,46 @@ public final class ClientModelCLI extends UserInterface{
 
         inputLine = stdin.nextLine();
 
-        if(verifyClient(nick)) {
-            if (inputLine.equals("1")) {
-                System.out.println("you selected play card");
-                System.out.println("insert the number of the Assistant card to play");
 
-                return ClientAction.PLAY_CARD;
+        if (inputLine.equals("1")) {
+            System.out.println("you selected play card");
+            System.out.println("insert the number of the Assistant card to play");
 
-            } else if (inputLine.equals("2")) {
-                System.out.println("you selected move student in dining room");
-                System.out.println("insert the colour of the student to move");
+            return ClientAction.PLAY_CARD;
 
-                return ClientAction.PLAY_MOVE_STUDENT_IN_DININGROOM;
+        } else if (inputLine.equals("2")) {
+            System.out.println("you selected move student in dining room");
+            System.out.println("insert the colour of the student to move");
 
-            } else if (inputLine.equals("3")) {
-                System.out.println("you selected move student in island");
-                System.out.println("insert the colour of the student to move");
+            return ClientAction.PLAY_MOVE_STUDENT_IN_DININGROOM;
 
-                return ClientAction.PLAY_MOVE_STUDENT_IN_ISLAND;
+        } else if (inputLine.equals("3")) {
+            System.out.println("you selected move student in island");
+            System.out.println("insert the colour of the student to move");
 
-            } else if (inputLine.equals("4")) {
-                System.out.println("you selected Move Mother Nature");
-                System.out.println("insert the number of steps mother nature have to do");
+            return ClientAction.PLAY_MOVE_STUDENT_IN_ISLAND;
 
-                return ClientAction.PLAY_MOVE_MOTHERNATURE;
+        } else if (inputLine.equals("4")) {
+            System.out.println("you selected Move Mother Nature");
+            System.out.println("insert the number of steps mother nature have to do");
 
-            } else if (inputLine.equals("5")) {
-                System.out.println("you selected Take Cloud");
-                System.out.println("insert the number of the cloud you want to take");
+            return ClientAction.PLAY_MOVE_MOTHERNATURE;
 
-                return ClientAction.PLAY_TAKE_CLOUD;
+        } else if (inputLine.equals("5")) {
+            System.out.println("you selected Take Cloud");
+            System.out.println("insert the number of the cloud you want to take");
 
-            } else if (inputLine.equals("6")) {
-                System.out.println("you selected Play Character Card");
-                System.out.println("insert the name of the character card you want to play");
+            return ClientAction.PLAY_TAKE_CLOUD;
 
-                return ClientAction.PLAY_CHARACTERCARD;
+        } else if (inputLine.equals("6")) {
+            System.out.println("you selected Play Character Card");
+            System.out.println("insert the name of the character card you want to play");
 
-            } else {
-                System.out.println("Selected move doesn't exist");
+            return ClientAction.PLAY_CHARACTERCARD;
 
-                return ClientAction.PLAY_ACTION;
-            }
-        } else{
-            if(end){
-                end = false;
-                throw new Exception();
-            }else {
-                System.out.println("It's not your turn! be patient");
-            }
+        } else {
+            System.out.println("Selected move doesn't exist");
+
             return ClientAction.PLAY_ACTION;
         }
     }
@@ -904,7 +893,6 @@ public final class ClientModelCLI extends UserInterface{
     }
 
     public static String keepPlaying(){
-        end = false;
         String inputLine;
         inputLine = stdin.nextLine();
 

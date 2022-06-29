@@ -54,7 +54,7 @@ public class SocketClientConnection extends Observable<String> implements Client
         socketClose = true;
         closeConnection();
         System.out.println("Deregistering client...");
-        server.deregisterConnection(this);
+        server.disconnection(this);
         System.out.println("Done!");
     }
 
@@ -69,8 +69,8 @@ public class SocketClientConnection extends Observable<String> implements Client
 
                     send((ServerMessage) message);
                 }catch(Exception e){
-                    System.out.println("eccezione: " + e.getClass());
-                    e.printStackTrace();
+                    //System.out.println("eccezione: " + e.getClass());
+                    //e.printStackTrace();
                 }
             }
         }).start();
@@ -273,7 +273,7 @@ public class SocketClientConnection extends Observable<String> implements Client
         }while(isActive());
 
         } catch (IOException e) {
-            System.err.println("Error IOException! ");
+            //System.err.println("Error IOException! ");
         } finally{
             close();
         }
@@ -294,10 +294,10 @@ public class SocketClientConnection extends Observable<String> implements Client
             } while (cm.getClientHeader().getClientAction().equals(ClientAction.PING));
 
         }catch(IOException e){
-            System.out.println("IOexception nel pingRead");
-            System.out.println("oggetto: " + cm.getClientHeader().getClientAction());
+            //System.out.println("IOexception nel pingRead");
+            //System.out.println("oggetto: " + cm.getClientHeader().getClientAction());
         }catch(ClassNotFoundException e){
-            System.out.println("ClassNotFoundException nel pingCheck");
+            //System.out.println("ClassNotFoundException nel pingCheck");
         }
         return cm;
     }

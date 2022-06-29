@@ -86,10 +86,12 @@ public final class ClientCLI {
                         else if (ServerAction.OK_START.equals(in2.getServerHeader().getServerAction())){
                             System.out.println(in2.getPayload().getParameter("OK_START"));
                             setClientAction(ClientAction.PLAY_ACTION);
+
                             if(model instanceof ClientModelCLI) {
-                                //ClientModelCLI.showMoves(nick);
+                                ClientModelCLI.reset();
                             }
                             else if(model instanceof ClientModelGUI) {
+                                ClientModelGUI.reset();
                                 ClientModelGUI.changeToWaitingPage();
                             }
                         }
@@ -117,7 +119,6 @@ public final class ClientCLI {
                         else if(ServerAction.END_GAME.equals(in2.getServerHeader().getServerAction())){
                             setClientAction(ClientAction.END_GAME);
                             if(model instanceof ClientModelCLI) {
-                                ClientModelCLI.end = true;
                                 ClientModelCLI.endGame(in2);
                             }
                             else if(model instanceof ClientModelGUI){
@@ -142,7 +143,7 @@ public final class ClientCLI {
                     }
 
                 } catch (Exception e) {
-                    System.out.println("eccezione read: " + e);
+                    //System.out.println("eccezione read: " + e);
                     close();
                 }
             }
@@ -205,9 +206,11 @@ public final class ClientCLI {
                         //PLAY ACTION MOVES
                         else if(clientAction.equals(ClientAction.PLAY_ACTION)){
                             if(model instanceof ClientModelCLI) {
-                                try {
+                                if(ClientModelCLI.verifyClient(nick)) {
                                     setClientAction(ClientModelCLI.sendTypeAction());
-                                }catch(Exception e){}
+                                }else{
+                                    Thread.sleep(100);
+                                }
                             }
                             else if(model instanceof ClientModelGUI){
                                 System.out.println("richiesta di action inviata");
@@ -356,7 +359,7 @@ public final class ClientCLI {
                         Thread.sleep(100);
                     }
                 }catch(Exception e){
-                    System.out.println("eccezione scrittura: " + e);
+                    //System.out.println("eccezione scrittura: " + e);
                     close();
                 }
             }
@@ -377,7 +380,7 @@ public final class ClientCLI {
             socketIn.close();
             socketOut.close();
             socket.close();
-
+            System.exit(0);
         }catch(IOException e){}
         System.out.println("Connection closed from the client side");
     }

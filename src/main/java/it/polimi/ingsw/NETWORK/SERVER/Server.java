@@ -25,7 +25,7 @@ public class Server {
     private Map<String, SocketClientConnection> waitingRoom4E = new HashMap<>();
     private Map<String, SocketClientConnection> waitingRoom4D = new HashMap<>();
     private Map<SocketClientConnection, ArrayList<SocketClientConnection>> playingConnection = new HashMap<>();
-    private List<SocketClientConnection> playingConnection2 = new ArrayList<>();
+
     //TODO POSSIBILE SOLUZIONE UNA LISTA DI TUTTE LE CONNESSIONI CHE STANNO GIOCANDO
     //TODO OPPURE ELIMINARE PLAYING CONNECTION E TENERE UNA LISTA DI TUTTE LE CONNESSIONI CHE STANNO GIOCANDO
     //Deregister connection
@@ -33,17 +33,14 @@ public class Server {
 
         ArrayList<SocketClientConnection> opponents = playingConnection.get(c);
 
-        if(playingConnection2.contains(c)){
-            playingConnection2.remove(c);
-        }else {
-            for (SocketClientConnection sc : opponents) {
-                if (sc != null) {
-                    sc.closeConnection();
-                }
-                playingConnection.remove(sc);
+        for (SocketClientConnection sc : opponents) {
+            if (sc != null) {
+                //sc.closeConnection();
             }
-            playingConnection.remove(c);
+            playingConnection.remove(sc);
         }
+        playingConnection.remove(c);
+
 
         Iterator<String> iterator = waitingRoom2E.keySet().iterator();
         while(iterator.hasNext()){
@@ -88,6 +85,62 @@ public class Server {
         }
     }
 
+    public synchronized void disconnection(ClientConnection c){
+        ArrayList<SocketClientConnection> opponents = playingConnection.get(c);
+
+        for (SocketClientConnection sc : opponents) {
+            if (sc != null) {
+                sc.closeConnection();
+            }
+            playingConnection.remove(sc);
+        }
+        playingConnection.remove(c);
+
+
+        Iterator<String> iterator = waitingRoom2E.keySet().iterator();
+        while(iterator.hasNext()){
+            if(waitingRoom2E.get(iterator.next())==c){
+                iterator.remove();
+            }
+        }
+
+        iterator = waitingRoom2D.keySet().iterator();
+        while(iterator.hasNext()){
+            if(waitingRoom2D.get(iterator.next())==c){
+                iterator.remove();
+            }
+        }
+
+        iterator = waitingRoom3E.keySet().iterator();
+        while(iterator.hasNext()){
+            if(waitingRoom3E.get(iterator.next())==c){
+                iterator.remove();
+            }
+        }
+
+        iterator = waitingRoom3D.keySet().iterator();
+        while(iterator.hasNext()){
+            if(waitingRoom3D.get(iterator.next())==c){
+                iterator.remove();
+            }
+        }
+
+        iterator = waitingRoom4E.keySet().iterator();
+        while(iterator.hasNext()){
+            if(waitingRoom4E.get(iterator.next())==c){
+                iterator.remove();
+            }
+        }
+
+        iterator = waitingRoom4D.keySet().iterator();
+        while(iterator.hasNext()){
+            if(waitingRoom4D.get(iterator.next())==c){
+                iterator.remove();
+            }
+        }
+
+    }
+
     //Wait for another player
     public synchronized void lobby2E(SocketClientConnection c, String name) throws Exception{
         //public synchronized void lobby(Connection c, String name){
@@ -118,14 +171,13 @@ public class Server {
             player1.addObserver(controllerTurn);
             player2.addObserver(controllerTurn);
 
-            //ArrayList<SocketClientConnection> l1 = new ArrayList<>();
-            //l1.add(c2);
-            //ArrayList<SocketClientConnection> l2 = new ArrayList<>();
-            //l2.add(c1);
-            if(!playingConnection2.contains(c1)){playingConnection2.add(c1);}
-            if(!playingConnection2.contains(c2)){playingConnection2.add(c2);}
-            //playingConnection.put(c1, l1);
-            //playingConnection.put(c2, l2);
+            ArrayList<SocketClientConnection> l1 = new ArrayList<>();
+            l1.add(c2);
+            ArrayList<SocketClientConnection> l2 = new ArrayList<>();
+            l2.add(c1);
+
+            playingConnection.put(c1, l1);
+            playingConnection.put(c2, l2);
             waitingRoom2E.clear();
 
             model.startGame(easy);

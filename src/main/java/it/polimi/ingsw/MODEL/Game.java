@@ -646,7 +646,6 @@ public class Game extends Observable {
 
                 //caso di parità
                 if (team1 == team2) {
-                    System.out.println("0");
                     return;
                 }
 
@@ -654,7 +653,6 @@ public class Game extends Observable {
                 //se il team1 ha finito le torri significa che ha vinto e lancio un'eccezione per
                 //richiamare il metodo checkwin
                 else if (team1 > team2) {
-                    System.out.println("1");
                     if(island.getColourTower().equals(listTeam.get(1).getColourTower())){
 
                         listTeam.get(0).useTowers(island.getNumSubIsland());
@@ -671,7 +669,6 @@ public class Game extends Observable {
                 //se il team2 ha finito le torri significa che ha vinto e lancio un'eccezione per
                 //richiamare il metodo checkwin
                 else {
-                    System.out.println("2");
                     if(island.getColourTower().equals(listTeam.get(0).getColourTower())){
                         listTeam.get(1).useTowers(island.getNumSubIsland());
                         listTeam.get(0).takeTowers(island.getNumSubIsland());
@@ -735,7 +732,7 @@ public class Game extends Observable {
             try {
                 //controllo isola sinistra
                 if (listIsland.get(numIsland - 1).getColourTower().equals(listIsland.get(numIsland).getColourTower())) {
-                    System.out.println("bla bla1");
+
 
                     //fondo isole
                     Island i = new Island(listIsland.get(numIsland), listIsland.get(numIsland - 1));
@@ -754,7 +751,7 @@ public class Game extends Observable {
                     }
 
                     for (Island iii : listIsland) {
-                        System.out.println("isole" + iii.getNumIsland());
+                        //System.out.println("isole" + iii.getNumIsland());
                     }
                     //System.out.println("isole" + );
 
@@ -767,13 +764,9 @@ public class Game extends Observable {
             } catch (MissingTowerException e) {
             }
             try {
-                //System.out.println("bla bla2" + listIsland.get(numIsland).getColourTower());
-                //System.out.println("bla bla3" + (numIsland + 1)%listIsland.size());
 
                 //controllo isola destra
                 if (listIsland.get((numIsland + 1) % listIsland.size()).getColourTower().equals(listIsland.get(numIsland).getColourTower())) {
-                    //System.out.println("bla bla4");
-                    //System.out.println("bla bla" + listIsland.get(numIsland).getNumSubIsland());
 
                     //fondo isole
                     Island i = new Island(listIsland.get(numIsland), listIsland.get((numIsland + 1) % listIsland.size()));
