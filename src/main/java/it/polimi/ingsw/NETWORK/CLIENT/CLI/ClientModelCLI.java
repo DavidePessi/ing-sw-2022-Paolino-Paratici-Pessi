@@ -3,8 +3,12 @@ package it.polimi.ingsw.NETWORK.CLIENT.CLI;
 import it.polimi.ingsw.CONTROLLER.Action;
 import it.polimi.ingsw.MODEL.*;
 import it.polimi.ingsw.MODEL.CharacterCards.ConcreteCharacterCard;
+import it.polimi.ingsw.MODEL.CharacterCards.Jester;
+import it.polimi.ingsw.MODEL.CharacterCards.Priest;
+import it.polimi.ingsw.MODEL.CharacterCards.Woman;
 import it.polimi.ingsw.MODEL.Exception.MissingCardException;
 import it.polimi.ingsw.MODEL.Exception.MissingTowerException;
+import it.polimi.ingsw.NETWORK.CLIENT.ClientCLI;
 import it.polimi.ingsw.NETWORK.CLIENT.UserInterface;
 import it.polimi.ingsw.NETWORK.MESSAGES.*;
 
@@ -16,6 +20,7 @@ public final class ClientModelCLI extends UserInterface{
 
     private static Scanner stdin;
     private static String nick;
+    public static boolean end = false;
 
     public ClientModelCLI(Scanner std){
         super();
@@ -33,10 +38,82 @@ public final class ClientModelCLI extends UserInterface{
         board = board + showPlayer();
 
         //-------------------------STAMPA CARTE PERSONAGGIO-------------------------
-        if(characterCards.get(0)!=null) {
+        if(characterCards != null) {
             board = board + ("Character Cards :\n");
             for (ConcreteCharacterCard card : characterCards) {
-                board = board + ("\t" + card.getNameCard() + " cost: " + card.getPrice() + "\n");
+                board = board + ("\t" + card.getNameCard() + " cost: " + card.getPrice());
+                if(card instanceof Jester){
+                    Jester j = (Jester) card;
+                    String colore = "";
+                    board = board + "[";
+
+                    for(int k = 0; k < j.getPool().size(); k++){
+
+                        //setto il colore della stringa
+                        if(j.getPool().get(k).getColour().equals(Colour.BLUE)){
+                            colore = "[34m";
+                        } else if(j.getPool().get(k).getColour().equals(Colour.RED)){
+                            colore = "[31m";
+                        } else if(j.getPool().get(k).getColour().equals(Colour.PINK)){
+                            colore = "[35m";
+                        } else if(j.getPool().get(k).getColour().equals(Colour.GREEN)){
+                            colore = "[32m";
+                        } else if(j.getPool().get(k).getColour().equals(Colour.YELLOW)){
+                            colore = "[33m";
+                        }
+
+                        board = board + (char) 27 + colore +"▪"+ "\u001B[0m";
+                    }
+                    board = board + "]\n";
+                } else if(card instanceof Priest){
+                    Priest j = (Priest) card;
+                    String colore = "";
+                    board = board + "[";
+
+                    for(int k = 0; k < j.getPool().size(); k++){
+
+                        //setto il colore della stringa
+                        if(j.getPool().get(k).getColour().equals(Colour.BLUE)){
+                            colore = "[34m";
+                        } else if(j.getPool().get(k).getColour().equals(Colour.RED)){
+                            colore = "[31m";
+                        } else if(j.getPool().get(k).getColour().equals(Colour.PINK)){
+                            colore = "[35m";
+                        } else if(j.getPool().get(k).getColour().equals(Colour.GREEN)){
+                            colore = "[32m";
+                        } else if(j.getPool().get(k).getColour().equals(Colour.YELLOW)){
+                            colore = "[33m";
+                        }
+
+                        board = board + (char) 27 + colore +"▪"+ "\u001B[0m";
+                    }
+                    board = board + "]\n";
+                } else if(card instanceof Woman){
+                    Woman j = (Woman) card;
+                    String colore = "";
+                    board = board + "[";
+
+                    for(int k = 0; k < j.getPool().size(); k++){
+
+                        //setto il colore della stringa
+                        if(j.getPool().get(k).getColour().equals(Colour.BLUE)){
+                            colore = "[34m";
+                        } else if(j.getPool().get(k).getColour().equals(Colour.RED)){
+                            colore = "[31m";
+                        } else if(j.getPool().get(k).getColour().equals(Colour.PINK)){
+                            colore = "[35m";
+                        } else if(j.getPool().get(k).getColour().equals(Colour.GREEN)){
+                            colore = "[32m";
+                        } else if(j.getPool().get(k).getColour().equals(Colour.YELLOW)){
+                            colore = "[33m";
+                        }
+
+                        board = board + (char) 27 + colore +"▪"+ "\u001B[0m";
+                    }
+                    board = board + "]\n";
+                } else{
+                    board = board + "\n";
+                }
             }
         }
 
@@ -256,8 +333,10 @@ public final class ClientModelCLI extends UserInterface{
             }catch(MissingTowerException e){}
             if(listIsland.get(i).getNumSubIsland() < 2) {
                 island = island + ("\t\t\t\t\t|");
-            } else{
+            } else if(listIsland.get(i).getNumSubIsland() <= 4){
                 island = island + ("\t\t\t\t|");
+            } else {
+                island = island + ("\t\t\t|");
             }
         }
 
@@ -398,17 +477,6 @@ public final class ClientModelCLI extends UserInterface{
     }
 
     //METODI CHE RICHIEDONO DATI
-
-    public static String sendIP(){
-        System.out.println("inserisci indirizzo ip: ");
-        return stdin.nextLine();//"127.0.0.1"
-    }
-
-    public static int sendPort(){
-        System.out.println("inserisci porta");
-        return stringToInt(stdin.nextLine());
-    }
-
     public static ClientMessage sendNickname(){
         String inputLine;
         ClientHeader ch;
@@ -456,7 +524,7 @@ public final class ClientModelCLI extends UserInterface{
         return cm;
     }
 
-    public static ClientAction sendTypeAction(){
+    public static ClientAction sendTypeAction()throws Exception{
         String inputLine;
         ClientHeader ch;
         Payload pay;
@@ -507,8 +575,12 @@ public final class ClientModelCLI extends UserInterface{
                 return ClientAction.PLAY_ACTION;
             }
         } else{
-            System.out.println("It's not your turn! be patient");
-
+            if(end){
+                end = false;
+                throw new Exception();
+            }else {
+                System.out.println("It's not your turn! be patient");
+            }
             return ClientAction.PLAY_ACTION;
         }
     }
@@ -832,6 +904,7 @@ public final class ClientModelCLI extends UserInterface{
     }
 
     public static String keepPlaying(){
+        end = false;
         String inputLine;
         inputLine = stdin.nextLine();
 

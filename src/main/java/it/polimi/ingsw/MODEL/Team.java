@@ -37,6 +37,7 @@ public class Team implements Serializable {
      */
     public void useTowers(int numTowerUsed)throws MissingTowerException {
         if(numTowerUsed >= this.numberOfTower){
+            this.numberOfTower = 0;
             throw new MissingTowerException();
         }
         else{

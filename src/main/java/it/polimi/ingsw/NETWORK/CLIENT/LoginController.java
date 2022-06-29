@@ -20,7 +20,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -122,8 +124,14 @@ public  class LoginController {
     public void changeToLoginPage(){
         Platform.runLater(()->{
             try {
+                if(ClientModelGUI.boardCreated){
+                    stage = ClientModelGUI.stage;
+                }else{
+                    stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                    stage.setOnCloseRequest(e -> { Platform.exit(); System.exit(0); });
+                }
                 root = FXMLLoader.load(ClientAppGUI.class.getResource("inserimento_dati_giocatore.fxml"));
-                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 scene = new Scene(root);
                 stage.setScene(scene);
                 stage.show();
@@ -144,6 +152,97 @@ public  class LoginController {
             }
         });
     }
+    public void changeToDisconnectedPage(){
+        Platform.runLater(()-> {
+            try {
+                //SETTO LO STAGE
+                if(ClientModelGUI.boardCreated == true) {
+                    stage = ClientModelGUI.stage;
+                } else if(WAIT != null){
+                    stage = (Stage) WAIT.getScene().getWindow();
+                } else if(GAMEMODE_text_field != null){
+                    stage = (Stage) GAMEMODE_text_field.getScene().getWindow();
+                }else if(IP_text_field != null){
+                    stage = (Stage) IP_text_field.getScene().getWindow();
+                }
+
+                BorderPane layout = new BorderPane();
+                Text text = new Text("Sorry you have been disconnected");
+
+                layout.setCenter(text);
+
+                scene = new Scene(layout);
+                stage.setScene(scene);
+                stage.show();
+            } catch (Exception e) {
+            }
+        });
+    }
+    public void changeToKeepPlayingPage(){
+        Platform.runLater(()-> {
+            try {
+                stage = ClientModelGUI.stage;
+                BorderPane layout = new BorderPane();
+                GridPane gp = new GridPane();
+
+                EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>(){
+                    @Override
+                    public void handle(MouseEvent event){
+                        if(event.getTarget() instanceof ImageView){
+                            ClientModelGUI.setActionPlayed(((ImageView)(event.getTarget())).getAccessibleText());
+                            ClientModelGUI.setButtonIsClicked(true);
+                        }
+                    }
+                };
+
+
+                Text text = new Text("Do you wanna keep playing?");
+                gp.add(text, 0,1);
+
+                Image img = new Image("it/polimi/ingsw/NETWORK/Images/si.jpg", 40, 40, false, true, true);
+                ImageView view= new ImageView(img);
+                view.setAccessibleText("yes");
+
+                view.addEventFilter(MouseEvent.MOUSE_PRESSED, eventHandler);
+
+                gp.add(view, 1,0);
+
+                img = new Image("it/polimi/ingsw/NETWORK/Images/no.jpg", 40, 40, false, true, true);;
+                view = new ImageView(img);
+                view.setAccessibleText("no");
+
+                view.addEventFilter(MouseEvent.MOUSE_PRESSED, eventHandler);
+
+                gp.add(view, 1,2);
+
+                //mostro chi ha vinto in cima
+                for(Player p : ClientModelGUI.listPlayer){
+                    if(p.getNicknameClient().equals(ClientModelGUI.nickname)){
+                        if(p.getTeam().getColourTower().equals(ClientModelGUI.winner)){
+                            text = new Text("You win the game");
+                        } else{
+                            text = new Text("You lost the game");
+                        }
+                    }
+                }
+                layout.setTop(text);
+
+
+                gp.getColumnConstraints().add(new ColumnConstraints(50));
+                gp.getColumnConstraints().add(new ColumnConstraints(50));
+                gp.getColumnConstraints().add(new ColumnConstraints(50));
+
+                gp.getRowConstraints().add(new RowConstraints(20));
+
+                layout.setCenter(gp);
+
+                scene = new Scene(layout);
+                stage.setScene(scene);
+                stage.show();
+            } catch (Exception e) {
+            }
+        });
+    }
     public void changeToBoard(){
         Platform.runLater(()->{
 
@@ -157,10 +256,10 @@ public  class LoginController {
 
             BorderPane layout = new BorderPane();
 
+            GridPane topBoard;
             GridPane centerBoard;
             GridPane bottomBoard;
             GridPane rightBoard;
-            VBox LeftBoard = new VBox();
             HBox UpperBoard = new HBox();
 
             //FUNZIONE DI DRAG HANDLE(gestisce move mother nature, move student in dining room e move student in island)
@@ -454,6 +553,10 @@ public  class LoginController {
             //LAYOUT
             layout.setStyle("-fx-background-color:#267bf1");
 
+            //TOP BOARD
+            topBoard = showTopBoard();
+            topBoard.setAlignment(Pos.CENTER);
+
             //CENTER BOARD
             centerBoard = showCenterBoard(eventHandler, dragHandler);
             //centerBoard.setStyle("-fx-background-color: #C0C0C0;");
@@ -468,8 +571,7 @@ public  class LoginController {
             rightBoard.setAlignment(Pos.CENTER);
 
             //ADDING EVERYTHING TO THE BOARD
-            layout.setTop(UpperBoard);
-            layout.setLeft(LeftBoard);
+            layout.setTop(topBoard);
             layout.setRight(rightBoard);
             layout.setBottom(bottomBoard);
             layout.setCenter(centerBoard);
@@ -478,6 +580,23 @@ public  class LoginController {
             stage.setScene(scene);
             stage.show();
     });
+    }
+
+    public GridPane showTopBoard(){
+        GridPane topBoard = new GridPane();
+        topBoard.setStyle("-fx-background-color:#FFFFFF;");
+        Text t;
+        if(ClientModelGUI.nickname.equals(ClientModelGUI.currentPlayer)) {
+
+            t = new Text("it's your turn");
+        }else{
+
+            t = new Text("wait for your turn");
+        }
+        t.setStyle("-fx-font: 15 Arial;");
+        topBoard.add(t,0,1);
+
+        return topBoard;
     }
 
     public GridPane showBottomBoard(EventHandler<? super MouseEvent> eventHandler, EventHandler<? super DragEvent> dragHandler){
@@ -515,7 +634,7 @@ public  class LoginController {
 
         //COINS
         if(ClientModelGUI.showCoins){
-            String address = "it/polimi/ingsw/NETWORK/Images/Moneta_base.png";
+            String address = "it/polimi/ingsw/NETWORK/Images/Moneta_base.png" ;
 
             img = new Image(address, 40, 40, false, true, true);
             ImageView view = new ImageView(img);
@@ -550,7 +669,7 @@ public  class LoginController {
         sub = ClientModelGUI.listIsland.get(0).getNumSubIsland();
 
 
-        pane = createIsland(i, eventHandler, dragHandler);
+        pane = createIsland(i, sub, eventHandler, dragHandler);
         centerBoard.add(pane, 1, 0);
         sub = sub -1;
 
@@ -561,7 +680,7 @@ public  class LoginController {
             //stampo il ponte nella posizione indicata
         }
 
-        pane = createIsland(i, eventHandler, dragHandler);
+        pane = createIsland(i, sub, eventHandler, dragHandler);
         centerBoard.add(pane, 3, 0);
         sub = sub -1;
 
@@ -572,7 +691,7 @@ public  class LoginController {
             //stampo il ponte nella posizione indicata
         }
 
-        pane = createIsland(i, eventHandler, dragHandler);
+        pane = createIsland(i, sub, eventHandler, dragHandler);
         centerBoard.add(pane, 5, 0);
         sub = sub -1;
 
@@ -583,7 +702,7 @@ public  class LoginController {
             //stampo il ponte nella posizione indicata
         }
 
-        pane = createIsland(i, eventHandler, dragHandler);
+        pane = createIsland(i, sub, eventHandler, dragHandler);
         centerBoard.add(pane, 7, 0);
         sub = sub -1;
 
@@ -594,7 +713,7 @@ public  class LoginController {
             //stampo il ponte nella posizione indicata
         }
 
-        pane = createIsland(i, eventHandler, dragHandler);
+        pane = createIsland(i, sub, eventHandler, dragHandler);
         centerBoard.add(pane, 8, 1);
         sub = sub -1;
 
@@ -605,7 +724,7 @@ public  class LoginController {
             //stampo il ponte nella posizione indicata
         }
 
-        pane = createIsland(i, eventHandler, dragHandler);
+        pane = createIsland(i, sub, eventHandler, dragHandler);
         centerBoard.add(pane, 8, 3);
         sub = sub -1;
 
@@ -616,7 +735,7 @@ public  class LoginController {
             //stampo il ponte nella posizione indicata
         }
 
-        pane = createIsland(i, eventHandler, dragHandler);
+        pane = createIsland(i, sub, eventHandler, dragHandler);
         centerBoard.add(pane, 7, 4);
         sub = sub -1;
 
@@ -627,7 +746,7 @@ public  class LoginController {
             //stampo il ponte nella posizione indicata
         }
 
-        pane = createIsland(i, eventHandler, dragHandler);
+        pane = createIsland(i, sub, eventHandler, dragHandler);
         centerBoard.add(pane, 5, 4);
         sub = sub -1;
 
@@ -638,7 +757,7 @@ public  class LoginController {
             //stampo il ponte nella posizione indicata
         }
 
-        pane = createIsland(i, eventHandler, dragHandler);
+        pane = createIsland(i, sub, eventHandler, dragHandler);
         centerBoard.add(pane, 3, 4);
         sub = sub -1;
 
@@ -649,7 +768,7 @@ public  class LoginController {
             //stampo il ponte nella posizione indicata
         }
 
-        pane = createIsland(i, eventHandler, dragHandler);
+        pane = createIsland(i, sub, eventHandler, dragHandler);
         centerBoard.add(pane, 1, 4);
         sub = sub -1;
 
@@ -660,7 +779,7 @@ public  class LoginController {
             //stampo il ponte nella posizione indicata
         }
 
-        pane = createIsland(i, eventHandler, dragHandler);
+        pane = createIsland(i, sub, eventHandler, dragHandler);
         centerBoard.add(pane, 0, 3);
         sub = sub -1;
 
@@ -671,7 +790,7 @@ public  class LoginController {
             //stampo il ponte nella posizione indicata
         }
 
-        pane = createIsland(i, eventHandler, dragHandler);
+        pane = createIsland(i, sub, eventHandler, dragHandler);
         centerBoard.add(pane, 0, 1);
         sub = sub -1;
 
@@ -749,17 +868,17 @@ public  class LoginController {
         rightBoard.getColumnConstraints().add(new ColumnConstraints(220));
         rightBoard.getColumnConstraints().add(new ColumnConstraints(10));
 
-        rightBoard.getRowConstraints().add(new RowConstraints(10));
+        rightBoard.getRowConstraints().add(new RowConstraints(0));
         rightBoard.getRowConstraints().add(new RowConstraints(110));
-        rightBoard.getRowConstraints().add(new RowConstraints(10));
+        rightBoard.getRowConstraints().add(new RowConstraints(0));
         rightBoard.getRowConstraints().add(new RowConstraints(110));
-        rightBoard.getRowConstraints().add(new RowConstraints(10));
+        rightBoard.getRowConstraints().add(new RowConstraints(0));
         rightBoard.getRowConstraints().add(new RowConstraints(110));
 
         return rightBoard;
     }
 
-    private GridPane createIsland(int i, EventHandler<? super MouseEvent> eventHandler, EventHandler<? super DragEvent> dragHandler) {
+    private GridPane createIsland(int i, int sub, EventHandler<? super MouseEvent> eventHandler, EventHandler<? super DragEvent> dragHandler) {
         GridPane pane = new GridPane();
 
         //funzioni per drag and drop con mother nature
@@ -805,65 +924,66 @@ public  class LoginController {
         pane.getRowConstraints().add(new RowConstraints(20));
 
         //SETTO GLI STUDENTI
+        if(sub > 1){}
+        else {
+            int width = 10;
+            int heigth = 10;
 
-        int width = 10;
-        int heigth = 10;
+            img = new Image("it/polimi/ingsw/NETWORK/Images/student_green.png", width, heigth, false, true, true);
+            ImageView view = new ImageView(img);
+            pane.add(view, 1, 1);
 
-        img = new Image("it/polimi/ingsw/NETWORK/Images/student_green.png", width, heigth, false, true, true);
-        ImageView view = new ImageView(img);
-        pane.add(view, 1,1 );
-
-        img = new Image("it/polimi/ingsw/NETWORK/Images/student_red.png", width, heigth, false, true, true);
-        view = new ImageView(img);
-        pane.add(view, 1,2 );
-
-        img = new Image("it/polimi/ingsw/NETWORK/Images/student_yellow.png", width, heigth, false, true, true);
-        view = new ImageView(img);
-        pane.add(view, 1,3 );
-
-        img = new Image("it/polimi/ingsw/NETWORK/Images/student_pink.png", width, heigth, false, true, true);
-        view = new ImageView(img);
-        pane.add(view, 3,1 );
-
-        img = new Image("it/polimi/ingsw/NETWORK/Images/student_blue.png", width, heigth, false, true, true);
-        view = new ImageView(img);
-        pane.add(view, 3,2 );
-
-        if(ClientModelGUI.listIsland.get(i).getHasMotherNature()){
-            img = new Image("it/polimi/ingsw/NETWORK/Images/mother_nature.png", width*2, heigth*2, false, true, true);
+            img = new Image("it/polimi/ingsw/NETWORK/Images/student_red.png", width, heigth, false, true, true);
             view = new ImageView(img);
-            view.setAccessibleText("mothernature");
+            pane.add(view, 1, 2);
 
-            view.addEventFilter(DragEvent.DRAG_DONE, dragHandler);
+            img = new Image("it/polimi/ingsw/NETWORK/Images/student_yellow.png", width, heigth, false, true, true);
+            view = new ImageView(img);
+            pane.add(view, 1, 3);
 
-            view.setOnDragDetected(new EventHandler<MouseEvent>() {
-                        public void handle(MouseEvent e) {
-                            Dragboard db = ((ImageView)(e.getTarget())).startDragAndDrop(TransferMode.ANY);
+            img = new Image("it/polimi/ingsw/NETWORK/Images/student_pink.png", width, heigth, false, true, true);
+            view = new ImageView(img);
+            pane.add(view, 3, 1);
 
-                            ClipboardContent content = new ClipboardContent();
-                            content.putString(((ImageView)(e.getTarget())).getAccessibleText());
-                            db.setContent(content);
+            img = new Image("it/polimi/ingsw/NETWORK/Images/student_blue.png", width, heigth, false, true, true);
+            view = new ImageView(img);
+            pane.add(view, 3, 2);
 
-                            event.consume();
-                        }
-                    });
+            if (ClientModelGUI.listIsland.get(i).getHasMotherNature()) {
+                img = new Image("it/polimi/ingsw/NETWORK/Images/mother_nature.png", width * 2, heigth * 2, false, true, true);
+                view = new ImageView(img);
+                view.setAccessibleText("mothernature");
 
-            pane.add(view, 5,1 );
+                view.addEventFilter(DragEvent.DRAG_DONE, dragHandler);
+
+                view.setOnDragDetected(new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent e) {
+                        Dragboard db = ((ImageView) (e.getTarget())).startDragAndDrop(TransferMode.ANY);
+
+                        ClipboardContent content = new ClipboardContent();
+                        content.putString(((ImageView) (e.getTarget())).getAccessibleText());
+                        db.setContent(content);
+
+                        event.consume();
+                    }
+                });
+
+                pane.add(view, 5, 1);
+            }
+
+
+            int j = 1;
+            for (Colour c : Colour.values()) {
+                Text text = new Text();
+                text.minHeight(10);
+                text.minWidth(10);
+                text.setText(String.valueOf(ClientModelGUI.listIsland.get(i).countStudentsOfColour(c)));
+                if (j < 4) pane.add(text, 2, j);
+                else pane.add(text, 4, j - 3);
+                j++;
+            }
+
         }
-
-
-
-        int j = 1;
-        for(Colour c : Colour.values()){
-            Text text = new Text();
-            text.minHeight(10);
-            text.minWidth(10);
-            text.setText(String.valueOf(ClientModelGUI.listIsland.get(i).countStudentsOfColour(c)));
-            if(j<4) pane.add(text, 2, j);
-            else pane.add(text, 4, j-3);
-            j++;
-        }
-
 
         return pane;
     }
@@ -878,14 +998,18 @@ public  class LoginController {
 
         gpane.setAccessibleText("cloud" + i);
 
+        //SELEZIONO L'IMMAGINE DELLA NUVOLA CORRETTA
         String address = "it/polimi/ingsw/NETWORK/Images/cloud_card_1.png";
-
-        if(i == 1){
-            address = "it/polimi/ingsw/NETWORK/Images/cloud_card_2.png";
-        } else if(i == 2){
-            address = "it/polimi/ingsw/NETWORK/Images/cloud_card_3.png";
-        } else if(i == 3){
-            address = "it/polimi/ingsw/NETWORK/Images/cloud_card_4.png";
+        if(ClientModelGUI.listCloud.size() == 3){
+            address = "it/polimi/ingsw/NETWORK/Images/cloud_card_5_2_and_4_players_game.png";
+        }else {
+            if (i == 1) {
+                address = "it/polimi/ingsw/NETWORK/Images/cloud_card_2.png";
+            } else if (i == 2) {
+                address = "it/polimi/ingsw/NETWORK/Images/cloud_card_3.png";
+            } else if (i == 3) {
+                address = "it/polimi/ingsw/NETWORK/Images/cloud_card_4.png";
+            }
         }
 
         Image img = new Image(address, gpane.getWidth(), gpane.getHeight(), false, true, true);
@@ -894,44 +1018,89 @@ public  class LoginController {
         Background backGround = new Background(bimage);
         gpane.setBackground(backGround);
 
-        //aggiungo gli studenti alla nuvola
+        //AGGIUNGO GLI STUDENTI ALLA NUVOLA
         int width = 30;
         int height = 30;
-        gpane.getRowConstraints().add(new RowConstraints(10));
-        gpane.getRowConstraints().add(new RowConstraints(height-10));
-        gpane.getRowConstraints().add(new RowConstraints(height-5));
-        gpane.getColumnConstraints().add(new ColumnConstraints(5));
-        gpane.getColumnConstraints().add(new ColumnConstraints(width+5));
-        gpane.getColumnConstraints().add(new ColumnConstraints(width-25));
 
-        if(!ClientModelGUI.listCloud.get(i).empty()) {
-            for(int j = 0; j < 3 ; j++) {
-                if (ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.BLUE)){
-                    address = "it/polimi/ingsw/NETWORK/Images/student_blue.png";
-                }else if(ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.RED)){
-                    address = "it/polimi/ingsw/NETWORK/Images/student_red.png";
-                }else if(ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.YELLOW)){
-                    address = "it/polimi/ingsw/NETWORK/Images/student_yellow.png";
-                }else if(ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.GREEN)){
-                    address = "it/polimi/ingsw/NETWORK/Images/student_green.png";
-                }else if(ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.PINK)){
-                    address = "it/polimi/ingsw/NETWORK/Images/student_pink.png";
+        //CASO 3 GIOCATORI
+        if(ClientModelGUI.listCloud.size() == 3){
+
+            gpane.getRowConstraints().add(new RowConstraints(height));
+            gpane.getRowConstraints().add(new RowConstraints(height));
+            gpane.getRowConstraints().add(new RowConstraints(height));
+            gpane.getColumnConstraints().add(new ColumnConstraints(height));
+            gpane.getColumnConstraints().add(new ColumnConstraints(width));
+            gpane.getColumnConstraints().add(new ColumnConstraints(width));
+
+            if (!ClientModelGUI.listCloud.get(i).empty()) {
+                for (int j = 0; j < 4; j++) {
+                    if (ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.BLUE)) {
+                        address = "it/polimi/ingsw/NETWORK/Images/student_blue.png";
+                    } else if (ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.RED)) {
+                        address = "it/polimi/ingsw/NETWORK/Images/student_red.png";
+                    } else if (ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.YELLOW)) {
+                        address = "it/polimi/ingsw/NETWORK/Images/student_yellow.png";
+                    } else if (ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.GREEN)) {
+                        address = "it/polimi/ingsw/NETWORK/Images/student_green.png";
+                    } else if (ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.PINK)) {
+                        address = "it/polimi/ingsw/NETWORK/Images/student_pink.png";
+                    }
+
+                    img = new Image(address, width, height, false, true, true);
+                    ImageView view = new ImageView(img);
+                    int y = 1;
+                    int x = 0;
+                    if(j == 1){
+                        x = 1;
+                        y = 0;
+                    }else if(j == 2){
+                        x = 1;
+                        y = 2;
+                    }else if(j == 3){
+                        x = 2;
+                    }
+                    gpane.add(view, x, y);
                 }
-
-                img = new Image(address, width, height, false, true, true);
-                ImageView view = new ImageView(img);
-
-                int y = 2;
-                if(j == 1){
-                    y = 3;
-                } else if (j == 2){
-                    y = 1;
-                }
-                gpane.add(view, j+1,y);
             }
         }
 
+        //CASO 2 O 4 GIOCATORI
+        else {
 
+            gpane.getRowConstraints().add(new RowConstraints(10));
+            gpane.getRowConstraints().add(new RowConstraints(height - 10));
+            gpane.getRowConstraints().add(new RowConstraints(height - 5));
+            gpane.getColumnConstraints().add(new ColumnConstraints(5));
+            gpane.getColumnConstraints().add(new ColumnConstraints(width + 5));
+            gpane.getColumnConstraints().add(new ColumnConstraints(width - 25));
+
+            if (!ClientModelGUI.listCloud.get(i).empty()) {
+                for (int j = 0; j < 3; j++) {
+                    if (ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.BLUE)) {
+                        address = "it/polimi/ingsw/NETWORK/Images/student_blue.png";
+                    } else if (ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.RED)) {
+                        address = "it/polimi/ingsw/NETWORK/Images/student_red.png";
+                    } else if (ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.YELLOW)) {
+                        address = "it/polimi/ingsw/NETWORK/Images/student_yellow.png";
+                    } else if (ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.GREEN)) {
+                        address = "it/polimi/ingsw/NETWORK/Images/student_green.png";
+                    } else if (ClientModelGUI.listCloud.get(i).getStudent(j).getColour().equals(Colour.PINK)) {
+                        address = "it/polimi/ingsw/NETWORK/Images/student_pink.png";
+                    }
+
+                    img = new Image(address, width, height, false, true, true);
+                    ImageView view = new ImageView(img);
+
+                    int y = 2;
+                    if (j == 1) {
+                        y = 3;
+                    } else if (j == 2) {
+                        y = 1;
+                    }
+                    gpane.add(view, j + 1, y);
+                }
+            }
+        }
 
         return gpane;
     }

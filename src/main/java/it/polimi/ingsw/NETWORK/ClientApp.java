@@ -11,10 +11,10 @@ public final class ClientApp {
         try{
             Scanner stdin = new Scanner(System.in);
 
-            System.out.println("inserisci indirizzo ip: ");
+            System.out.println("Please enter the ip address: ");
             String ip = stdin.nextLine();//"127.0.0.1"
 
-            System.out.println("inserisci porta");
+            System.out.println("Please enter the port");
             int port = Integer.parseInt(stdin.nextLine());//12345
 
             client.run(ip, port);

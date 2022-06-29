@@ -17,7 +17,6 @@ public class ClientAppGUI extends Application {
         stage.setTitle("Eriantys");
         stage.setScene(new Scene(root, 500, 500));
         stage.show();
-
     }
 
     public static void main(String[] args) {

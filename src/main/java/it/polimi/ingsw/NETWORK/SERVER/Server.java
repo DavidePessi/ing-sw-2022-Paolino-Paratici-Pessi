@@ -9,7 +9,6 @@ import it.polimi.ingsw.NETWORK.VIEW.RemoteView;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-//import java.rmi.Remote;  todo................................................
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,20 +25,25 @@ public class Server {
     private Map<String, SocketClientConnection> waitingRoom4E = new HashMap<>();
     private Map<String, SocketClientConnection> waitingRoom4D = new HashMap<>();
     private Map<SocketClientConnection, ArrayList<SocketClientConnection>> playingConnection = new HashMap<>();
-
+    private List<SocketClientConnection> playingConnection2 = new ArrayList<>();
+    //TODO POSSIBILE SOLUZIONE UNA LISTA DI TUTTE LE CONNESSIONI CHE STANNO GIOCANDO
+    //TODO OPPURE ELIMINARE PLAYING CONNECTION E TENERE UNA LISTA DI TUTTE LE CONNESSIONI CHE STANNO GIOCANDO
     //Deregister connection
     public synchronized void deregisterConnection(ClientConnection c) {
 
         ArrayList<SocketClientConnection> opponents = playingConnection.get(c);
 
-        for(SocketClientConnection sc : opponents) {
-            if (sc != null) {
-                sc.closeConnection();
+        if(playingConnection2.contains(c)){
+            playingConnection2.remove(c);
+        }else {
+            for (SocketClientConnection sc : opponents) {
+                if (sc != null) {
+                    sc.closeConnection();
+                }
+                playingConnection.remove(sc);
             }
-            playingConnection.remove(sc);
+            playingConnection.remove(c);
         }
-        playingConnection.remove(c);
-
 
         Iterator<String> iterator = waitingRoom2E.keySet().iterator();
         while(iterator.hasNext()){
@@ -114,13 +118,14 @@ public class Server {
             player1.addObserver(controllerTurn);
             player2.addObserver(controllerTurn);
 
-            ArrayList<SocketClientConnection> l1 = new ArrayList<>();
-            l1.add(c2);
-            ArrayList<SocketClientConnection> l2 = new ArrayList<>();
-            l2.add(c1);
-
-            playingConnection.put(c1, l1);
-            playingConnection.put(c2, l2);
+            //ArrayList<SocketClientConnection> l1 = new ArrayList<>();
+            //l1.add(c2);
+            //ArrayList<SocketClientConnection> l2 = new ArrayList<>();
+            //l2.add(c1);
+            if(!playingConnection2.contains(c1)){playingConnection2.add(c1);}
+            if(!playingConnection2.contains(c2)){playingConnection2.add(c2);}
+            //playingConnection.put(c1, l1);
+            //playingConnection.put(c2, l2);
             waitingRoom2E.clear();
 
             model.startGame(easy);

@@ -84,28 +84,29 @@ public class SocketClientConnection extends Observable<String> implements Client
         boolean okNickname = false;
 
         try {
+            //inizializzo i canali di comunicazione
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+
+            //dichiaro i messaggi da scambiare
+            ClientMessage cm;
+            Payload pay;
+            ServerMessage sm;
+            ServerHeader sh;
+
+            //invio i messaggi di ping
+
+            Thread t = asyncPingDecrease();
+            ExecutorService executor = Executors.newFixedThreadPool(1);
+            executor.submit(t);
             do{
-                //inizializzo i canali di comunicazione
-                out = new ObjectOutputStream(socket.getOutputStream());
-                in = new ObjectInputStream(socket.getInputStream());
-
-                //dichiaro i messaggi da scambiare
-                ClientMessage cm;
-                Payload pay;
-                ServerMessage sm;
-                ServerHeader sh;
-
-                //invio i messaggi di ping
-
-                Thread t = asyncPingDecrease();
-                ExecutorService executor = Executors.newFixedThreadPool(1);
-                executor.submit(t);
+                endGame = false;
 
                 //--------------------------------------------------------------
                 //CHIEDO IL TIPO DI PARTITA
                 do {
                     sh = new ServerHeader(ServerAction.SET_UP_GAMEMODE, "");
-                    pay = new Payload("SET_UP_GAMEMODE", "Scegli il tipo di parita");
+                    pay = new Payload("SET_UP_GAMEMODE", "Select the gamemode");
                     sm = new ServerMessage(sh, pay);
 
                     send(sm);
@@ -117,7 +118,7 @@ public class SocketClientConnection extends Observable<String> implements Client
                     //CASO DI ERRORE
                     if (!typeGame.equals("difficult") && !typeGame.equals("easy")) {
                         sh = new ServerHeader(ServerAction.ERROR_SETUP, "");
-                        pay = new Payload("ERROR_SETUP", "Attenzione devi scegliere tra difficult o easy");
+                        pay = new Payload("ERROR_SETUP", "Warning you have to choose between difficult and easy");
                         sm = new ServerMessage(sh, pay);
 
                         send(sm);
@@ -128,7 +129,7 @@ public class SocketClientConnection extends Observable<String> implements Client
                 //CHIEDO IL NUMERO DI GIOCATORI
                 do {
                     sh = new ServerHeader(ServerAction.SET_UP_NUM_PLAYERS, "");
-                    pay = new Payload("SET_UP_NUM_PLAYERS", "Scegli il numero di giocatori");
+                    pay = new Payload("SET_UP_NUM_PLAYERS", "Choose the number of player");
                     sm = new ServerMessage(sh, pay);
 
                     send(sm);
@@ -142,7 +143,7 @@ public class SocketClientConnection extends Observable<String> implements Client
                     //CASO DI ERRORE
                     if (numPlayers != 2 && numPlayers != 3 && numPlayers != 4) {
                         sh = new ServerHeader(ServerAction.ERROR_SETUP, "");
-                        pay = new Payload("ERROR_SETUP", "Attenzione puoi giocare con 2,3,4 giocatori");
+                        pay = new Payload("ERROR_SETUP", "Warning you can choose between 2,3 or 4 players");
                         sm = new ServerMessage(sh, pay);
 
                         send(sm);
@@ -153,7 +154,7 @@ public class SocketClientConnection extends Observable<String> implements Client
                 //CHIEDO IL NICKNAME
                 do {
                     sh = new ServerHeader(ServerAction.SET_UP_NICKNAME, "");
-                    pay = new Payload("SET_UP_NICKNAME", "Scegli il nickname");
+                    pay = new Payload("SET_UP_NICKNAME", "Choose the nickname");
                     sm = new ServerMessage(sh, pay);
 
                     send(sm);
@@ -169,7 +170,7 @@ public class SocketClientConnection extends Observable<String> implements Client
                             okNickname = true;
                         } catch (Exception e) {
                             sh = new ServerHeader(ServerAction.ERROR_SETUP, "");
-                            pay = new Payload("ERROR_SETUP", "Attenzione nickname già in uso");
+                            pay = new Payload("ERROR_SETUP", "Warning nickname is already in use");
                             sm = new ServerMessage(sh, pay);
 
                             send(sm);
@@ -181,7 +182,7 @@ public class SocketClientConnection extends Observable<String> implements Client
                                 okNickname = true;
                             } catch (Exception e) {
                                 sh = new ServerHeader(ServerAction.ERROR_SETUP, "");
-                                pay = new Payload("ERROR_SETUP", "Attenzione nickname già in uso");
+                                pay = new Payload("ERROR_SETUP", "Warning nickname is already in use");
                                 sm = new ServerMessage(sh, pay);
 
                                 send(sm);
@@ -194,7 +195,7 @@ public class SocketClientConnection extends Observable<String> implements Client
                                     okNickname = true;
                                 } catch (Exception e) {
                                     sh = new ServerHeader(ServerAction.ERROR_SETUP, "");
-                                    pay = new Payload("ERROR_SETUP", "Attenzione nickname già in uso");
+                                    pay = new Payload("ERROR_SETUP", "Warning nickname is already in use");
                                     sm = new ServerMessage(sh, pay);
 
                                     send(sm);
@@ -207,7 +208,7 @@ public class SocketClientConnection extends Observable<String> implements Client
                                         okNickname = true;
                                     } catch (Exception e) {
                                         sh = new ServerHeader(ServerAction.ERROR_SETUP, "");
-                                        pay = new Payload("ERROR_SETUP", "Attenzione nickname già in uso");
+                                        pay = new Payload("ERROR_SETUP", "Warning nickname is already in use");
                                         sm = new ServerMessage(sh, pay);
 
                                         send(sm);
@@ -220,7 +221,7 @@ public class SocketClientConnection extends Observable<String> implements Client
                                             okNickname = true;
                                         } catch (Exception e) {
                                             sh = new ServerHeader(ServerAction.ERROR_SETUP, "");
-                                            pay = new Payload("ERROR_SETUP", "Attenzione nickname già in uso");
+                                            pay = new Payload("ERROR_SETUP", "Warning nickname is already in use");
                                             sm = new ServerMessage(sh, pay);
 
                                             send(sm);
@@ -232,7 +233,7 @@ public class SocketClientConnection extends Observable<String> implements Client
                                                 okNickname = true;
                                             } catch (Exception e) {
                                                 sh = new ServerHeader(ServerAction.ERROR_SETUP, "");
-                                                pay = new Payload("ERROR_SETUP", "Attenzione nickname già in uso");
+                                                pay = new Payload("ERROR_SETUP", "Warning nickname is already in use");
                                                 sm = new ServerMessage(sh, pay);
 
                                                 send(sm);
@@ -243,7 +244,7 @@ public class SocketClientConnection extends Observable<String> implements Client
 
             //CONFERMO AL CLIENT DI ESSERE ENTRATO NELLA LOBBY
             sh = new ServerHeader(ServerAction.OK_START, "");
-            pay = new Payload("OK_START", "Parametri corretti, sei in LOBBY");
+            pay = new Payload("OK_START", "You are in LOBBY");
             sm = new ServerMessage(sh, pay);
 
             send(sm);
@@ -258,7 +259,9 @@ public class SocketClientConnection extends Observable<String> implements Client
 
                 if (ClientAction.END_GAME.equals(cm.getClientHeader().getClientAction())) {
                     setEndGame(true);
-                    server.deregisterConnection(this);
+                    try {
+                        server.deregisterConnection(this);
+                    }catch(Exception e){}
 
                     if("0".equals((String)cm.getPayload().getParameter("endgame"))){
                         setActive(false);

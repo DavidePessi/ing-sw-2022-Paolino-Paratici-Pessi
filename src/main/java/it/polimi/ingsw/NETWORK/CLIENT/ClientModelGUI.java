@@ -1,9 +1,7 @@
 package it.polimi.ingsw.NETWORK.CLIENT;
 
 import it.polimi.ingsw.CONTROLLER.Action;
-import it.polimi.ingsw.MODEL.CharacterParameters;
-import it.polimi.ingsw.MODEL.Colour;
-import it.polimi.ingsw.MODEL.Player;
+import it.polimi.ingsw.MODEL.*;
 import it.polimi.ingsw.NETWORK.CLIENT.LoginController;
 import it.polimi.ingsw.NETWORK.CLIENT.UserInterface;
 import it.polimi.ingsw.NETWORK.MESSAGES.*;
@@ -18,9 +16,11 @@ import java.util.Scanner;
 
 public final class ClientModelGUI extends UserInterface {
 
+    //VARIABILI PER INVIO DI AZIONI
     private static boolean buttonIsClicked = false;
 
     private static ClientAction action;
+
     private static String actionPlayed;
     private static String actionPlayed2;
     private static String actionPlayed3;
@@ -29,15 +29,20 @@ public final class ClientModelGUI extends UserInterface {
     private static String actionPlayed6;
     private static String actionPlayed7;
     private static String actionPlayed8;
+
     private static int colors1 = 0;
     private static int colors2 = 0;
 
+    protected static String nickname = "";
+
     private static String cardThrown = "";
+
+    //VARIABILI PER CAMBIO DI PAGINA
     protected static boolean boardCreated = false;
     protected static Stage stage = new Stage();
     private static LoginController controller;
+    public static ColourTower winner = ColourTower.NO_ONE;
 
-    protected static String nickname = "";
 
     static {
         try {
@@ -58,19 +63,20 @@ public final class ClientModelGUI extends UserInterface {
     //todo : deve mostrare che cosa non va bene
     public static void clientError(ServerMessage message){}
 
-    //todo : deve mostrare il vincitore
-    public static void endGame(ServerMessage message){}
-
     //METODI CHE RICHIEDONO DATI
-    public static ClientMessage sendNickname(){
+    public static ClientMessage sendNickname()throws Exception{
 
         ClientHeader ch;
         Payload pay;
         ClientMessage cm;
 
 
-        while(!controller.getButtonIsClicked()){try{Thread.sleep(100);}catch(Exception e){}}
-        //System.out.println("e' stato premuto il pulsante");
+        while(!controller.getButtonIsClicked() && !ClientCLI.getClose()){
+            try{Thread.sleep(100);}catch(Exception e){}
+        }
+
+        if(ClientCLI.getClose()){throw new Exception();}
+
         String nick = controller.sendNickname();
         nickname = nick;
 
@@ -81,15 +87,15 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
-    public static ClientMessage sendTypeGame(){
+    public static ClientMessage sendTypeGame()throws Exception{
 
         ClientHeader ch;
         Payload pay;
         ClientMessage cm;
 
-        while(!controller.getButtonIsClicked()){try{Thread.sleep(100);}catch(Exception e){}
+        while(!controller.getButtonIsClicked() && !ClientCLI.getClose()){try{Thread.sleep(100);}catch(Exception e){}
         }
-
+        if(ClientCLI.getClose()){throw new Exception();}
         String typeGame = controller.sendTypeGame();
 
 
@@ -100,14 +106,16 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
-    public static ClientMessage sendNumPlayers(){
+    public static ClientMessage sendNumPlayers()throws Exception{
 
         ClientHeader ch;
         Payload pay;
         ClientMessage cm;
 
-        while(!controller.getButtonIsClicked()){try{Thread.sleep(100);}catch(Exception e){}}
-        //System.out.println("e' stato premuto il pulsante");
+        while(!controller.getButtonIsClicked() && !ClientCLI.getClose()){try{Thread.sleep(100);}catch(Exception e){}}
+
+        if(ClientCLI.getClose()){throw new Exception();}
+
         String numPlayers = controller.sendNumPlayers();
 
         ch = new ClientHeader(nickname, ClientAction.SEND_NUM_PLAYERS);
@@ -118,9 +126,11 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
-    public static ClientAction sendTypeAction(){
-        while(!getButtonIsClicked()){try{Thread.sleep(100);}catch(Exception e){}}
-        System.out.println("invio l'azione");
+    public static ClientAction sendTypeAction()throws Exception{
+        while(!getButtonIsClicked() && !ClientCLI.getClose()){try{Thread.sleep(100);}catch(Exception e){}}
+
+        if(ClientCLI.getClose()){throw new Exception();}
+
         return getAction();
     }
 
@@ -363,9 +373,14 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
-    //TODO : TUTTI I METODI SOTTO QUESTO TODO
-    public static String keepPlaying(){
-        return "no";
+    public static String keepPlaying()throws Exception{
+
+        while(!controller.getButtonIsClicked() && !ClientCLI.getClose()){
+            try{Thread.sleep(100);}catch(Exception e){}
+        }
+        if(ClientCLI.getClose()){throw new Exception();}
+
+        return getActionPlayed();
     }
 
     //METODI UTILI
@@ -540,5 +555,12 @@ public final class ClientModelGUI extends UserInterface {
 
     public static void changeToBoard(){
         controller.changeToBoard();
+    }
+
+    public static void changeToDisconnectedPage(){controller.changeToDisconnectedPage();}
+
+    public static void changeToKeepPlayingPage(ServerMessage sm){
+        ClientModelGUI.winner = ((Team) (sm.getPayload().getParameter("team"))).getColourTower();
+        controller.changeToKeepPlayingPage();
     }
 }

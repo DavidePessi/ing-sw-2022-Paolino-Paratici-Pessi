@@ -23,6 +23,7 @@ public final class ClientCLI {
     private static Socket socket;
     private static ObjectInputStream socketIn;
     private static ObjectOutputStream socketOut;
+    private static boolean close = false;
 
     public ClientCLI(String type){
         this.ip = null;
@@ -45,7 +46,8 @@ public final class ClientCLI {
     public synchronized static void setActive(boolean a){
         active = a;
     }
-
+    public synchronized static void setClose(boolean b){close = b;}
+    public synchronized static boolean getClose(){return close;}
 
     public static Thread asyncReadFromSocket(final ObjectInputStream socketIn, final ObjectOutputStream socketOut){
         Thread t = new Thread(new Runnable() {
@@ -106,7 +108,7 @@ public final class ClientCLI {
                             }
                         }
 
-                            //HEADER PER CHIUSURA CONNESSIONE
+                            //HEADER PER PING
                         else if(ServerAction.PING.equals(in2.getServerHeader().getServerAction())){
                             ping();
                         }
@@ -115,10 +117,11 @@ public final class ClientCLI {
                         else if(ServerAction.END_GAME.equals(in2.getServerHeader().getServerAction())){
                             setClientAction(ClientAction.END_GAME);
                             if(model instanceof ClientModelCLI) {
+                                ClientModelCLI.end = true;
                                 ClientModelCLI.endGame(in2);
                             }
                             else if(model instanceof ClientModelGUI){
-                                ClientModelGUI.endGame(in2);
+                                ClientModelGUI.changeToKeepPlayingPage(in2);
                             }
 
                         }
@@ -202,7 +205,9 @@ public final class ClientCLI {
                         //PLAY ACTION MOVES
                         else if(clientAction.equals(ClientAction.PLAY_ACTION)){
                             if(model instanceof ClientModelCLI) {
-                                setClientAction(ClientModelCLI.sendTypeAction());
+                                try {
+                                    setClientAction(ClientModelCLI.sendTypeAction());
+                                }catch(Exception e){}
                             }
                             else if(model instanceof ClientModelGUI){
                                 System.out.println("richiesta di action inviata");
@@ -317,8 +322,9 @@ public final class ClientCLI {
                                 response = ClientModelGUI.keepPlaying();
                             }
                             else response = "no";
+
                             if(response.equals("yes")){
-                                setClientAction(ClientAction.SEND_NICKNAME);
+                                setClientAction(ClientAction.STAI_FERMO);
 
                                 ClientHeader ch;
                                 Payload pay;
@@ -361,11 +367,17 @@ public final class ClientCLI {
 
     private static void close()  {
         setActive(false);
+
         try {
+            setClose(true);
+            if(model instanceof ClientModelGUI){
+                ClientModelGUI.changeToDisconnectedPage();
+            }
             stdin.close();
             socketIn.close();
             socketOut.close();
             socket.close();
+
         }catch(IOException e){}
         System.out.println("Connection closed from the client side");
     }
