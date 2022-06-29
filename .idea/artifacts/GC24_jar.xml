@@ -14,7 +14,6 @@
       <element id="extracted-dir" path="$PROJECT_DIR$/../../Documenti/libraries for coding/openjfx-18.0.1_windows-x64_bin-sdk/javafx-sdk-18.0.1/lib/javafx.swing.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../Documenti/libraries for coding/openjfx-18.0.1_windows-x64_bin-sdk/javafx-sdk-18.0.1/lib/javafx.controls.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/../../Documenti/libraries for coding/openjfx-18.0.1_windows-x64_bin-sdk/javafx-sdk-18.0.1/lib/javafx.graphics.jar" path-in-jar="/" />
-      <element id="library" level="project" name="lib" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/jetbrains/annotations-java5/23.0.0/annotations-java5-23.0.0.jar" path-in-jar="/" />
     </root>
   </artifact>

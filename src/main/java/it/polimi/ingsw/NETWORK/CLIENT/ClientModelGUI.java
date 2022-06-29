@@ -373,12 +373,11 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
-    public static String keepPlaying()throws Exception{
+    public static String keepPlaying(){
 
-        while(!controller.getButtonIsClicked() && !ClientCLI.getClose()){
+        while(!getButtonIsClicked()){
             try{Thread.sleep(100);}catch(Exception e){}
         }
-        if(ClientCLI.getClose()){throw new Exception();}
 
         return getActionPlayed();
     }

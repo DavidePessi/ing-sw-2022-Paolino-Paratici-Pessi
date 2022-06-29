@@ -192,13 +192,14 @@ public  class LoginController {
                         if(event.getTarget() instanceof ImageView){
                             ClientModelGUI.setActionPlayed(((ImageView)(event.getTarget())).getAccessibleText());
                             ClientModelGUI.setButtonIsClicked(true);
+                            System.out.println("ho schiacciato un bottone");
                         }
                     }
                 };
 
 
                 Text text = new Text("Do you wanna keep playing?");
-                gp.add(text, 0,1);
+                gp.add(text, 1,1);
 
                 Image img = new Image("it/polimi/ingsw/NETWORK/Images/si.jpg", 40, 40, false, true, true);
                 ImageView view= new ImageView(img);
@@ -206,7 +207,7 @@ public  class LoginController {
 
                 view.addEventFilter(MouseEvent.MOUSE_PRESSED, eventHandler);
 
-                gp.add(view, 1,0);
+                gp.add(view, 0,2);
 
                 img = new Image("it/polimi/ingsw/NETWORK/Images/no.jpg", 40, 40, false, true, true);;
                 view = new ImageView(img);
@@ -214,7 +215,7 @@ public  class LoginController {
 
                 view.addEventFilter(MouseEvent.MOUSE_PRESSED, eventHandler);
 
-                gp.add(view, 1,2);
+                gp.add(view, 2,2);
 
                 //mostro chi ha vinto in cima
                 for(Player p : ClientModelGUI.listPlayer){
@@ -230,11 +231,12 @@ public  class LoginController {
 
 
                 gp.getColumnConstraints().add(new ColumnConstraints(50));
-                gp.getColumnConstraints().add(new ColumnConstraints(50));
+                gp.getColumnConstraints().add(new ColumnConstraints(150));
                 gp.getColumnConstraints().add(new ColumnConstraints(50));
 
                 gp.getRowConstraints().add(new RowConstraints(20));
 
+                gp.setAlignment(Pos.CENTER);
                 layout.setCenter(gp);
 
                 scene = new Scene(layout);

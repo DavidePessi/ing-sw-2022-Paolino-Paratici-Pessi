@@ -172,6 +172,9 @@ public final class ClientCLI {
                             else if(model instanceof ClientModelGUI){
                                 System.out.println("richiesta di messaggio per send nickname inviata");
                                 cm = ClientModelGUI.sendNickname();
+
+                                nick = (String) cm.getPayload().getParameter("nickname");
+
                                 send(socketOut, cm);
                             }
 
@@ -213,8 +216,12 @@ public final class ClientCLI {
                                 }
                             }
                             else if(model instanceof ClientModelGUI){
-                                System.out.println("richiesta di action inviata");
-                                setClientAction(ClientModelGUI.sendTypeAction());
+                                if(ClientModelCLI.verifyClient(nick)) {
+                                    System.out.println("richiesta di action inviata");
+                                    setClientAction(ClientModelGUI.sendTypeAction());
+                                }else{
+                                    Thread.sleep(100);
+                                }
                             }
                         }
 
