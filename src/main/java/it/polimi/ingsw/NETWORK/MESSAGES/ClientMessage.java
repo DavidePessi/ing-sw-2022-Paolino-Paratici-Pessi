@@ -12,10 +12,18 @@ public class ClientMessage  implements Serializable{
         this.clientHeader = cli;
     }
 
+    /**
+     * returns the payload of the message
+     * @return
+     */
     public Payload getPayload(){
         return this.payload;
     }
 
+    /**
+     * returns the header of the message
+     * @return
+     */
     public ClientHeader getClientHeader(){
         return  this.clientHeader;
     }

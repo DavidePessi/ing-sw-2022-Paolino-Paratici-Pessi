@@ -10,6 +10,10 @@ public class ClientHeader implements Serializable {
         this.nickname = nickname;
     }
 
+    /**
+     * returns the client action
+     * @return
+     */
     public ClientAction getClientAction(){
         return this.clientAction;
     }

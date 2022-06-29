@@ -34,6 +34,10 @@ public class SocketClientConnection extends Observable<String> implements Client
         this.server = server;
     }
 
+    /**
+     * returns if the socket is active
+     * @return
+     */
     private synchronized boolean isActive(){
         return active;
     }
@@ -49,6 +53,9 @@ public class SocketClientConnection extends Observable<String> implements Client
         active = false;
     }
 
+    /**
+     * close the connection
+     */
     private void close() {
         //chiudo effettivamente la connessione
         socketClose = true;
@@ -279,7 +286,11 @@ public class SocketClientConnection extends Observable<String> implements Client
         }
     }
 
-
+    /**
+     * if the type of client message is ping, I will read the ping, and call ping()
+     * @param in
+     * @return
+     */
     private ClientMessage PingRead(ObjectInputStream in){
         ClientMessage cm = null;
         try {
@@ -302,6 +313,10 @@ public class SocketClientConnection extends Observable<String> implements Client
         return cm;
     }
 
+    /**
+     * decrease the value of ping
+     * @return
+     */
     private Thread asyncPingDecrease(){
 
         Thread t = new Thread(new Runnable() {
@@ -322,6 +337,10 @@ public class SocketClientConnection extends Observable<String> implements Client
         });
         return t;
     }
+
+    /**
+     * send the value of ping and send a message to server to say that connection is stable
+     */
     private void ping() {
         pingTime = 10;
 
@@ -333,6 +352,10 @@ public class SocketClientConnection extends Observable<String> implements Client
 
     }
 
+    /**
+     * send a message
+     * @param sm
+     */
     private synchronized void send(ServerMessage sm){
         try {
             out.writeObject(sm); //Write byte stream to file system.
@@ -341,9 +364,18 @@ public class SocketClientConnection extends Observable<String> implements Client
         }catch(IOException e){}
     }
 
+    /**
+     * set the variable endGame with the value of the parameter
+     * @param bool
+     */
     private void setEndGame(boolean bool){
         endGame = bool;
     }
+
+    /**
+     * set the activity of the socketClientConnection
+     * @param bool
+     */
     private void setActive(boolean bool){
         active = bool;
     }

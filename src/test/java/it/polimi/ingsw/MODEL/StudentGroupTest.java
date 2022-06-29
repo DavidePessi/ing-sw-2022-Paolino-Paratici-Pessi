@@ -52,7 +52,7 @@ public class StudentGroupTest extends TestCase {
         s.addStudent(c);
 
         for(Colour col : Colour.values()){
-            n = s.countStudentsOfColour(col);
+            n = n + s.countStudentsOfColour(col);
         }
 
         assertEquals(1, n);

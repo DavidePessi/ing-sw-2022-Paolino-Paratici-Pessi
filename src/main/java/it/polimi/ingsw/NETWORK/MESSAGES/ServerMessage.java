@@ -10,8 +10,17 @@ public class ServerMessage implements Serializable {
         this.payload = pay;
         this.serverHeader = ser;
     }
+
+    /**
+     * returns the server header
+     * @return
+     */
     public ServerHeader getServerHeader(){return this.serverHeader;}
 
+    /**
+     * returns the payload
+     * @return
+     */
     public Payload getPayload(){
         return this.payload;
     }

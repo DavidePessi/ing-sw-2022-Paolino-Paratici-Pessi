@@ -26,9 +26,14 @@ public class Server {
     private Map<String, SocketClientConnection> waitingRoom4D = new HashMap<>();
     private Map<SocketClientConnection, ArrayList<SocketClientConnection>> playingConnection = new HashMap<>();
 
-    //TODO POSSIBILE SOLUZIONE UNA LISTA DI TUTTE LE CONNESSIONI CHE STANNO GIOCANDO
-    //TODO OPPURE ELIMINARE PLAYING CONNECTION E TENERE UNA LISTA DI TUTTE LE CONNESSIONI CHE STANNO GIOCANDO
-    //Deregister connection
+    public Server() throws IOException {
+        this.serverSocket = new ServerSocket(PORT);
+    }
+
+    /**
+     * Deregister client connection
+     * @param c
+     */
     public synchronized void deregisterConnection(ClientConnection c) {
 
         ArrayList<SocketClientConnection> opponents = playingConnection.get(c);
@@ -141,7 +146,12 @@ public class Server {
 
     }
 
-    //Wait for another player
+    /**
+     * Wait for another player
+     * @param c
+     * @param name
+     * @throws Exception
+     */
     public synchronized void lobby2E(SocketClientConnection c, String name) throws Exception{
         //public synchronized void lobby(Connection c, String name){
         boolean easy = true;
@@ -185,6 +195,12 @@ public class Server {
         }
     }
 
+    /**
+     * Wait for another player
+     * @param c
+     * @param name
+     * @throws Exception
+     */
     public synchronized void lobby2D(SocketClientConnection c, String name) throws Exception{
         boolean easy = false;
         if(!waitingRoom2D.containsKey(name)){
@@ -228,6 +244,12 @@ public class Server {
         }
     }
 
+    /**
+     * Wait for another player
+     * @param c
+     * @param name
+     * @throws Exception
+     */
     public synchronized void lobby3E(SocketClientConnection c, String name) throws Exception{
         boolean easy = true;
         if(!waitingRoom3E.containsKey(name)){
@@ -281,6 +303,12 @@ public class Server {
         }
     }
 
+    /**
+     * Wait for another player
+     * @param c
+     * @param name
+     * @throws Exception
+     */
     public synchronized void lobby3D(SocketClientConnection c, String name) throws Exception{
         boolean easy = false;
         if(!waitingRoom3D.containsKey(name)){
@@ -332,6 +360,12 @@ public class Server {
         }
     }
 
+    /**
+     * Wait for another player
+     * @param c
+     * @param name
+     * @throws Exception
+     */
     public synchronized void lobby4E(SocketClientConnection c, String name) throws Exception{
         boolean easy = true;
         if(!waitingRoom4E.containsKey(name)){
@@ -396,6 +430,12 @@ public class Server {
         }
     }
 
+    /**
+     * Wait for another player
+     * @param c
+     * @param name
+     * @throws Exception
+     */
     public synchronized void lobby4D(SocketClientConnection c, String name) throws Exception{
         boolean easy = false;
         if(!waitingRoom4D.containsKey(name)){
@@ -459,10 +499,9 @@ public class Server {
         }
     }
 
-    public Server() throws IOException {
-        this.serverSocket = new ServerSocket(PORT);
-    }
-
+    /**
+     * Create new socket and new socket client connection
+     */
     public void run(){
         int connections = 0;
         System.out.println("Server is running");

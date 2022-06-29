@@ -81,7 +81,7 @@ class CharacterParametersTest {
         colours.add(3,Colour.PINK);
         colours.add(4,Colour.YELLOW);
         colours.add(5,Colour.YELLOW);
-        CharacterParameters characterParameters = new CharacterParameters("gio", "Satyr", colours, 2);
+        CharacterParameters characterParameters = new CharacterParameters("gio", "Satyr", colours, 3);
         assertEquals(Colour.YELLOW, characterParameters.getColour5());
     }
 
@@ -94,7 +94,7 @@ class CharacterParametersTest {
         colours.add(3,Colour.PINK);
         colours.add(4,Colour.YELLOW);
         colours.add(5,Colour.YELLOW);
-        CharacterParameters characterParameters = new CharacterParameters("gio", "Satyr", colours, 2);
+        CharacterParameters characterParameters = new CharacterParameters("gio", "Satyr", colours, 3);
         assertEquals(Colour.YELLOW, characterParameters.getColour6());
     }
 }

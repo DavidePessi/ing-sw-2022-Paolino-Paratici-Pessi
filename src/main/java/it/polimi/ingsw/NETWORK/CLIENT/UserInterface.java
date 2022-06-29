@@ -32,7 +32,10 @@ public class UserInterface {
         characterCards = new ArrayList<>();
     }
 
-    //METODI CHE EFFETTUANO OPERAZIONI
+    /**
+     * method for handle client actions
+     * @param message
+     */
     public static void update(ServerMessage message){
 
         // --> players
@@ -412,6 +415,11 @@ public class UserInterface {
         characterCards = new ArrayList<>();
     }
 
+    /**
+     * verify if the nickname is the current player
+     * @param nickname
+     * @return
+     */
     public static boolean verifyClient(String nickname){
         if(nickname.equals(currentPlayer)) return true;
         else return false;

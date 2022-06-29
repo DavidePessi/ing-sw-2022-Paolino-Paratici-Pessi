@@ -326,13 +326,22 @@ public class Game extends Observable {
             }
         }
 
-        for (Player player : listPlayer) { //per ogni player aggiungo nella entrance i 7 studenti estratti casualmente dalla bag
+        for (Player player : listPlayer) { //per ogni player aggiungo nella entrance i 7 o i 9 studenti estratti casualmente dalla bag
             if (player != null) {
-                StudentGroup studentGroup = new StudentGroup();
-                for (int i = 0; i < 7; i++) {
-                    studentGroup.addStudent(bag.pullOut());
+                if(listPlayer.size()==3) {
+                    StudentGroup studentGroup1 = new StudentGroup();
+                    for (int i = 0; i < 9; i++) {
+                        studentGroup1.addStudent(bag.pullOut());
+                    }
+                    player.addStudentsToEntrance(studentGroup1);
                 }
-                player.addStudentsToEntrance(studentGroup);
+                else{
+                    StudentGroup studentGroup = new StudentGroup();
+                    for (int i = 0; i < 7; i++) {
+                        studentGroup.addStudent(bag.pullOut());
+                    }
+                    player.addStudentsToEntrance(studentGroup);
+                }
             }
         }
         sendBoard("STARTGAME");
