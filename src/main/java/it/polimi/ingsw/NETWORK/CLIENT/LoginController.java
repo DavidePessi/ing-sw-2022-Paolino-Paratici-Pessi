@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -432,58 +433,58 @@ public  class LoginController {
                                 ClientModelGUI.setCardThrown("");
                             }
                             else if (ClientModelGUI.getCardThrown().equals("Jester")) {
-                                    if(e.getTarget() instanceof ImageView){
-                                        String student = ((ImageView)(e.getTarget())).getAccessibleText();
-                                        System.out.println(student);
-                                        if(student.substring(0,1).equals("j")){
-                                            String parameter = student.substring(1,student.length());
+                                if(e.getTarget() instanceof ImageView){
+                                    String student = ((ImageView)(e.getTarget())).getAccessibleText();
+                                    System.out.println(student);
+                                    if(student.substring(0,1).equals("j")){
+                                        String parameter = student.substring(1,student.length());
 
-                                            if(ClientModelGUI.getColors1() == 0) {
-                                                ClientModelGUI.setActionPlayed2(parameter);
-                                                ClientModelGUI.setColors1(1);
-                                            }else if(ClientModelGUI.getColors1() == 1){
-                                                ClientModelGUI.setActionPlayed4(parameter);
-                                                ClientModelGUI.setColors1(2);
-                                            }else if(ClientModelGUI.getColors1() == 2) {
-                                                ClientModelGUI.setActionPlayed6(parameter);
-                                                ClientModelGUI.setColors1(3);
-                                            }
-                                            System.out.println("aggiunto colore pool, "+ ClientModelGUI.getColors1());
-                                        }else if(!student.substring(0,1).equals("c") && !student.substring(0, 1).equals("d")){
-                                            if(ClientModelGUI.getColors2() == 0) {
-                                                ClientModelGUI.setActionPlayed3(student);
-                                                ClientModelGUI.setColors2(1);
-                                            }else if(ClientModelGUI.getColors2() == 1){
-                                                ClientModelGUI.setActionPlayed5(student);
-                                                ClientModelGUI.setColors2(2);
-                                            }else if(ClientModelGUI.getColors2() == 2) {
-                                                ClientModelGUI.setActionPlayed7(student);
-                                                ClientModelGUI.setColors2(3);
-                                            }
-                                            System.out.println("aggiunto colore entrance, " + ClientModelGUI.getColors2());
+                                        if(ClientModelGUI.getColors1() == 0) {
+                                            ClientModelGUI.setActionPlayed2(parameter);
+                                            ClientModelGUI.setColors1(1);
+                                        }else if(ClientModelGUI.getColors1() == 1){
+                                            ClientModelGUI.setActionPlayed4(parameter);
+                                            ClientModelGUI.setColors1(2);
+                                        }else if(ClientModelGUI.getColors1() == 2) {
+                                            ClientModelGUI.setActionPlayed6(parameter);
+                                            ClientModelGUI.setColors1(3);
                                         }
-                            } else if(e.getTarget() instanceof GridPane){
-                                        System.out.println("sto per inviare: " + ((GridPane) (e.getTarget())).getAccessibleText());
-                                        if(((GridPane) (e.getTarget())).getAccessibleText().equals("Jester")) {
-                                            if (ClientModelGUI.getColors2() != 0 && ClientModelGUI.getColors1() != 0) {
-
-                                                ClientModelGUI.setActionPlayed("Jester");
-                                                ClientModelGUI.setButtonIsClicked(true);
-                                                ClientModelGUI.setAction(ClientAction.PLAY_CHARACTERCARD);
-
-                                                if (ClientModelGUI.getColors1() > ClientModelGUI.getColors2()) {
-                                                    ClientModelGUI.setActionPlayed8(String.valueOf(ClientModelGUI.getColors2()));
-                                                } else {
-                                                    ClientModelGUI.setActionPlayed8(String.valueOf(ClientModelGUI.getColors1()));
-                                                }
-
-                                                System.out.println("inviato");
-                                                ClientModelGUI.setCardThrown("");
-                                            }
+                                        System.out.println("aggiunto colore pool, "+ ClientModelGUI.getColors1());
+                                    }else if(!student.substring(0,1).equals("c") && !student.substring(0, 1).equals("d")){
+                                        if(ClientModelGUI.getColors2() == 0) {
+                                            ClientModelGUI.setActionPlayed3(student);
+                                            ClientModelGUI.setColors2(1);
+                                        }else if(ClientModelGUI.getColors2() == 1){
+                                            ClientModelGUI.setActionPlayed5(student);
+                                            ClientModelGUI.setColors2(2);
+                                        }else if(ClientModelGUI.getColors2() == 2) {
+                                            ClientModelGUI.setActionPlayed7(student);
+                                            ClientModelGUI.setColors2(3);
                                         }
+                                        System.out.println("aggiunto colore entrance, " + ClientModelGUI.getColors2());
+                                    }
+                                } else if(e.getTarget() instanceof GridPane){
+                                    System.out.println("sto per inviare: " + ((GridPane) (e.getTarget())).getAccessibleText());
+                                    if(((GridPane) (e.getTarget())).getAccessibleText().equals("Jester")) {
+                                        if (ClientModelGUI.getColors2() != 0 && ClientModelGUI.getColors1() != 0) {
+
+                                            ClientModelGUI.setActionPlayed("Jester");
+                                            ClientModelGUI.setButtonIsClicked(true);
+                                            ClientModelGUI.setAction(ClientAction.PLAY_CHARACTERCARD);
+
+                                            if (ClientModelGUI.getColors1() > ClientModelGUI.getColors2()) {
+                                                ClientModelGUI.setActionPlayed8(String.valueOf(ClientModelGUI.getColors2()));
+                                            } else {
+                                                ClientModelGUI.setActionPlayed8(String.valueOf(ClientModelGUI.getColors1()));
+                                            }
+
+                                            System.out.println("inviato");
+                                            ClientModelGUI.setCardThrown("");
+                                        }
+                                    }
 
                                 }
-                        } else if(ClientModelGUI.getCardThrown().equals("Minstrell")) {
+                            } else if(ClientModelGUI.getCardThrown().equals("Minstrell")) {
                                 if (e.getTarget() instanceof ImageView) {
                                     String student = ((ImageView) (e.getTarget())).getAccessibleText();
                                     if (student.substring(0, 1).equals("d")) {
@@ -528,10 +529,10 @@ public  class LoginController {
                                     }
 
                                 }
+                            }
                         }
                     }
-                }
-            }};
+                }};
 
 
             //FUNZIONE DI EVENT HANDLE  (invio carte assistente)
@@ -582,7 +583,7 @@ public  class LoginController {
             scene = new Scene(layout);
             stage.setScene(scene);
             stage.show();
-    });
+        });
     }
 
     public GridPane showTopBoard(){
@@ -611,45 +612,45 @@ public  class LoginController {
         try{
             p = ClientModelGUI.getPlayer(ClientModelGUI.nickname);
 
-        //PLANCIA
-        GridPane gpane = createDashBoard(2, ClientModelGUI.nickname, dragHandler, eventHandler, true);
-        bottomBoard.add(gpane, 0,0);
+            //PLANCIA
+            GridPane gpane = createDashBoard(2, ClientModelGUI.nickname, dragHandler, eventHandler, true);
+            bottomBoard.add(gpane, 0,0);
 
 
-        //CARTE (solo del giocatore corrente)
-        GridPane cardsRow = new GridPane();
-        cardsRow.getRowConstraints().add(new RowConstraints(105));
-        cardsRow.getRowConstraints().add(new RowConstraints(40));
+            //CARTE (solo del giocatore corrente)
+            GridPane cardsRow = new GridPane();
+            cardsRow.getRowConstraints().add(new RowConstraints(105));
+            cardsRow.getRowConstraints().add(new RowConstraints(40));
 
-        width = 65;
-        heigth = 75;
+            width = 65;
+            heigth = 75;
 
-        for (int i = 1; i <= p.getDeck().size(); i++) {
-            String address = getAddressCard(p.getDeck().getCardOfIndex(i - 1).getValue());
-            img = new Image(address, width, heigth, false, true, true);
-            ImageView view = new ImageView(img);
-            view.setAccessibleText("card" + p.getDeck().getCardOfIndex(i - 1).getValue());
-            view.addEventFilter(MouseEvent.MOUSE_PRESSED, eventHandler);
+            for (int i = 1; i <= p.getDeck().size(); i++) {
+                String address = getAddressCard(p.getDeck().getCardOfIndex(i - 1).getValue());
+                img = new Image(address, width, heigth, false, true, true);
+                ImageView view = new ImageView(img);
+                view.setAccessibleText("card" + p.getDeck().getCardOfIndex(i - 1).getValue());
+                view.addEventFilter(MouseEvent.MOUSE_PRESSED, eventHandler);
 
-            cardsRow.add(view, i, 0);
-        }
-
-
-        //COINS
-        if(ClientModelGUI.showCoins){
-            String address = "it/polimi/ingsw/NETWORK/Images/Moneta_base.png" ;
-
-            img = new Image(address, 40, 40, false, true, true);
-            ImageView view = new ImageView(img);
-
-            Text text = new Text(String.valueOf(p.getNumCoins()));
-            text.setTabSize(20);
-            cardsRow.add(view, 1,1);
-            cardsRow.add(text, 2,1);
-        }
+                cardsRow.add(view, i, 0);
+            }
 
 
-        bottomBoard.add(cardsRow, 2,0);
+            //COINS
+            if(ClientModelGUI.showCoins){
+                String address = "it/polimi/ingsw/NETWORK/Images/Moneta_base.png" ;
+
+                img = new Image(address, 40, 40, false, true, true);
+                ImageView view = new ImageView(img);
+
+                Text text = new Text(String.valueOf(p.getNumCoins()));
+                text.setTabSize(20);
+                cardsRow.add(view, 1,1);
+                cardsRow.add(text, 2,1);
+            }
+
+
+            bottomBoard.add(cardsRow, 2,0);
 
         }catch(Exception e){}
 
@@ -681,6 +682,11 @@ public  class LoginController {
             sub = ClientModelGUI.listIsland.get(i).getNumSubIsland();
         }else{
             //stampo il ponte nella posizione indicata
+
+            String address = "it/polimi/ingsw/NETWORK/Images/ponte_orizzontale.png";
+            Image img = new Image(address, 70, 70, false, true, true);
+            ImageView view = new ImageView(img);
+            centerBoard.add(view, 2, 0);
         }
 
         pane = createIsland(i, sub, eventHandler, dragHandler);
@@ -692,6 +698,11 @@ public  class LoginController {
             sub = ClientModelGUI.listIsland.get(i).getNumSubIsland();
         }else{
             //stampo il ponte nella posizione indicata
+            String address = "it/polimi/ingsw/NETWORK/Images/ponte_orizzontale.png";
+            Image img = new Image(address, 70, 70, false, true, true);
+            ImageView view = new ImageView(img);
+            centerBoard.add(view, 4, 0);
+
         }
 
         pane = createIsland(i, sub, eventHandler, dragHandler);
@@ -703,6 +714,10 @@ public  class LoginController {
             sub = ClientModelGUI.listIsland.get(i).getNumSubIsland();
         }else{
             //stampo il ponte nella posizione indicata
+            String address = "it/polimi/ingsw/NETWORK/Images/ponte_orizzontale.png";
+            Image img = new Image(address, 70, 70, false, true, true);
+            ImageView view = new ImageView(img);
+            centerBoard.add(view, 6, 0);
         }
 
         pane = createIsland(i, sub, eventHandler, dragHandler);
@@ -713,7 +728,15 @@ public  class LoginController {
             i = ClientModelGUI.listIsland.get(i+1).getNumIsland();
             sub = ClientModelGUI.listIsland.get(i).getNumSubIsland();
         }else{
-            //stampo il ponte nella posizione indicata
+            //stampo il ponte nella posizione indicata (angolo alto dx)
+            GridPane gpane = new GridPane();
+            String address = "it/polimi/ingsw/NETWORK/Images/ponte_obliquo_bello.png";
+            Image img = new Image(address, 70, 70, false, true, true);
+            ImageView view = new ImageView(img);
+            GridPane.setValignment(view, VPos.BOTTOM);
+
+            centerBoard.add(view, 8, 0);
+
         }
 
         pane = createIsland(i, sub, eventHandler, dragHandler);
@@ -725,6 +748,11 @@ public  class LoginController {
             sub = ClientModelGUI.listIsland.get(i).getNumSubIsland();
         }else{
             //stampo il ponte nella posizione indicata
+            String address = "it/polimi/ingsw/NETWORK/Images/ponte_verticale.png";
+            Image img = new Image(address, 70, 70, false, true, true);
+            ImageView view = new ImageView(img);
+            centerBoard.add(view, 8, 2);
+
         }
 
         pane = createIsland(i, sub, eventHandler, dragHandler);
@@ -735,7 +763,14 @@ public  class LoginController {
             i = ClientModelGUI.listIsland.get(i+1).getNumIsland();
             sub = ClientModelGUI.listIsland.get(i).getNumSubIsland();
         }else{
-            //stampo il ponte nella posizione indicata
+            //stampo il ponte nella posizione indicata (angolo basso dx)
+            String address = "it/polimi/ingsw/NETWORK/Images/ponte_obliquo_bello.png";
+            Image img = new Image(address, 70, 70, false, true, true);
+            ImageView view = new ImageView(img);
+            view.setRotate(90);
+            GridPane.setValignment(view, VPos.TOP);
+
+            centerBoard.add(view, 8, 4);
         }
 
         pane = createIsland(i, sub, eventHandler, dragHandler);
@@ -747,6 +782,10 @@ public  class LoginController {
             sub = ClientModelGUI.listIsland.get(i).getNumSubIsland();
         }else{
             //stampo il ponte nella posizione indicata
+            String address = "it/polimi/ingsw/NETWORK/Images/ponte_orizzontale.png";
+            Image img = new Image(address, 70, 70, false, true, true);
+            ImageView view = new ImageView(img);
+            centerBoard.add(view, 6, 4);
         }
 
         pane = createIsland(i, sub, eventHandler, dragHandler);
@@ -758,6 +797,10 @@ public  class LoginController {
             sub = ClientModelGUI.listIsland.get(i).getNumSubIsland();
         }else{
             //stampo il ponte nella posizione indicata
+            String address = "it/polimi/ingsw/NETWORK/Images/ponte_orizzontale.png";
+            Image img = new Image(address, 70, 70, false, true, true);
+            ImageView view = new ImageView(img);
+            centerBoard.add(view, 4, 4);
         }
 
         pane = createIsland(i, sub, eventHandler, dragHandler);
@@ -769,6 +812,10 @@ public  class LoginController {
             sub = ClientModelGUI.listIsland.get(i).getNumSubIsland();
         }else{
             //stampo il ponte nella posizione indicata
+            String address = "it/polimi/ingsw/NETWORK/Images/ponte_orizzontale.png";
+            Image img = new Image(address, 70, 70, false, true, true);
+            ImageView view = new ImageView(img);
+            centerBoard.add(view, 2, 4);
         }
 
         pane = createIsland(i, sub, eventHandler, dragHandler);
@@ -779,7 +826,14 @@ public  class LoginController {
             i = ClientModelGUI.listIsland.get(i+1).getNumIsland();
             sub = ClientModelGUI.listIsland.get(i).getNumSubIsland();
         }else{
-            //stampo il ponte nella posizione indicata
+            //stampo il ponte nella posizione indicata (angolo basso sx)
+            String address = "it/polimi/ingsw/NETWORK/Images/ponte_obliquo_bello2.png";
+            Image img = new Image(address, 70, 70, false, true, true);
+            ImageView view = new ImageView(img);
+            view.setRotate(270);
+            GridPane.setValignment(view, VPos.TOP);
+
+            centerBoard.add(view, 0, 4);
         }
 
         pane = createIsland(i, sub, eventHandler, dragHandler);
@@ -791,6 +845,10 @@ public  class LoginController {
             sub = ClientModelGUI.listIsland.get(i).getNumSubIsland();
         }else{
             //stampo il ponte nella posizione indicata
+            String address = "it/polimi/ingsw/NETWORK/Images/ponte_verticale.png";
+            Image img = new Image(address, 70, 70, false, true, true);
+            ImageView view = new ImageView(img);
+            centerBoard.add(view, 0, 2);
         }
 
         pane = createIsland(i, sub, eventHandler, dragHandler);
@@ -799,7 +857,13 @@ public  class LoginController {
 
         if(sub == 0){
         }else{
-            //stampo il ponte nella posizione indicata
+            //stampo il ponte nella posizione indicata (angolo alto sx)
+            String address = "it/polimi/ingsw/NETWORK/Images/ponte_obliquo_bello2.png";
+            Image img = new Image(address, 70, 70, false, true, true);
+            ImageView view = new ImageView(img);
+            GridPane.setValignment(view, VPos.BOTTOM);
+
+            centerBoard.add(view, 0, 0);
         }
 
         //NUVOLE
@@ -831,12 +895,12 @@ public  class LoginController {
 
         //LAYOUT CONSTRAINTS
         centerBoard.getColumnConstraints().add(new ColumnConstraints(100));
-        centerBoard.getColumnConstraints().add(new ColumnConstraints(100));
-        centerBoard.getColumnConstraints().add(new ColumnConstraints(30));
-        centerBoard.getColumnConstraints().add(new ColumnConstraints(100));
-        centerBoard.getColumnConstraints().add(new ColumnConstraints(30));
-        centerBoard.getColumnConstraints().add(new ColumnConstraints(100));
-        centerBoard.getColumnConstraints().add(new ColumnConstraints(30));
+        centerBoard.getColumnConstraints().add(new ColumnConstraints(80));
+        centerBoard.getColumnConstraints().add(new ColumnConstraints(50));
+        centerBoard.getColumnConstraints().add(new ColumnConstraints(80));
+        centerBoard.getColumnConstraints().add(new ColumnConstraints(50));
+        centerBoard.getColumnConstraints().add(new ColumnConstraints(80));
+        centerBoard.getColumnConstraints().add(new ColumnConstraints(50));
         centerBoard.getColumnConstraints().add(new ColumnConstraints(100));
         centerBoard.getColumnConstraints().add(new ColumnConstraints(100));
         centerBoard.getColumnConstraints().add(new ColumnConstraints(30));
