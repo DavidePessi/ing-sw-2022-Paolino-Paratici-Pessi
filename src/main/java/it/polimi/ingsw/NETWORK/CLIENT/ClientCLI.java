@@ -9,7 +9,6 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
 public final class ClientCLI {
 
     private static String ip;
@@ -40,15 +39,41 @@ public final class ClientCLI {
     }
 
 
+    /**
+     * reurns if the connection is active
+     * @return
+     */
     public synchronized static boolean isActive(){
         return active;
     }
+
+    /**
+     * set the activity of the connection with the parameter a
+     * @param a
+     */
     public synchronized static void setActive(boolean a){
         active = a;
     }
+
+    /**
+     * the the closure of the connection with the parameter b
+     * @param b
+     */
     public synchronized static void setClose(boolean b){close = b;}
+
+    /**
+     * returns if the connection is closed
+     * @return
+     */
     public synchronized static boolean getClose(){return close;}
 
+
+    /**
+     * allows you to read asynchronously from socket
+     * @param socketIn
+     * @param socketOut
+     * @return
+     */
     public static Thread asyncReadFromSocket(final ObjectInputStream socketIn, final ObjectOutputStream socketOut){
         Thread t = new Thread(new Runnable() {
             @Override
@@ -152,6 +177,13 @@ public final class ClientCLI {
         return t;
     };
 
+
+    /**
+     * allows you to write asynchronously from socket
+     * @param stdin
+     * @param socketOut
+     * @return
+     */
     public static Thread asyncWriteToSocket(final Scanner stdin, final ObjectOutputStream socketOut){
         Thread t = new Thread(new Runnable() {
             @Override
@@ -375,6 +407,9 @@ public final class ClientCLI {
         return t;
     }
 
+    /**
+     * close the connection
+     */
     private static void close()  {
         setActive(false);
 
@@ -392,6 +427,12 @@ public final class ClientCLI {
         System.out.println("Connection closed from the client side");
     }
 
+    /**
+     * run the class ClientCLI
+     * @param ip1
+     * @param port1
+     * @throws IOException
+     */
     public static void run(String ip1, int port1) throws IOException{
 
         ip = ip1;
@@ -421,13 +462,19 @@ public final class ClientCLI {
         }
     }
 
+    /**
+     * set the current client action
+     * @param clientA
+     */
     private static void setClientAction(ClientAction clientA){
         clientAction = clientA;
     }
 
-
-    //METODI RELATIVI AL PING E AL NETWORK
-
+    /**
+     * allows to send to the socket
+     * @param socketOut
+     * @param cm
+     */
     private static synchronized void send(ObjectOutputStream socketOut,ClientMessage cm){
         try {
             socketOut.writeObject(cm); //Write byte stream to file system.
@@ -436,6 +483,11 @@ public final class ClientCLI {
         }catch(IOException e){}
     }
 
+    /**
+     * allows you to send ping asynchronously from socket
+     * @param socketOut
+     * @return
+     */
     private static Thread asyncPing(ObjectOutputStream socketOut) {
         Thread t = new Thread(new Runnable() {
             @Override
@@ -461,6 +513,10 @@ public final class ClientCLI {
         return t;
     }
 
+    /**
+     * allows you to decrease ping asynchronously from socket
+     * @return
+     */
     private static Thread asyncPingDecrease(){
 
         Thread t = new Thread(new Runnable() {
@@ -481,6 +537,10 @@ public final class ClientCLI {
         });
         return t;
     }
+
+    /**
+     * set the variable ping
+     */
     private static void ping() {
         pingTime = 10;
     }

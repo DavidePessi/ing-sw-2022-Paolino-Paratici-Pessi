@@ -32,7 +32,6 @@ import java.io.IOException;
 
 public  class LoginController {
 
-    //LABEL - INSERIMETO_DATI_GIOCATORI
     @FXML
     private TextField GAMEMODE_text_field;
     @FXML
@@ -40,8 +39,6 @@ public  class LoginController {
     @FXML
     private TextField NUMPLAYERS_text_field;
 
-
-    //LABEL - CONNECTION
     @FXML
     private Label IP;
     @FXML
@@ -53,25 +50,27 @@ public  class LoginController {
     @FXML
     private TextField PORT_text_field;
 
-
-    //INTERNAL VARIABLE for rendering
     private Stage stage = new Stage();
     private ActionEvent event = new ActionEvent();
     private Scene scene;
     private Parent root;
 
-    //INTERNAL VARIABLE for computation
     private Boolean buttonIsClicked = false;
     private ClientAction action = ClientAction.STAI_FERMO;
-
-    //METODI
     public LoginController() throws IOException {
     }
+
+    /**
+     * initialize the controller
+     */
     @FXML
     public void initialize() {
         ClientModelGUI.setController(this);
     }
 
+    /**
+     * create a new client gui
+     */
     private void callClient(){
         ClientCLI client = new ClientCLI("GUI");
 
@@ -81,14 +80,22 @@ public  class LoginController {
         catch(Exception e){}
     }
 
-    //GESTIONE EVENTI
-    @FXML //bottone per andare in lobby (statico)
+    /**
+     * allows me to go to lobby
+     * @param e
+     */
+    @FXML
     protected void goToLobby(ActionEvent e) {
         this.event = e;
         setButtonIsClicked(true);
     }
 
-    @FXML//bottone per andare alla pagina di login (statico)
+    /**
+     * when i click the button this function take IP and PORT and create a new client gui
+     * @param event
+     * @throws IOException
+     */
+    @FXML
     protected void onLoginButtonClick(ActionEvent event) throws IOException {
         this.event = event;
         System.out.println(IP_text_field.getText());
@@ -97,24 +104,46 @@ public  class LoginController {
         callClient();
     }
 
-
-    //LETTURA DA LABEL
+    /**
+     * allows to send the IP
+     * @return
+     */
     public String sendIP()  {
         String ip = IP_text_field.getText();
         return ip;
     }
+
+    /**
+     * allows to send the PORT
+     * @return
+     */
     public int sendPort(){
         int port = Integer.parseInt(PORT_text_field.getText());
         return port;
     }
+
+    /**
+     * allows to send the type of the game
+     * @return
+     */
     public String sendTypeGame()  {
         String typeGame = GAMEMODE_text_field.getText();
         return typeGame;
     }
+
+    /**
+     * allows to send the number of the players
+     * @return
+     */
     public String sendNumPlayers(){
         String numPlayers = NUMPLAYERS_text_field.getText();
         return numPlayers;
     }
+
+    /**
+     * allows to send the nickname
+     * @return
+     */
     public String sendNickname()  {
         String nick = NICKNAME_field_text.getText();
         setButtonIsClicked(false);
@@ -122,7 +151,9 @@ public  class LoginController {
         return nick;
     }
 
-    //AGGIORNAMENTO BOARD
+    /**
+     * change the page to login page
+     */
     public void changeToLoginPage(){
         Platform.runLater(()->{
             try {
@@ -141,6 +172,10 @@ public  class LoginController {
 
         });
     }
+
+    /**
+     * change the page to waiting page
+     */
     public void changeToWaitingPage(){
         Platform.runLater(()-> {
             Parent root = null;
@@ -154,6 +189,10 @@ public  class LoginController {
             }
         });
     }
+
+    /**
+     * change to disconnecition page
+     */
     public void changeToDisconnectedPage(){
         Platform.runLater(()-> {
             try {
@@ -180,6 +219,10 @@ public  class LoginController {
             }
         });
     }
+
+    /**
+     * change to keep playing page
+     */
     public void changeToKeepPlayingPage(){
         Platform.runLater(()-> {
             try {
@@ -247,6 +290,10 @@ public  class LoginController {
             }
         });
     }
+
+    /**
+     * change to board page
+     */
     public void changeToBoard(){
         Platform.runLater(()->{
 
@@ -586,6 +633,11 @@ public  class LoginController {
         });
     }
 
+
+    /**
+     * shows the top of the board
+     * @return
+     */
     public GridPane showTopBoard(){
         GridPane topBoard = new GridPane();
         topBoard.setStyle("-fx-background-color:#FFFFFF;");
@@ -603,6 +655,11 @@ public  class LoginController {
         return topBoard;
     }
 
+
+    /**
+     * shows the bottom of the board
+     * @return
+     */
     public GridPane showBottomBoard(EventHandler<? super MouseEvent> eventHandler, EventHandler<? super DragEvent> dragHandler){
         GridPane bottomBoard = new GridPane();
         int width;
@@ -661,6 +718,10 @@ public  class LoginController {
         return bottomBoard;
     }
 
+    /**
+     * shows the center of the board
+     * @return
+     */
     public GridPane showCenterBoard(EventHandler<? super MouseEvent> eventHandler, EventHandler<? super DragEvent> dragHandler){
         GridPane centerBoard = new GridPane();
         Button button;
@@ -917,6 +978,10 @@ public  class LoginController {
         return centerBoard;
     }
 
+    /**
+     * shows the right of the board
+     * @return
+     */
     private GridPane showRightBoard(EventHandler<? super MouseEvent> eventHandler, EventHandler<? super DragEvent> dragHandler){
         GridPane rightBoard = new GridPane();
         int j = 0;
@@ -945,6 +1010,14 @@ public  class LoginController {
         return rightBoard;
     }
 
+    /**
+     * create island on the board
+     * @param i
+     * @param sub
+     * @param eventHandler
+     * @param dragHandler
+     * @return
+     */
     private GridPane createIsland(int i, int sub, EventHandler<? super MouseEvent> eventHandler, EventHandler<? super DragEvent> dragHandler) {
         GridPane pane = new GridPane();
 
@@ -1067,6 +1140,12 @@ public  class LoginController {
         return pane;
     }
 
+    /**
+     * create island on the board
+     * @param i
+     * @param eventHandler
+     * @return
+     */
     private GridPane createCloud(int i, EventHandler<? super MouseEvent> eventHandler){
         GridPane gpane = new GridPane();
 
@@ -1184,6 +1263,15 @@ public  class LoginController {
         return gpane;
     }
 
+    /**
+     * create island on the board
+     * @param factor
+     * @param client
+     * @param dragHandler
+     * @param eventHandler
+     * @param drag
+     * @return
+     */
     private GridPane createDashBoard(int factor, String client, EventHandler<? super DragEvent> dragHandler, EventHandler<? super MouseEvent> eventHandler , boolean drag){
 
         //PLANCIA
@@ -1370,6 +1458,14 @@ public  class LoginController {
         return gpane;
     }
 
+    /**
+     * create island on the board
+     * @param name
+     * @param k
+     * @param eventHandler
+     * @param dragHandler
+     * @return
+     */
     private GridPane createCharacterCard(String name, int k,EventHandler<? super MouseEvent> eventHandler, EventHandler<? super DragEvent> dragHandler){
         GridPane gp = new GridPane();
 
@@ -1440,7 +1536,11 @@ public  class LoginController {
         return gp;
     }
 
-    //METODI UTILI
+    /**
+     * returns the address of the parameter
+     * @param c
+     * @return
+     */
     private String getAddress(Colour c){
         String address = "";
 
@@ -1458,6 +1558,12 @@ public  class LoginController {
 
         return address;
     }
+
+    /**
+     * returns the address of the card with the number i
+     * @param i
+     * @return
+     */
     private String getAddressCard(int i){
         String address = "";
 
@@ -1485,6 +1591,12 @@ public  class LoginController {
 
         return address;
     }
+
+    /**
+     * returns the address of the character with name s
+     * @param s
+     * @return
+     */
     private String getAddressCharacter(String s){
         String address = "";
 
@@ -1509,6 +1621,12 @@ public  class LoginController {
         return address;
 
     }
+
+    /**
+     * returns the address of the professor with colour c
+     * @param c
+     * @return
+     */
     private String getAddressProfessor(Colour c){
         String address = "";
 
@@ -1526,6 +1644,12 @@ public  class LoginController {
 
         return address;
     }
+
+    /**
+     * returns the address of the tower with colour c
+     * @param c
+     * @return
+     */
     private String getAddressTower(ColourTower c){
         String address = "";
         if (c.equals(ColourTower.BLACK)){
@@ -1539,14 +1663,20 @@ public  class LoginController {
         return address;
     }
 
-    //GET AND SET
+    /**
+     * returns if the button has been clicked
+     * @return
+     */
     public boolean getButtonIsClicked() {
         return buttonIsClicked;
     }
+
+    /**
+     * set if the button has been clicked
+     * @param b
+     */
     private void setButtonIsClicked(boolean b) {
         //System.out.println("settato a" + b + "il buttone");
         buttonIsClicked = b;
     }
-
-
 }

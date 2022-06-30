@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="FINIRE DI COMMENTARE CLI" />
         <module name="Eriantys" />
         <module name="GC24" />
       </profile>

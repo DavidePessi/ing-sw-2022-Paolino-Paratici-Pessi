@@ -16,7 +16,6 @@ import java.util.Scanner;
 
 public final class ClientModelGUI extends UserInterface {
 
-    //VARIABILI PER INVIO DI AZIONI
     private static boolean buttonIsClicked = false;
 
     private static ClientAction action;
@@ -34,15 +33,11 @@ public final class ClientModelGUI extends UserInterface {
     private static int colors2 = 0;
 
     protected static String nickname = "";
-
     private static String cardThrown = "";
-
-    //VARIABILI PER CAMBIO DI PAGINA
     protected static boolean boardCreated = false;
     protected static Stage stage = new Stage();
     private static LoginController controller;
     public static ColourTower winner = ColourTower.NO_ONE;
-
 
     static {
         try {
@@ -52,18 +47,21 @@ public final class ClientModelGUI extends UserInterface {
         }
     }
 
-
-    
     public ClientModelGUI(){
 
         super();
     }
 
-
-    //todo : deve mostrare che cosa non va bene
+    /**
+     * it show if something is wrong
+     * @param message
+     */
     public static void clientError(ServerMessage message){}
 
-    //METODI CHE RICHIEDONO DATI
+    /**
+     * allows to send a nickname to the server
+     * @return
+     */
     public static ClientMessage sendNickname()throws Exception{
 
         ClientHeader ch;
@@ -87,6 +85,10 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
+    /**
+     * allows to send the type of game to the server
+     * @return
+     */
     public static ClientMessage sendTypeGame()throws Exception{
 
         ClientHeader ch;
@@ -106,6 +108,10 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
+    /**
+     * allows to send the number of the player to the server
+     * @return
+     */
     public static ClientMessage sendNumPlayers()throws Exception{
 
         ClientHeader ch;
@@ -126,6 +132,11 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
+    /**
+     * allows to send the type of action chose by the client
+     * @return
+     * @throws Exception
+     */
     public static ClientAction sendTypeAction()throws Exception{
         while(!getButtonIsClicked() && !ClientCLI.getClose()){try{Thread.sleep(100);}catch(Exception e){}}
 
@@ -134,6 +145,10 @@ public final class ClientModelGUI extends UserInterface {
         return getAction();
     }
 
+    /**
+     * allows to send the played card chose by the client
+     * @return
+     */
     public static ClientMessage sendPlayCard(){
         ClientHeader ch;
         Payload pay;
@@ -168,6 +183,10 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
+    /**
+     * allows to take the cloud chosen by the client
+     * @return
+     */
     public static ClientMessage sendTakeCloud(){
         ClientHeader ch;
         Payload pay;
@@ -195,6 +214,10 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
+    /**
+     * allows to send the num of movement of mother nature
+     * @return
+     */
     public static ClientMessage sendMoveMotherNature(){
         ClientHeader ch;
         Payload pay;
@@ -232,6 +255,10 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
+    /**
+     * allows you to send the color that the client wishes to move to the dining room to the server
+     * @return
+     */
     public static ClientMessage sendMoveStudentInDiningRoom(){
         ClientHeader ch;
         Payload pay;
@@ -256,6 +283,10 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
+    /**
+     *  allows you to send the color that the client wishes to move to the island to the server
+     * @return
+     */
     public static ClientMessage sendMoveStudentInIsland(){
         ClientHeader ch;
         Payload pay;
@@ -283,7 +314,10 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
-
+    /**
+     * allows to send the character card played chose by the client
+     * @return
+     */
     public static ClientMessage sendPlayCharacterCard(){
         ClientHeader ch;
         Payload pay;
@@ -373,6 +407,10 @@ public final class ClientModelGUI extends UserInterface {
         return cm;
     }
 
+    /**
+     * allows you to continue playing
+     * @return
+     */
     public static String keepPlaying(){
 
         while(!getButtonIsClicked()){
@@ -382,12 +420,22 @@ public final class ClientModelGUI extends UserInterface {
         return getActionPlayed();
     }
 
-    //METODI UTILI
+    /**
+     * set the controller
+     * @param control
+     */
     public static void setController(LoginController control){
         //System.out.println("ho cambiato il controller");
         controller = control;
 
     }
+
+    /**
+     * returns the player with that nickname
+     * @param s
+     * @return
+     * @throws Exception
+     */
     public static Player getPlayer(String s)throws Exception{
         Player player= null;
         for(Player p : listPlayer){
@@ -400,39 +448,88 @@ public final class ClientModelGUI extends UserInterface {
         }else{return player;}
     }
 
+    /**
+     * returns the current action
+     * @return
+     */
     public static ClientAction getAction(){
         return action;
     }
+
+    /**
+     * set the new action
+     * @param newAction
+     */
     protected static void setAction(ClientAction newAction){action = newAction;}
 
+    /**
+     * set the action that the client has played
+     * @param s
+     */
     protected static void setActionPlayed(String s){
         actionPlayed = s;
     }
+
+    /**
+     * returns the action that the client played
+     * @return
+     */
     public static String getActionPlayed(){
         setButtonIsClicked(false);
         return actionPlayed;
     }
 
+    /**
+     * set the action that the client has played
+     * @param s
+     */
     protected static void setActionPlayed2(String s){
         actionPlayed2 = s;
     }
+
+    /**
+     * returns the action that the client played
+     * @return
+     */
     public static String getActionPlayed2(){
         setButtonIsClicked(false);
         return actionPlayed2;
     }
 
+    /**
+     * returns if the button has been clicked
+     * @return
+     */
     public static boolean getButtonIsClicked() {
         return buttonIsClicked;
     }
+
+    /**
+     * set if the button has been clicked
+     * @return
+     */
     protected static void setButtonIsClicked(boolean b) {
         buttonIsClicked = b;
     }
 
+    /**
+     * set the card that has been thrown
+     * @param s
+     */
     protected static void setCardThrown(String s){
         cardThrown = s;
     }
+
+    /**
+     * returns the card that has been thrown
+     * @return
+     */
     protected static String getCardThrown(){return cardThrown;}
 
+    /**
+     * set the action that the client has played
+     * @param actionPlayed3
+     */
     public static void setActionPlayed3(String actionPlayed3) {
         ClientModelGUI.actionPlayed3 = actionPlayed3;
     }
@@ -440,6 +537,10 @@ public final class ClientModelGUI extends UserInterface {
         return actionPlayed3;
     }
 
+    /**
+     * set the action that the client has played
+     * @param actionPlayed4
+     */
     public static void setActionPlayed4(String actionPlayed4) {
         ClientModelGUI.actionPlayed4 = actionPlayed4;
     }
@@ -447,6 +548,10 @@ public final class ClientModelGUI extends UserInterface {
         return actionPlayed4;
     }
 
+    /**
+     * set the action that the client has played
+     * @param actionPlayed5
+     */
     public static void setActionPlayed5(String actionPlayed5) {
         ClientModelGUI.actionPlayed5 = actionPlayed5;
     }
@@ -454,6 +559,10 @@ public final class ClientModelGUI extends UserInterface {
         return actionPlayed5;
     }
 
+    /**
+     * set the action that the client has played
+     * @param actionPlayed6
+     */
     public static void setActionPlayed6(String actionPlayed6) {
         ClientModelGUI.actionPlayed6 = actionPlayed6;
     }
@@ -461,6 +570,10 @@ public final class ClientModelGUI extends UserInterface {
         return actionPlayed6;
     }
 
+    /**
+     * set the action that the client has played
+     * @param actionPlayed7
+     */
     public static void setActionPlayed7(String actionPlayed7) {
         ClientModelGUI.actionPlayed7 = actionPlayed7;
     }
@@ -468,6 +581,10 @@ public final class ClientModelGUI extends UserInterface {
         return actionPlayed7;
     }
 
+    /**
+     * set the action that the client has played
+     * @param actionPlayed8
+     */
     public static void setActionPlayed8(String actionPlayed8) {
         ClientModelGUI.actionPlayed8 = actionPlayed8;
     }
@@ -475,12 +592,35 @@ public final class ClientModelGUI extends UserInterface {
         return actionPlayed8;
     }
 
+    /**
+     * set the colour1
+     * @param num
+     */
     public static void setColors1(int num){ClientModelGUI.colors1 = num;}
+
+    /**
+     * returns the colour1
+     * @return
+     */
     public static int getColors1(){return colors1;}
 
+    /**
+     * set the colour2
+     * @param num
+     */
     public static void setColors2(int num){ClientModelGUI.colors2 = num;}
+
+    /**
+     * returns the colour2
+     * @return
+     */
     public static int getColors2(){return colors2;}
 
+    /**
+     * converts from string to int
+     * @param inputLine
+     * @return
+     */
     private static int stringToInt(String inputLine){
         int n;
         if(inputLine.equals("0")){
@@ -515,6 +655,12 @@ public final class ClientModelGUI extends UserInterface {
 
         return n;
     }
+
+    /**
+     * converts from string to colour
+     * @param inputLine
+     * @return
+     */
     private static Colour stringToColour(String inputLine) {
         if(inputLine.equals("blue")){
             return Colour.BLUE;
@@ -528,6 +674,12 @@ public final class ClientModelGUI extends UserInterface {
             return Colour.PINK;
         }
     }
+
+    /**
+     * converts from colour to string
+     * @param inputLine
+     * @return
+     */
     protected static String colourToString(Colour inputLine){
 
         if(inputLine.equals(Colour.BLUE)){
@@ -543,21 +695,36 @@ public final class ClientModelGUI extends UserInterface {
         }
     }
 
-    //CAMBI PAGINA
+    /**
+     * change the page to login page
+     */
     public static void changeToLoginPage() {
         controller.changeToLoginPage();
     }
 
+    /**
+     * change the page to waiting page
+     */
     public static void changeToWaitingPage() {
         controller.changeToWaitingPage();
     }
 
+    /**
+     * change to board page
+     */
     public static void changeToBoard(){
         controller.changeToBoard();
     }
 
+    /**
+     * change to disconnecition page
+     */
     public static void changeToDisconnectedPage(){controller.changeToDisconnectedPage();}
 
+    /**
+     * change to keep playing page
+     * @param sm
+     */
     public static void changeToKeepPlayingPage(ServerMessage sm){
         ClientModelGUI.winner = ((Team) (sm.getPayload().getParameter("team"))).getColourTower();
         controller.changeToKeepPlayingPage();

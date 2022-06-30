@@ -26,8 +26,9 @@ public final class ClientModelCLI extends UserInterface{
         stdin = std;
     }
 
-    //METODI CHE MOSTRANO AL CLIENT
-
+    /**
+     * shows the board at the client
+     */
     public static void showBoard(){
 
         String board = "";
@@ -49,18 +50,18 @@ public final class ClientModelCLI extends UserInterface{
 
                         //setto il colore della stringa
                         if(j.getPool().get(k).getColour().equals(Colour.BLUE)){
-                            colore = "[34m";
+                            colore = "Blue";
                         } else if(j.getPool().get(k).getColour().equals(Colour.RED)){
-                            colore = "[31m";
+                            colore = "Red";
                         } else if(j.getPool().get(k).getColour().equals(Colour.PINK)){
-                            colore = "[35m";
+                            colore = "Pink";
                         } else if(j.getPool().get(k).getColour().equals(Colour.GREEN)){
-                            colore = "[32m";
+                            colore = "Green";
                         } else if(j.getPool().get(k).getColour().equals(Colour.YELLOW)){
-                            colore = "[33m";
+                            colore = "Yellow";
                         }
 
-                        board = board + (char) 27 + colore +"▪"+ "\u001B[0m";
+                        board = board + colore + " ";
                     }
                     board = board + "]\n";
                 } else if(card instanceof Priest){
@@ -72,18 +73,18 @@ public final class ClientModelCLI extends UserInterface{
 
                         //setto il colore della stringa
                         if(j.getPool().get(k).getColour().equals(Colour.BLUE)){
-                            colore = "[34m";
+                            colore = "Blue";
                         } else if(j.getPool().get(k).getColour().equals(Colour.RED)){
-                            colore = "[31m";
+                            colore = "Red";
                         } else if(j.getPool().get(k).getColour().equals(Colour.PINK)){
-                            colore = "[35m";
+                            colore = "Pink";
                         } else if(j.getPool().get(k).getColour().equals(Colour.GREEN)){
-                            colore = "[32m";
+                            colore = "Green";
                         } else if(j.getPool().get(k).getColour().equals(Colour.YELLOW)){
-                            colore = "[33m";
+                            colore = "Yellow";
                         }
 
-                        board = board + (char) 27 + colore +"▪"+ "\u001B[0m";
+                        board = board + colore + " ";
                     }
                     board = board + "]\n";
                 } else if(card instanceof Woman){
@@ -95,18 +96,18 @@ public final class ClientModelCLI extends UserInterface{
 
                         //setto il colore della stringa
                         if(j.getPool().get(k).getColour().equals(Colour.BLUE)){
-                            colore = "[34m";
+                            colore = "Blue";
                         } else if(j.getPool().get(k).getColour().equals(Colour.RED)){
-                            colore = "[31m";
+                            colore = "Red";
                         } else if(j.getPool().get(k).getColour().equals(Colour.PINK)){
-                            colore = "[35m";
+                            colore = "Pink";
                         } else if(j.getPool().get(k).getColour().equals(Colour.GREEN)){
-                            colore = "[32m";
+                            colore = "Green";
                         } else if(j.getPool().get(k).getColour().equals(Colour.YELLOW)){
-                            colore = "[33m";
+                            colore = "Yellow";
                         }
 
-                        board = board + (char) 27 + colore +"▪"+ "\u001B[0m";
+                        board = board + colore + " ";
                     }
                     board = board + "]\n";
                 } else{
@@ -126,6 +127,10 @@ public final class ClientModelCLI extends UserInterface{
         System.out.println(board);
     }
 
+    /**
+     * shows the cloud at the client
+     * @return
+     */
     private static String showCloud(){
         String cloud = "";
         String colore = "";
@@ -137,33 +142,33 @@ public final class ClientModelCLI extends UserInterface{
                 if(listPlayer.size() == 3) {
                     for (int i = 0; i < 4; i++) {
                         if (listCloud.get(j).getStudent(i).getColour().equals(Colour.BLUE)) {
-                            colore = "[34m";
+                            colore = "Blue";
                         } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.RED)) {
-                            colore = "[31m";
+                            colore = "Red";
                         } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.PINK)) {
-                            colore = "[35m";
+                            colore = "Pink";
                         } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.GREEN)) {
-                            colore = "[32m";
+                            colore = "Green";
                         } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.YELLOW)) {
-                            colore = "[33m";
+                            colore = "Yellow";
                         }
-                        cloud = cloud + (char) 27 + colore + "▪" + "\u001B[0m";
+                        cloud = cloud + colore + " ";
                     }
                 }
                 else{
                     for (int i = 0; i < 3; i++) {
                         if (listCloud.get(j).getStudent(i).getColour().equals(Colour.BLUE)) {
-                            colore = "[34m";
+                            colore = "Blue";
                         } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.RED)) {
-                            colore = "[31m";
+                            colore = "Red";
                         } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.PINK)) {
-                            colore = "[35m";
+                            colore = "Pink";
                         } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.GREEN)) {
-                            colore = "[32m";
+                            colore = "Green";
                         } else if (listCloud.get(j).getStudent(i).getColour().equals(Colour.YELLOW)) {
-                            colore = "[33m";
+                            colore = "Yellow";
                         }
-                        cloud = cloud + (char) 27 + colore + "▪" + "\u001B[0m";
+                        cloud = cloud + colore + " ";
                     }
                 }
             }
@@ -171,6 +176,11 @@ public final class ClientModelCLI extends UserInterface{
         }
         return cloud;
     }
+
+    /**
+     * shows the Players at the client
+     * @return
+     */
     private static String showPlayer(){
         String players = "";
 
@@ -200,66 +210,47 @@ public final class ClientModelCLI extends UserInterface{
             //metto i professori
             players = players + "\nprofessors: ";
 
-            if(player.professorPresent(Colour.RED))players = players + (char) 27 + "[31m" + "◊" + "\u001B[0m";
-            if(player.professorPresent(Colour.YELLOW))players = players + (char) 27 + "[33m" + "◊" + "\u001B[0m";
-            if(player.professorPresent(Colour.GREEN))players = players + (char) 27 + "[32m" + "◊" + "\u001B[0m";
-            if(player.professorPresent(Colour.BLUE))players = players + (char) 27 + "[34m" + "◊" + "\u001B[0m";
-            if(player.professorPresent(Colour.PINK))players = players + (char) 27 + "[35m" + "◊" + "\u001B[0m";
+            if(player.professorPresent(Colour.RED))players = players + "RedProf ";
+            if(player.professorPresent(Colour.YELLOW))players = players + "YellowProf";
+            if(player.professorPresent(Colour.GREEN))players = players + (char) 27 + "GreenProf";
+            if(player.professorPresent(Colour.BLUE))players = players + (char) 27 + "BlueProf";
+            if(player.professorPresent(Colour.PINK))players = players + (char) 27 + "PinkProf";
 
-            players = players +( "\nentrance : \n[");
+            players = players +( "\nentrance : \n");
 
-            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.RED); i++) {
-                players = players +((char) 27 + "[31m" + "▪" + "\u001B[0m");
-            }
+            players = players + "Red: " + player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.RED) + "\n";
 
-            players = players +( "]\n[");
-            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.YELLOW); i++) {
-                players = players +((char) 27 + "[33m" + "▪" + "\u001B[0m");
-            }
+            players = players + "Blue: " + player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.BLUE) + "\n";
 
-            players = players +( "]\n[");
-            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.GREEN); i++) {
-                players = players +((char) 27 + "[32m" + "▪" + "\u001B[0m");
-            }
+            players = players + "Green: " + player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.GREEN) + "\n";
 
-            players = players +( "]\n[");
-            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.BLUE); i++) {
-                players = players +((char) 27 + "[34m" + "▪" + "\u001B[0m");
-            }
+            players = players + "Yellow: " + player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.YELLOW) + "\n";
 
-            players = players +( "]\n[");
-            for (int i = 0; i < player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.PINK); i++) {
-                players = players +((char) 27 + "[35m" + "▪" + "\u001B[0m");
-            }
-
-            players = players +( "]\n");
+            players = players + "Pink: " + player.getEntrance().getStudentGroup().countStudentsOfColour(Colour.PINK) + "\n";
 
 
-            players = players +( "DiningRoom : \n[");
-            for (int i = 0; i < player.numStudentsDiningRoom(Colour.RED); i++) {
-                players = players +((char) 27 + "[31m" + "▪" + "\u001B[0m");
-            }
-            players = players +( "]\n[");
-            for (int i = 0; i < player.numStudentsDiningRoom(Colour.YELLOW); i++) {
-                players = players +((char) 27 + "[33m" + "▪" + "\u001B[0m");
-            }
-            players = players +( "]\n[");
-            for (int i = 0; i < player.numStudentsDiningRoom(Colour.GREEN); i++) {
-                players = players +((char) 27 + "[32m" + "▪" + "\u001B[0m");
-            }
-            players = players +( "]\n[");
-            for (int i = 0; i < player.numStudentsDiningRoom(Colour.BLUE); i++) {
-                players = players +((char) 27 + "[34m" + "▪" + "\u001B[0m");
-            }
-            players = players +( "]\n[");
-            for (int i = 0; i < player.numStudentsDiningRoom(Colour.PINK); i++) {
-                players = players +((char) 27 + "[35m" + "▪" + "\u001B[0m");
-            }
-            players = players +( "]\n");
+
+            players = players +( "DiningRoom : \n");
+
+            players = players + "Red: " + player.numStudentsDiningRoom(Colour.RED) + "\n";
+
+            players = players + "Blue: " + player.numStudentsDiningRoom(Colour.BLUE) + "\n";
+
+            players = players + "Green: " + player.numStudentsDiningRoom(Colour.GREEN) + "\n";
+
+            players = players + "Yellow: " + player.numStudentsDiningRoom(Colour.YELLOW) + "\n";
+
+            players = players + "Pink: " + player.numStudentsDiningRoom(Colour.PINK) + "\n";
+
 
         }
         return players;
     }
+
+    /**
+     * shows the Islands at the client
+     * @return
+     */
     private static String showIsland(){
         String island = "";
         String colore = "";
@@ -288,27 +279,33 @@ public final class ClientModelCLI extends UserInterface{
 
         //stampo gli studenti per colore sulle isole
         for(Colour colour : Colour.values()){
-
+            String tab = "";
             //setto il colore della stringa
             if(colour.equals(Colour.BLUE)){
-                colore = "[34m";
+                colore = "Blue";
+                tab = "\t\t\t";
             } else if(colour.equals(Colour.RED)){
-                colore = "[31m";
+                colore = "Red";
+                tab = "\t\t\t\t";
             } else if(colour.equals(Colour.PINK)){
-                colore = "[35m";
+                colore = "Pink";
+                tab = "\t\t\t";
             } else if(colour.equals(Colour.GREEN)){
-                colore = "[32m";
+                colore = "Green";
+                tab = "\t\t\t";
             } else if(colour.equals(Colour.YELLOW)){
-                colore = "[33m";
+                colore = "Yellow";
+                tab = "\t\t\t";
             }
 
             for (int i = 0; i < max; i++) {
                 island = island + ("\t|");
                 if(listIsland.get(i).countStudentsOfColour(colour)!=0) {
-                    island = island + ((char) 27 + colore + "▪" + listIsland.get(i).countStudentsOfColour(colour) + "\u001B[0m");
+                    island = island + (colore +": " + listIsland.get(i).countStudentsOfColour(colour));
+                    island = island + (tab+"|");
+                }else{
+                    island = island + ("\t\t\t\t\t|");
                 }
-                island = island + ("\t\t\t\t\t|");
-
             }
 
             island = island +("\n");
@@ -319,23 +316,18 @@ public final class ClientModelCLI extends UserInterface{
             island = island + "\t|";
             try{
                 if(listIsland.get(i).getColourTower().equals(ColourTower.BLACK)){
-                    for(int j = 0; j < listIsland.get(i).getNumSubIsland(); j++){
+                    island = island + "BlackTower: " + listIsland.get(i).getNumSubIsland()+ "\t\t|";
 
-                        island = island + ((char) 27 + "[30m" + "○" + "\u001B[0m");
-                    }
                 } else if(listIsland.get(i).getColourTower().equals(ColourTower.WHITE)){
-                    for(int j = 0; j < listIsland.get(i).getNumSubIsland(); j++){
-                        island = island + ((char) 27 + "[38m" + "○" + "\u001B[0m");
-                    }
+                    island = island + "WhiteTower: " + listIsland.get(i).getNumSubIsland()+ "\t\t|";
+
+                } else if(listIsland.get(i).getColourTower().equals(ColourTower.GREY)){
+                    island = island + "GreyTower: " + listIsland.get(i).getNumSubIsland()+ "\t\t|";
+                }else{
+                    island = island + ("\t\t\t\t\t|");
                 }
             }catch(MissingTowerException e){}
-            if(listIsland.get(i).getNumSubIsland() < 2) {
-                island = island + ("\t\t\t\t\t|");
-            } else if(listIsland.get(i).getNumSubIsland() <= 4){
-                island = island + ("\t\t\t\t|");
-            } else {
-                island = island + ("\t\t\t|");
-            }
+
         }
 
         island = island + "\n";
@@ -345,7 +337,7 @@ public final class ClientModelCLI extends UserInterface{
             island = island + "\t|";
 
             if(listIsland.get(i).getHasMotherNature()) {
-                island = island + "\t" + ((char) 27 + "[36m" + "֍mothernature֍" + "\u001B[0m") + "\t|";
+                island = island + "\t" + "֍mothernature֍" + "\t|";
             }
             else{
                 island = island + ("\t\t\t\t\t|");
@@ -377,25 +369,35 @@ public final class ClientModelCLI extends UserInterface{
         //stampo gli studenti per colore sulle isole
         for(Colour colour : Colour.values()){
 
+            String tab = "";
             //setto il colore della stringa
             if(colour.equals(Colour.BLUE)){
-                colore = "[34m";
+                colore = "Blue";
+                tab = "\t\t\t";
             } else if(colour.equals(Colour.RED)){
-                colore = "[31m";
+                colore = "Red";
+                tab = "\t\t\t\t";
             } else if(colour.equals(Colour.PINK)){
-                colore = "[35m";
+                colore = "Pink";
+                tab = "\t\t\t";
             } else if(colour.equals(Colour.GREEN)){
-                colore = "[32m";
+                colore = "Green";
+                tab = "\t\t\t";
             } else if(colour.equals(Colour.YELLOW)){
-                colore = "[33m";
+                colore = "Yellow";
+                tab = "\t\t\t";
             }
 
-            for (int i = 6; i < listIsland.size(); i++) {
+            for (int i = 0; i < listIsland.size(); i++) {
                 island = island + ("\t|");
                 if(listIsland.get(i).countStudentsOfColour(colour)!=0) {
-                    island = island + ((char) 27 + colore + "▪" + listIsland.get(i).countStudentsOfColour(colour) + "\u001B[0m");
+                    island = island + (colore +": " + listIsland.get(i).countStudentsOfColour(colour));
+                    island = island + (tab+"|");
+                }else{
+                    island = island + ("\t\t\t\t\t|");
                 }
-                island = island + ("\t\t\t\t\t|");
+
+
             }
 
             island = island +("\n");
@@ -406,21 +408,17 @@ public final class ClientModelCLI extends UserInterface{
             island = island + "\t|";
             try{
                 if(listIsland.get(i).getColourTower().equals(ColourTower.BLACK)){
-                    for(int j = 0; j < listIsland.get(i).getNumSubIsland(); j++){
-                        island = island + ((char) 27 + "[30m" + "○" + "\u001B[0m");
-                    }
+                    island = island + "BlackTower: " + listIsland.get(i).getNumSubIsland()+ "\t\t|";
+
                 } else if(listIsland.get(i).getColourTower().equals(ColourTower.WHITE)){
-                    for(int j = 0; j < listIsland.get(i).getNumSubIsland(); j++){
-                        island = island + ((char) 27 + "[38m" + "○" + "\u001B[0m");
-                    }
+                    island = island + "WhiteTower: " + listIsland.get(i).getNumSubIsland()+ "\t\t|";
+
+                } else if(listIsland.get(i).getColourTower().equals(ColourTower.GREY)){
+                    island = island + "GreyTower: " + listIsland.get(i).getNumSubIsland()+ "\t\t|";
+                }else{
+                    island = island + ("\t\t\t\t\t|");
                 }
             }catch(MissingTowerException e){}
-
-            if(listIsland.get(i).getNumSubIsland() < 2) {
-                island = island + ("\t\t\t\t\t|");
-            } else{
-                island = island + ("\t\t\t\t|");
-            }
         }
 
         island = island + "\n";
@@ -430,7 +428,7 @@ public final class ClientModelCLI extends UserInterface{
             island = island + "\t|";
 
             if(listIsland.get(i).getHasMotherNature()) {
-                island = island + "\t" + ((char) 27 + "[36m" + "֍mothernature֍" + "\u001B[0m") + "\t|";
+                island = island + "\t" + "֍mothernature֍" + "\t|";
             }
             else{
                 island = island + ("\t\t\t\t\t|");
@@ -448,6 +446,10 @@ public final class ClientModelCLI extends UserInterface{
         return island;
     }
 
+    /**
+     * show the moves that the client chose
+     * @param nickname
+     */
     public static void showMoves(String nickname){
         if(ClientModelCLI.currentPlayer.equals(nickname)){
             System.out.println("it's your turn!");
@@ -464,17 +466,28 @@ public final class ClientModelCLI extends UserInterface{
         }
     }
 
+    /**
+     * print the error that the client has committed
+     * @param message
+     */
     public static void clientError(ServerMessage message){
         System.out.println(message.getServerHeader().getDescription());
     }
 
+    /**
+     * set the winner team and send a message
+     * @param message
+     */
     public static void endGame(ServerMessage message){
         Team t = (Team) message.getPayload().getParameter("team");
         System.out.println("il team vincitore è il: " + t.getColourTower());
         System.out.println("vuoi giocare un'altra partita? ");
     }
 
-    //METODI CHE RICHIEDONO DATI
+    /**
+     * allows to send a nickname to the server
+     * @return
+     */
     public static ClientMessage sendNickname(){
         String inputLine;
         ClientHeader ch;
@@ -491,6 +504,10 @@ public final class ClientModelCLI extends UserInterface{
         return cm;
     }
 
+    /**
+     * allows to send the type of game to the server
+     * @return
+     */
     public static ClientMessage sendTypeGame(){
         String inputLine;
         ClientHeader ch;
@@ -506,6 +523,10 @@ public final class ClientModelCLI extends UserInterface{
         return cm;
     }
 
+    /**
+     * allows to send the number of the player to the server
+     * @return
+     */
     public static ClientMessage sendNumPlayers(){
         String inputLine;
         ClientHeader ch;
@@ -522,6 +543,11 @@ public final class ClientModelCLI extends UserInterface{
         return cm;
     }
 
+    /**
+     * allows to send the type of action chose by the client
+     * @return
+     * @throws Exception
+     */
     public static ClientAction sendTypeAction()throws Exception{
         String inputLine;
         ClientHeader ch;
@@ -574,6 +600,10 @@ public final class ClientModelCLI extends UserInterface{
         }
     }
 
+    /**
+     * allows to send the played card chose by the client
+     * @return
+     */
     public static ClientMessage sendPlayCard(){
         String inputLine;
         ClientHeader ch;
@@ -602,6 +632,10 @@ public final class ClientModelCLI extends UserInterface{
         return cm;
     }
 
+    /**
+     * allows to send the character card played chose by the client
+     * @return
+     */
     public static ClientMessage sendPlayCharacterCard(){
         String inputLine;
         ClientHeader ch;
@@ -779,6 +813,10 @@ public final class ClientModelCLI extends UserInterface{
         return cm;
     }
 
+    /**
+     * allows to send the num of movement of mother nature
+     * @return
+     */
     public static ClientMessage sendMoveMotherNature(){
         String inputLine;
         ClientHeader ch;
@@ -806,6 +844,10 @@ public final class ClientModelCLI extends UserInterface{
         return cm;
     }
 
+    /**
+     * allows you to send the color that the client wishes to move to the dining room to the server
+     * @return
+     */
     public static ClientMessage sendMoveStudentInDiningRoom(){
         String inputLine;
         ClientHeader ch;
@@ -833,6 +875,10 @@ public final class ClientModelCLI extends UserInterface{
         return cm;
     }
 
+    /**
+     *  allows you to send the color that the client wishes to move to the island to the server
+     * @return
+     */
     public static ClientMessage sendMoveStudentInIsland(){
         String inputLine;
         ClientHeader ch;
@@ -864,6 +910,10 @@ public final class ClientModelCLI extends UserInterface{
         return cm;
     }
 
+    /**
+     * allows to take the cloud chosen by the client
+     * @return
+     */
     public static ClientMessage sendTakeCloud(){
         String inputLine;
         ClientHeader ch;
@@ -892,6 +942,10 @@ public final class ClientModelCLI extends UserInterface{
         return cm;
     }
 
+    /**
+     * allows you to continue playing
+     * @return
+     */
     public static String keepPlaying(){
         String inputLine;
         inputLine = stdin.nextLine();
@@ -899,8 +953,12 @@ public final class ClientModelCLI extends UserInterface{
         return inputLine;
     }
 
-
-    //METODI DI COMPUTAZIONE
+    /**
+     * converts from string to colour
+     * @param inputLine
+     * @param stdin
+     * @return
+     */
     private static Colour stringToColour(String inputLine, Scanner stdin){
 
         while(!inputLine.equals("blue") && !inputLine.equals("yellow") && !inputLine.equals("red") && !inputLine.equals("green") && !inputLine.equals("pink")){
@@ -922,6 +980,11 @@ public final class ClientModelCLI extends UserInterface{
         }
     }
 
+    /**
+     * converts from string to int
+     * @param inputLine
+     * @return
+     */
     private static int stringToInt(String inputLine){
         int n;
         if(inputLine.equals("12345")){

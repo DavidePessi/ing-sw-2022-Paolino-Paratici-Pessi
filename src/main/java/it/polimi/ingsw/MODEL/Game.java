@@ -184,113 +184,113 @@ public class Game extends Observable {
             //estrarre casualmente 3 carte
             Random random = new Random();
             for (int i = 0; i < 3; i++) {
-                    boolean isPresent = false;
-                    int num = random.nextInt(8);
+                boolean isPresent = false;
+                int num = random.nextInt(8);
 
-                    if (num == 0) {
-                        for (CharacterCard c : characterCards) {
-                            if (c.getNameCard().equals("Jester")) {
-                                isPresent = true;
-                            }
-                        }
-                        if (!isPresent) {
-                            characterCards.add(new Jester(this));
-                        } else {
-                            i--;
+                if (num == 0) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("Jester")) {
+                            isPresent = true;
                         }
                     }
-
-                    if (num == 1) {
-                        for (CharacterCard c : characterCards) {
-                            if (c.getNameCard().equals("Knight")) {
-                                isPresent = true;
-                            }
-                        }
-                        if (!isPresent) {
-                            characterCards.add(new Knight(this));
-                        } else {
-                            i--;
-                        }
-                    }
-
-                    if (num == 2) {
-                        for (CharacterCard c : characterCards) {
-                            if (c.getNameCard().equals("Minstrell")) {
-                                isPresent = true;
-                            }
-                        }
-                        if (!isPresent) {
-                            characterCards.add(new Minstrell(this));
-                        } else {
-                            i--;
-                        }
-                    }
-
-                    if (num == 3) {
-                        for (CharacterCard c : characterCards) {
-                            if (c.getNameCard().equals("Pirate")) {
-                                isPresent = true;
-                            }
-                        }
-                        if (!isPresent) {
-                            characterCards.add(new Pirate(this));
-                        } else {
-                            i--;
-                        }
-                    }
-
-                    if (num == 4) {
-                        for (CharacterCard c : characterCards) {
-                            if (c.getNameCard().equals("PostMan")) {
-                                isPresent = true;
-                            }
-                        }
-                        if (!isPresent) {
-                            characterCards.add(new PostMan(this));
-                        } else {
-                            i--;
-                        }
-                    }
-
-                    if (num == 5) {
-                        for (CharacterCard c : characterCards) {
-                            if (c.getNameCard().equals("Priest")) {
-                                isPresent = true;
-                            }
-                        }
-                        if (!isPresent) {
-                            characterCards.add(new Priest(this));
-                        } else {
-                            i--;
-                        }
-                    }
-
-                    if (num == 6) {
-                        for (CharacterCard c : characterCards) {
-                            if (c.getNameCard().equals("Satyr")) {
-                                isPresent = true;
-                            }
-                        }
-                        if (!isPresent) {
-                            characterCards.add(new Satyr(this));
-                        } else {
-                            i--;
-                        }
-                    }
-
-                    if (num == 7) {
-                        for (CharacterCard c : characterCards) {
-                            if (c.getNameCard().equals("Woman")) {
-                                isPresent = true;
-                            }
-                        }
-                        if (!isPresent) {
-                            characterCards.add(new Woman(this));
-                        } else {
-                            i--;
-                        }
+                    if (!isPresent) {
+                        characterCards.add(new Jester(this));
+                    } else {
+                        i--;
                     }
                 }
+
+                if (num == 1) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("Knight")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new Knight(this));
+                    } else {
+                        i--;
+                    }
+                }
+
+                if (num == 2) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("Minstrell")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new Minstrell(this));
+                    } else {
+                        i--;
+                    }
+                }
+
+                if (num == 3) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("Pirate")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new Pirate(this));
+                    } else {
+                        i--;
+                    }
+                }
+
+                if (num == 4) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("PostMan")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new PostMan(this));
+                    } else {
+                        i--;
+                    }
+                }
+
+                if (num == 5) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("Priest")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new Priest(this));
+                    } else {
+                        i--;
+                    }
+                }
+
+                if (num == 6) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("Satyr")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new Satyr(this));
+                    } else {
+                        i--;
+                    }
+                }
+
+                if (num == 7) {
+                    for (CharacterCard c : characterCards) {
+                        if (c.getNameCard().equals("Woman")) {
+                            isPresent = true;
+                        }
+                    }
+                    if (!isPresent) {
+                        characterCards.add(new Woman(this));
+                    } else {
+                        i--;
+                    }
+                }
+            }
 
         }
 
@@ -591,7 +591,11 @@ public class Game extends Observable {
      * @throws MissingTowerException
      */
     public void checkTowers(int numIsland) throws MissingIslandException, MissingTowerException {
+        boolean three = false;
 
+        if(listTeam.size() == 3){
+            three = true;
+        }
         Island island = null;
 
         //cerco l'isola su cui effettuare il controllo
@@ -612,6 +616,7 @@ public class Game extends Observable {
             //inizializzo i punti per ogni team a 0
             int team1 = 0;
             int team2 = 0;
+            int team3 = 0;
 
             //associo ai team i corrispettivi punti
             //(a seconda dei professori che controllano e degli studenti presenti sul terreno)
@@ -624,6 +629,9 @@ public class Game extends Observable {
                         prof.getOwner().getTeam() == listTeam.get(1)) {
 
                     team2 = team2 + island.countStudentsOfColour(prof.getColour());
+                }else if(three && prof.getOwner() != null &&
+                        prof.getOwner().getTeam() == listTeam.get(2)){
+                    team3 = team3 + island.countStudentsOfColour(prof.getColour());
                 }
             }
 
@@ -636,13 +644,17 @@ public class Game extends Observable {
                         team1 = team1 + island.getNumSubIsland();
                     } else if(colourTower.equals(listTeam.get(1).getColourTower())){
                         team2 = team2 + island.getNumSubIsland();
+                    } else if(three && colourTower.equals(listTeam.get(2).getColourTower())){
+                        team3 = team3 + island.getNumSubIsland();
                     }
                 }
                 if (characterCardThrown == "Knight") {
                     if (getPlayer(currentPlayer).getTeam() == listTeam.get(0))
                         team1 = team1 + 2;
-                    else {
+                    else if(getPlayer(currentPlayer).getTeam() == listTeam.get(1)) {
                         team2 = team2 + 2;
+                    } else if(three && getPlayer(currentPlayer).getTeam() == listTeam.get(2)) {
+                        team3 = team3 + 2;
                     }
                 }
                 characterCardThrown = "";
@@ -652,21 +664,34 @@ public class Game extends Observable {
                 //a questo punto confronto il valore dei team
                 //e se c'è una maggioranza riassegno le torri e controllo eventuali fusioni
                 //altrimenti chiudo il metodo
-
+                System.out.println("team1 :" + team1);
+                System.out.println("team2 :" + team2);
+                System.out.println("team3 :" + team3);
                 //caso di parità
-                if (team1 == team2) {
+
+                if(three && ((team1 == team2 && team3 <= team1) || (team1 == team3 && team2 <= team1)  || (team2 == team3 && team1 <= team2))){
+
+                    return;
+                } else if (!three && team1 == team2) {
                     return;
                 }
 
                 //caso di maggioranza team1
                 //se il team1 ha finito le torri significa che ha vinto e lancio un'eccezione per
                 //richiamare il metodo checkwin
-                else if (team1 > team2) {
-                    if(island.getColourTower().equals(listTeam.get(1).getColourTower())){
+                else if ((three && team1 > team3 && team1 > team2) || (!three && team1 > team2)) {
+                    if (!island.getColourTower().equals(listTeam.get(0).getColourTower())) {
 
                         listTeam.get(0).useTowers(island.getNumSubIsland());
-                        listTeam.get(1).takeTowers(island.getNumSubIsland());
-                    }else if(island.getColourTower().equals(ColourTower.NO_ONE)){
+                        if(island.getColourTower().equals(ColourTower.BLACK)) {
+                            listTeam.get(1).takeTowers(island.getNumSubIsland());
+                        }else if(three){
+                            if(island.getColourTower().equals(ColourTower.GREY)){
+                                listTeam.get(2).takeTowers(island.getNumSubIsland());
+                            }
+                        }
+
+                    } else if (island.getColourTower().equals(ColourTower.NO_ONE)) {
                         listTeam.get(0).useTowers(island.getNumSubIsland());
                     }
 
@@ -674,20 +699,42 @@ public class Game extends Observable {
                     fusion(numIsland);
                 }
 
+
                 //caso di maggioranza team2
                 //se il team2 ha finito le torri significa che ha vinto e lancio un'eccezione per
                 //richiamare il metodo checkwin
-                else {
-                    if(island.getColourTower().equals(listTeam.get(0).getColourTower())){
+                else if ((three && team2 > team3 && team2 > team1) || (!three && team2 > team1)) {
+                    if (!island.getColourTower().equals(listTeam.get(1).getColourTower())) {
+
                         listTeam.get(1).useTowers(island.getNumSubIsland());
-                        listTeam.get(0).takeTowers(island.getNumSubIsland());
-                    }else if(island.getColourTower().equals(ColourTower.NO_ONE)){
+                        if(island.getColourTower().equals(ColourTower.WHITE)) {
+                            listTeam.get(0).takeTowers(island.getNumSubIsland());
+                        }else if(three){
+                            if(island.getColourTower().equals(ColourTower.GREY)){
+                                listTeam.get(2).takeTowers(island.getNumSubIsland());
+                            }
+                        }
+
+                    } else if (island.getColourTower().equals(ColourTower.NO_ONE)) {
                         listTeam.get(1).useTowers(island.getNumSubIsland());
                     }
 
                     island.setColourTower(listTeam.get(1).getColourTower());
                     fusion(numIsland);
+                } else{
+                    System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                    listTeam.get(2).useTowers(island.getNumSubIsland());
+
+                    if (island.getColourTower().equals(listTeam.get(0).getColourTower())) {
+                        listTeam.get(0).takeTowers(island.getNumSubIsland());
+                    } else if (island.getColourTower().equals(listTeam.get(1).getColourTower())) {
+                        listTeam.get(1).takeTowers(island.getNumSubIsland());
+                    }
+
+                    island.setColourTower(listTeam.get(2).getColourTower());
+                    fusion(numIsland);
                 }
+
             }
 
         }
@@ -1039,7 +1086,11 @@ public class Game extends Observable {
         currentPlayer = newCurrentPlayer;
     }
 
-    //Method for network
+    /**
+     * notify an error committed by the client
+     * @param description
+     * @param nickname
+     */
     public void notifyError(String description, String nickname){
         ServerMessage sm;
         ServerHeader sh;
@@ -1055,6 +1106,10 @@ public class Game extends Observable {
         notify(sm);
     }
 
+    /**
+     * send the board to the client
+     * @param s
+     */
     public void sendBoard(String s){
         ServerMessage sm;
         ServerHeader sh = new ServerHeader(ServerAction.UPDATE_BOARD, s);
@@ -1222,6 +1277,9 @@ public class Game extends Observable {
         notify(sm);
     }
 
+    /**
+     * notify the winner
+     */
     public void notifyWin() {
         if(checkWin()) {
             ServerMessage sm;
