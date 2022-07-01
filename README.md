@@ -15,6 +15,13 @@ Il progetto implementa:
   
   Model         100%      93%       85%
   
+  
+---------------------AVVIO JAR
+
+per avviare le jar è sufficiente scrivere il seguente comando:
+
+java -jar "path dell'eseguibile\nome_eseguibile.jar"
+  
 -----------------------ISTRUZIONE PER UTILIZZARE LA CLI
 
 PORTA SERVER: 55555
