@@ -17,6 +17,8 @@ Il progetto implementa:
   
 -----------------------ISTRUZIONE PER UTILIZZARE LA CLI
 
+PORTA SERVER: 55555
+
 •le modalità di gioco sono chiamate easy e difficult
 
 •le partite possono essere da 2, 3 o 4 giocatori
@@ -27,6 +29,9 @@ Il progetto implementa:
 
 
 ------------------------ISTRUZIONI PER UTILIZZARE LA GUI
+
+PORTA SERVER: 55555
+
 •le modalità di gioco sono chiamate easy e difficult
 
 •le partite possono essere da 2, 3 o 4 giocatori
