@@ -258,190 +258,57 @@ public final class ClientModelCLI extends UserInterface{
 
         island = island +( "Islands :\n\t");
 
-        //voglio tornare a capo se ci sono più di 6 isole quindi metto due casi
-        //setto quanto è lunga la prima fila
-        if(max > listIsland.size()){
-            max = listIsland.size();
-        }
 
-        /////////////////////////////////////////////////////////////////////////PRIMA FILA DI ISOLE
-        //scrivo i numeri sopra
-        for(int i = 0; i < max; i++){
-            island = island + ( listIsland.get(i).getNumIsland()+1) + "\t\t\t\t\t\t";
-        }
-
-        //scrivo il confine delle isole
-        island = island +("\n");
-        for(int i = 0; i < max; i++) {
-            island = island +("\t|-------------------|");
-        }
-        island = island +("\n");
-
-        //stampo gli studenti per colore sulle isole
-        for(Colour colour : Colour.values()){
-            String tab = "";
-            //setto il colore della stringa
-            if(colour.equals(Colour.BLUE)){
-                colore = "Blue";
-                tab = "\t\t\t";
-            } else if(colour.equals(Colour.RED)){
-                colore = "Red";
-                tab = "\t\t\t\t";
-            } else if(colour.equals(Colour.PINK)){
-                colore = "Pink";
-                tab = "\t\t\t";
-            } else if(colour.equals(Colour.GREEN)){
-                colore = "Green";
-                tab = "\t\t\t";
-            } else if(colour.equals(Colour.YELLOW)){
-                colore = "Yellow";
-                tab = "\t\t\t";
-            }
-
-            for (int i = 0; i < max; i++) {
-                island = island + ("\t|");
-                if(listIsland.get(i).countStudentsOfColour(colour)!=0) {
-                    island = island + (colore +": " + listIsland.get(i).countStudentsOfColour(colour));
-                    island = island + (tab+"|");
-                }else{
-                    island = island + ("\t\t\t\t\t|");
-                }
-            }
-
-            island = island +("\n");
-        }
-
-        //metto le torri
-        for(int i = 0; i < max; i++){
-            island = island + "\t|";
-            try{
-                if(listIsland.get(i).getColourTower().equals(ColourTower.BLACK)){
-                    island = island + "BlackTower: " + listIsland.get(i).getNumSubIsland()+ "\t\t|";
-
-                } else if(listIsland.get(i).getColourTower().equals(ColourTower.WHITE)){
-                    island = island + "WhiteTower: " + listIsland.get(i).getNumSubIsland()+ "\t\t|";
-
-                } else if(listIsland.get(i).getColourTower().equals(ColourTower.GREY)){
-                    island = island + "GreyTower: " + listIsland.get(i).getNumSubIsland()+ "\t\t|";
-                }else{
-                    island = island + ("\t\t\t\t\t|");
-                }
-            }catch(MissingTowerException e){}
-
-        }
-
-        island = island + "\n";
-
-        //metto madre natura dove serve
-        for(int i = 0; i < max; i++){
-            island = island + "\t|";
-
-            if(listIsland.get(i).getHasMotherNature()) {
-                island = island + "\t" + "֍mothernature֍" + "\t|";
-            }
-            else{
-                island = island + ("\t\t\t\t\t|");
-            }
-        }
-
-        island = island + "\n";
-
-        //stampo il confine in fondo dell'isola
-        for(int i = 0; i < max; i++) {
-            island = island +("\t|-------------------|");
-        }
-        island = island +("\n\n");
 
         /////////////////////////////////////////////////////////////////////////SECONDA FILA DI ISOLE
         island = island +( "\t");
         //scrivo i numeri sopra
-        for(int i = 6; i < listIsland.size(); i++){
-            island = island + (listIsland.get(i).getNumIsland()+1) + "\t\t\t\t\t\t";
-        }
+        for(int i = 0; i < listIsland.size(); i++){
+            island = island +"\n------isola " + (listIsland.get(i).getNumIsland()+1)+ "-------\n";
 
-        //scrivo il confine delle isole
-        island = island +("\n");
-        for(int i = 6; i < listIsland.size(); i++) {
-            island = island +("\t|-------------------|");
-        }
-        island = island +("\n");
 
-        //stampo gli studenti per colore sulle isole
-        for(Colour colour : Colour.values()){
+            //stampo gli studenti per colore sulle isole
+            for(Colour colour : Colour.values()){
 
-            String tab = "";
-            //setto il colore della stringa
-            if(colour.equals(Colour.BLUE)){
-                colore = "Blue";
-                tab = "\t\t\t";
-            } else if(colour.equals(Colour.RED)){
-                colore = "Red";
-                tab = "\t\t\t\t";
-            } else if(colour.equals(Colour.PINK)){
-                colore = "Pink";
-                tab = "\t\t\t";
-            } else if(colour.equals(Colour.GREEN)){
-                colore = "Green";
-                tab = "\t\t\t";
-            } else if(colour.equals(Colour.YELLOW)){
-                colore = "Yellow";
-                tab = "\t\t\t";
-            }
+                //setto il colore della stringa
+                if(colour.equals(Colour.BLUE)){
+                    colore = "Blue";
 
-            for (int i = 0; i < listIsland.size(); i++) {
-                island = island + ("\t|");
-                if(listIsland.get(i).countStudentsOfColour(colour)!=0) {
-                    island = island + (colore +": " + listIsland.get(i).countStudentsOfColour(colour));
-                    island = island + (tab+"|");
-                }else{
-                    island = island + ("\t\t\t\t\t|");
+                } else if(colour.equals(Colour.RED)){
+                    colore = "Red";
+
+                } else if(colour.equals(Colour.PINK)){
+                    colore = "Pink";
+
+                } else if(colour.equals(Colour.GREEN)){
+                    colore = "Green";
+
+                } else if(colour.equals(Colour.YELLOW)){
+                    colore = "Yellow";
+
                 }
 
-
+                island = island + (colore +": " + listIsland.get(i).countStudentsOfColour(colour));
+                island = island +("\n");
             }
 
-            island = island +("\n");
-        }
-
-        //metto le torri
-        for(int i = 6; i < listIsland.size(); i++){
-            island = island + "\t|";
             try{
                 if(listIsland.get(i).getColourTower().equals(ColourTower.BLACK)){
-                    island = island + "BlackTower: " + listIsland.get(i).getNumSubIsland()+ "\t\t|";
+                    island = island + "BlackTower: " + listIsland.get(i).getNumSubIsland()+ "\n";
 
                 } else if(listIsland.get(i).getColourTower().equals(ColourTower.WHITE)){
-                    island = island + "WhiteTower: " + listIsland.get(i).getNumSubIsland()+ "\t\t|";
+                    island = island + "WhiteTower: " + listIsland.get(i).getNumSubIsland()+ "\n";
 
                 } else if(listIsland.get(i).getColourTower().equals(ColourTower.GREY)){
-                    island = island + "GreyTower: " + listIsland.get(i).getNumSubIsland()+ "\t\t|";
-                }else{
-                    island = island + ("\t\t\t\t\t|");
+                    island = island + "GreyTower: " + listIsland.get(i).getNumSubIsland()+ "\n";
                 }
             }catch(MissingTowerException e){}
-        }
-
-        island = island + "\n";
-
-        //metto madre natura dove serve
-        for(int i = 6; i < listIsland.size(); i++){
-            island = island + "\t|";
-
             if(listIsland.get(i).getHasMotherNature()) {
-                island = island + "\t" + "֍mothernature֍" + "\t|";
-            }
-            else{
-                island = island + ("\t\t\t\t\t|");
+                island = island + "֍mothernature֍" + "\n";
             }
         }
 
         island = island + "\n";
-
-        //stampo il confine in fondo dell'isola
-        for(int i = 6; i < listIsland.size(); i++) {
-            island = island +("\t|-------------------|");
-        }
-        island = island +("\n");
 
         return island;
     }
