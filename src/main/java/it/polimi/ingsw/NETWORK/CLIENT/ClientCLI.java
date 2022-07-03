@@ -395,7 +395,7 @@ public final class ClientCLI {
                                 System.out.println("please choose between yes and no");
                             }
                         }
-                        Thread.sleep(100);
+                        Thread.sleep(1000);
                     }
                 }catch(Exception e){
                     //System.out.println("eccezione scrittura: " + e);
